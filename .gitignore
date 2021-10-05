@@ -1,2 +1,0 @@
-$ git rm --cached token.txt
-src/main/resources/token.txt
