@@ -1,7 +1,9 @@
 package amiiBot;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.javacord.api.DiscordApi;
@@ -10,29 +12,48 @@ import org.javacord.api.DiscordApiBuilder;
 public class Main {
 
 	public static void main(String[] args) {
-
-		File tokenFile = new File("src\\main\\resources\\token.txt");
+		
+		ArrayList<AbstractCommand> commandList = addCommands();
+		String commandToken = "!";
+		HelpCommand.setCommandList(commandList);
+		HelpCommand.setCommandToken(commandToken);
+		
 		String token = "";
+		File tokenFile = new File("src\\main\\resources\\token.txt");
 		try {
 			Scanner tokenScanner = new Scanner(tokenFile);
 			token = tokenScanner.next();
+			tokenScanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("FILE NOT FOUND");
 			e.printStackTrace();
 		}
+		
+		DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
+		
+		
+		
+		
+	     // Print the invite url of your bot
+	        System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
 
-        DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
+	        api.addMessageCreateListener(event -> {
+	        	for(int i = 0; i < commandList.size(); i++) {
+	            if (event.getMessageContent().equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
+	            	event.getChannel().sendMessage(commandList.get(i).getOutput().setColor(Color.BLUE));	            
+	            	} 
+	            
+	        	}
+	            
+	        });
+		}
 
-        // Add a listener which answers with "Pong!" if someone writes "!ping"
-        api.addMessageCreateListener(event -> {
-            if (event.getMessageContent().equalsIgnoreCase("!ping")) {
-                event.getChannel().sendMessage("Pong!");
-            }
-        });
+	public static ArrayList<AbstractCommand> addCommands() {
+		ArrayList<AbstractCommand> list = new ArrayList<AbstractCommand>();
 
-        // Print the invite url of your bot
-        System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
+		list.add(new pingCommand());
+		list.add(new HelpCommand());
 
+		return list;
 	}
-
 }
