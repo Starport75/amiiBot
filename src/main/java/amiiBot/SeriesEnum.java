@@ -11,11 +11,11 @@ public enum SeriesEnum {
 		amiiboType = type;
 	}
 		
-	SeriesEnum[] SeriesArray = SeriesEnum.values();
+	static SeriesEnum[] SeriesArray = SeriesEnum.values();
 
 	
 
-	public SeriesEnum intToSeries(int num) {
+	public static SeriesEnum intToSeries(int num) {
 		return SeriesArray[num];
 	}
 	
@@ -32,10 +32,10 @@ public enum SeriesEnum {
 		return amiiboType;
 	}
 	
-	public int getNumOfType(TypeEnum type) {
+	public static int getNumOfType(TypeEnum type) {
 		int j = 0;
 		for (int i = 0; i < SeriesEnum.values().length; i++) {
-			if (this.intToSeries(i).amiiboType == type) {
+			if (intToSeries(i).amiiboType == type) {
 				j++;
 			}
 		}

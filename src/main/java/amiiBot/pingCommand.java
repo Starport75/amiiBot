@@ -6,7 +6,7 @@ class PingCommand extends AbstractCommand {
 	String command = "ping";
 	String description = "A test command";
 
-	public EmbedBuilder getOutput() {
+	public EmbedBuilder getOutput(MasterList masterList) {
 		EmbedBuilder embed = new EmbedBuilder()
 				.setDescription("Pong!");
 		return embed;

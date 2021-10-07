@@ -15,8 +15,12 @@ public class Main {
 		
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
+		
 		HelpCommand.setCommandList(commandList);
 		HelpCommand.setCommandToken(commandToken);
+		
+		MasterList masterList = new MasterList();
+		masterList.updateMasterList();
 		
 		String token = "";
 		File tokenFile = new File("src\\main\\resources\\token.txt");
@@ -40,7 +44,7 @@ public class Main {
 	        api.addMessageCreateListener(event -> {
 	        	for(int i = 0; i < commandList.size(); i++) {
 	            if (event.getMessageContent().equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
-	            	event.getChannel().sendMessage(commandList.get(i).getOutput().setColor(Color.BLUE));	            
+	            	event.getChannel().sendMessage(commandList.get(i).getOutput(masterList).setColor(Color.BLUE));	            
 	            	} 
 	            
 	        	}

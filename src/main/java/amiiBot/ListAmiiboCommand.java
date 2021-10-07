@@ -2,19 +2,22 @@ package amiiBot;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-public class ListAmiiboCommand extends AbstractCommand{
+public class ListAmiiboCommand extends AbstractCommand {
 	String description = "Lists all amiibo in the database";
 	String command = "listAmiibo";
 
-	public EmbedBuilder getOutput() {
-String output = "";
-		
-		for (int i = 0; i < commandList.size(); i++) {
-			output = output + "\n**" + commandToken + commandList.get(i).getCommand() + "**\n\t*" + commandList.get(i).getDescription() + "*";
+	public EmbedBuilder getOutput(MasterList masterList) {
+		String output = "";
+
+		for (int i = 0; i < masterList.getMasterList().length; i++) {
+			for (int j = 0; j < masterList.getMasterList()[i].length; j++) {
+				for (int k = 0; k < masterList.getMasterList()[i][j].size(); k++) {
+					output = output + masterList.getMasterList()[i][j].toString() + "/n";
+				}
+			}
 		}
-		EmbedBuilder embed = new EmbedBuilder()
-				.setDescription(output);
-				return embed;
+		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
+		return embed;
 	}
 
 	public String getCommand() {

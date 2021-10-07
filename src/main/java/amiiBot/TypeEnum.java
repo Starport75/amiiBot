@@ -5,9 +5,9 @@ public enum TypeEnum {
 	CARD,
 	OTHER;
 	
-	TypeEnum[] TypeArray = TypeEnum.values();
+	static TypeEnum[] TypeArray = TypeEnum.values();
 	
-	public TypeEnum intToType(int num) {
+	public static TypeEnum intToType(int num) {
 		return TypeArray[num];
 	}
 	
