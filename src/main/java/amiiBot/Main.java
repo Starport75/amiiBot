@@ -53,6 +53,7 @@ public class Main {
 
 		list.add(new pingCommand());
 		list.add(new HelpCommand());
+		list.add(new ListAmiiboCommand());
 
 		return list;
 	}

@@ -19,5 +19,4 @@ abstract class AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
-
 }
