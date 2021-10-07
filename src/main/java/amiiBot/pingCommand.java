@@ -2,7 +2,7 @@ package amiiBot;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-class pingCommand extends AbstractCommand {
+class PingCommand extends AbstractCommand {
 	String command = "ping";
 	String description = "A test command";
 

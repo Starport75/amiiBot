@@ -3,15 +3,15 @@ package amiiBot;
 public class Amiibo {
 	//Set for all amiibo, saved to data sheet
 	String amiiboName;
-	TypeList amiiboType;
-	SeriesList amiiboSeries;
+	TypeEnum amiiboType;
+	SeriesEnum amiiboSeries;
 	
 	
 	//Specific to each user, saved in user document
 	int numberObtained;
 	boolean wantsNotifications;
 	
-	public Amiibo(String name, TypeList type, SeriesList series) {
+	public Amiibo(String name, TypeEnum type, SeriesEnum series) {
 		amiiboName = name;
 		amiiboType = type;
 		amiiboSeries = series;
@@ -23,11 +23,11 @@ public class Amiibo {
 		return amiiboName;
 	}
 	
-	public TypeList getType() {
+	public TypeEnum getType() {
 		return amiiboType;
 	}
 	
-	public SeriesList getSeries() {
+	public SeriesEnum getSeries() {
 		return amiiboSeries;
 	}
 	

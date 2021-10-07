@@ -51,7 +51,7 @@ public class Main {
 	public static ArrayList<AbstractCommand> addCommands() {
 		ArrayList<AbstractCommand> list = new ArrayList<AbstractCommand>();
 
-		list.add(new pingCommand());
+		list.add(new PingCommand());
 		list.add(new HelpCommand());
 		list.add(new ListAmiiboCommand());
 
