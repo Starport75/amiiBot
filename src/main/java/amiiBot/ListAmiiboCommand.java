@@ -6,27 +6,34 @@ public class ListAmiiboCommand extends AbstractCommand {
 	String description = "Lists all amiibo in the database";
 	String command = "listAmiibo";
 
-	public EmbedBuilder getOutput(MasterList masterList) {
+	public EmbedBuilder getOutput(MasterList masterList, String restOfCommand) {
+
+		// System.out.println(restOfCommand);
+		// System.out.println(restOfCommand.substring(restOfCommand.indexOf('<') + 1,
+		// restOfCommand.indexOf('>')));
+
 		String output = "";
 
-		for (int i = 0; i < masterList.getMasterList().length; i++) {
-			output = output + "**" + TypeEnum.intToType(i).toString() + ":**\n";
-			for (int j = 0; j < masterList.getMasterList()[i].length; j++) {
-				output = output + SeriesEnum.intToSeries(j).toString() + " Series:\n";
-				for (int k = 0; k < masterList.getMasterList()[i][j].size(); k++) {
-					output = output + masterList.getMasterList()[i][j].get(k).getName();
-					if (k < masterList.getMasterList()[i][j].size() - 2) {
-						output = output + ", ";
-					} else if (k == masterList.getMasterList()[i][j].size() - 2) {
-						if (masterList.getMasterList()[i][j].size() != 2) {
-							output = output +  ",";
-						}
-						output = output + " and ";
+		int typeInt = 0;
+
+		output = output + "***" + TypeEnum.intToType(typeInt).toString() + ":***\n";
+		for (int j = 0; j < masterList.getMasterList()[typeInt].length; j++) {
+			output = output + "\n**" + SeriesEnum.intToSeries(j, TypeEnum.intToType(typeInt)).toString() + ":** ";
+			output = output + "*(" + masterList.getMasterList()[typeInt][j].size() + ")*\n";
+			for (int k = 0; k < masterList.getMasterList()[typeInt][j].size(); k++) {
+				output = output + masterList.getMasterList()[typeInt][j].get(k).getName();
+				if (k < masterList.getMasterList()[typeInt][j].size() - 2) {
+					output = output + ", ";
+				} else if (k == masterList.getMasterList()[typeInt][j].size() - 2) {
+					if (masterList.getMasterList()[typeInt][j].size() != 2) {
+						output = output + ",";
 					}
+					output = output + " and ";
 				}
-				output = output + "\n";
 			}
+			output = output + "\n";
 		}
+
 		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
 		return embed;
 	}

@@ -14,6 +14,9 @@ public class MasterList {
 		masterList = new ArrayList[TypeEnum.getNumOfTypes()][];
 		for (int i = 0; i < TypeEnum.values().length; i++) {
 			masterList[i] = new ArrayList[SeriesEnum.getNumOfType(TypeEnum.intToType(i))];
+			/*System.out.println("NumOfType: Card = " + SeriesEnum.getNumOfType(TypeEnum.CARD) + 
+									  ", Figure = " + SeriesEnum.getNumOfType(TypeEnum.FIGURE) + 
+									  ", Other = " + SeriesEnum.getNumOfType(TypeEnum.OTHER));*/
 			for (int j = 0; j < SeriesEnum.getNumOfType(TypeEnum.intToType(i)); j++) {
 				masterList[i][j] = new ArrayList<Amiibo>();
 			}
@@ -50,9 +53,9 @@ public class MasterList {
 
 	public void addAmiiboToList(Amiibo amiiboToAdd) {
 		int type = amiiboToAdd.getType().typeToInt();
-		int series = amiiboToAdd.getSeries().seriesToInt();
-		System.out.println("Type = " + type + " (" + TypeEnum.intToType(type) + "), Series = " + series + ", ("
-				+ SeriesEnum.intToSeries(series) + ")");
+		int series = amiiboToAdd.getSeries().seriesToInt(amiiboToAdd.getType());
+		/*System.out.println("Type = " + type + " (" + TypeEnum.intToType(type) + "), Series = " + series + ", ("
+				+ SeriesEnum.intToSeries(series, amiiboToAdd.getType()) + ") - " + amiiboToAdd.getName());*/
 
 		masterList[type][series].add(amiiboToAdd);
 	}

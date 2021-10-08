@@ -6,7 +6,7 @@ abstract class AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command;
 
-	public EmbedBuilder getOutput(MasterList masterList) {
+	public EmbedBuilder getOutput(MasterList masterList, String restOfCommand) {
 		EmbedBuilder embed = new EmbedBuilder()
 				.setDescription("This command has not been set up. Please contact the creator");
 		return embed;

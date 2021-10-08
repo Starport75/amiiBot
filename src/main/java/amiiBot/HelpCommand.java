@@ -18,7 +18,7 @@ public class HelpCommand extends AbstractCommand {
 	String command = "help";
 	String description = "Lists the commands the user can use. You just used it!";
 
-	public EmbedBuilder getOutput(MasterList masterList) {
+	public EmbedBuilder getOutput(MasterList masterList, String restOfCommand) {
 		String output = "";
 		
 		for (int i = 0; i < commandList.size(); i++) {
