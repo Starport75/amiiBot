@@ -1,14 +1,16 @@
 package amiiBot;
 
 public enum SeriesEnum {
-	SMASH (TypeEnum.FIGURE),
-	MARIO (TypeEnum.FIGURE),
-	SPLATOON (TypeEnum.FIGURE);
+	SMASH (TypeEnum.FIGURE, "Super Smash Brothers"),
+	MARIO (TypeEnum.FIGURE, "Super Mario"),
+	SPLATOON (TypeEnum.FIGURE, "Splatoon");
 	
 	private final TypeEnum amiiboType;
+	private final String amiiboName;
 
-	SeriesEnum(TypeEnum type) {
+	SeriesEnum(TypeEnum type, String name) {
 		amiiboType = type;
+		amiiboName = name;
 	}
 		
 	static SeriesEnum[] SeriesArray = SeriesEnum.values();
@@ -40,5 +42,9 @@ public enum SeriesEnum {
 			}
 		}
 		return j;
+	}
+	
+	public String toString() {
+		return amiiboName;
 	}
 }

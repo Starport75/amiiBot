@@ -1,12 +1,18 @@
 package amiiBot;
 
 public enum TypeEnum {
-	FIGURE,
-	CARD,
-	OTHER;
+	FIGURE ("Figures"),
+	CARD ("Cards"),
+	OTHER ("Other");
 	
 	static TypeEnum[] TypeArray = TypeEnum.values();
 	
+	String formalName;
+	
+	TypeEnum(String name) {
+		formalName = name;
+	}
+
 	public static TypeEnum intToType(int num) {
 		return TypeArray[num];
 	}
@@ -18,5 +24,13 @@ public enum TypeEnum {
 			}
 		}
 		return -1;
+	}
+	
+	public static int getNumOfTypes() {
+		return TypeEnum.values().length;
+	}
+	
+	public String toString() {
+		return formalName;
 	}
 }
