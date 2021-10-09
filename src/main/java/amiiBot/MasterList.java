@@ -5,12 +5,30 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 public class MasterList {
 
 	ArrayList<Amiibo>[][] masterList;
 
+
 	@SuppressWarnings("unchecked")
 	public MasterList() {
+		
+		String JSON = "";
+		File JSONFile = new File("src\\main\\resources\\json example.bin");
+		try {
+			Scanner JSONScanner = new Scanner(JSONFile);
+			JSON = JSONScanner.next();
+			JSONScanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("FILE NOT FOUND");
+			e.printStackTrace();
+		}
+		
+		System.out.println("JSON: " + JSON.length());
+		
 		masterList = new ArrayList[TypeEnum.getNumOfTypes()][];
 		for (int i = 0; i < TypeEnum.values().length; i++) {
 			masterList[i] = new ArrayList[SeriesEnum.getNumOfType(TypeEnum.intToType(i))];
