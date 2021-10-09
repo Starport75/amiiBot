@@ -3,6 +3,8 @@ package amiiBot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,9 +26,9 @@ public class AmiiboHuntAccess {
 
 	    CloseableHttpResponse response = client.execute(httpPost);
 	    System.out.println("Status code: " + response.getStatusLine().getStatusCode());
-	    String output = response.toString();
+	    HttpEntity output = response.getEntity();
 	    client.close();
-	    return output;
+	    return output.toString();
 	}
 
 }
