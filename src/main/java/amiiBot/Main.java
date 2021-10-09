@@ -3,6 +3,7 @@ package amiiBot;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,6 +13,17 @@ import org.javacord.api.DiscordApiBuilder;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		AmiiboHuntAccess AHA = new AmiiboHuntAccess();
+		try {
+			System.out.println("Data from amiiboHunt: " + AHA.sendPostRequest());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
