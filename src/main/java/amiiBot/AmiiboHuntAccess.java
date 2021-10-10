@@ -25,8 +25,8 @@ public class AmiiboHuntAccess {
 	    httpPost.setEntity(new UrlEncodedFormEntity(params));
 
 	    CloseableHttpResponse response = client.execute(httpPost);
+	    String output = response.;
 	    System.out.println("Status code: " + response.getStatusLine().getStatusCode());
-	    HttpEntity output = response.getEntity();
 	    client.close();
 	    return output.toString();
 	}
