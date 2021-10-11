@@ -2,32 +2,32 @@ package amiiBot;
 
 public class Amiibo {
 	//Set for all amiibo, saved to data sheet
+	
+	
 	String amiiboName;
-	TypeEnum amiiboType;
-	SeriesEnum amiiboSeries;
+	String amiiboType;
+	String amiiboSeries;
 	
 	
 	//Specific to each user, saved in user document
 	int numberObtained;
 	boolean wantsNotifications;
 	
-	public Amiibo(String name, TypeEnum type, SeriesEnum series) {
+	public Amiibo(String name, String type, String series) {
 		amiiboName = name;
 		amiiboType = type;
 		amiiboSeries = series;
-		numberObtained = 0;
-		wantsNotifications = false;
 	}
 	
 	public String getName() {
 		return amiiboName;
 	}
 	
-	public TypeEnum getType() {
+	public String getType() {
 		return amiiboType;
 	}
 	
-	public SeriesEnum getSeries() {
+	public String getSeries() {
 		return amiiboSeries;
 	}
 	

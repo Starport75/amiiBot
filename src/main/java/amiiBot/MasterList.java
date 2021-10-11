@@ -80,7 +80,11 @@ public class MasterList {
 		}
 		
 		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
-			
+			masterList[0][0].add(new Amiibo(
+					data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(),
+					data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type").toString(),
+					data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name").toString()
+					));
 		}
 
 		System.out.println(seriesList);
