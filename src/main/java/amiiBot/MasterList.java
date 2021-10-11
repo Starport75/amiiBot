@@ -1,80 +1,100 @@
 package amiiBot;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MasterList {
 
 	ArrayList<Amiibo>[][] masterList;
+	AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
+	JSONObject data = new JSONObject(websiteData.sendPostRequest());
+
+	ArrayList<String> seriesList = new ArrayList<String>();
+	ArrayList<String> typeList = new ArrayList<String>();
+	ArrayList<String> comparisonList = new ArrayList<String>();
 
 	@SuppressWarnings("unchecked")
 	public MasterList() {
-		
-		String JSON = "";
-		File JSONFile = new File("src\\main\\resources\\json example.bin");
-		try {
-			Scanner JSONScanner = new Scanner(JSONFile);
-			JSON = JSONScanner.next();
-			JSONScanner.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("FILE NOT FOUND");
-			e.printStackTrace();
-		}
-		
-		System.out.println("JSON: " + JSON.length());
-		
-		masterList = new ArrayList[TypeEnum.getNumOfTypes()][];
-		for (int i = 0; i < TypeEnum.values().length; i++) {
-			masterList[i] = new ArrayList[SeriesEnum.getNumOfType(TypeEnum.intToType(i))];
-			/*System.out.println("NumOfType: Card = " + SeriesEnum.getNumOfType(TypeEnum.CARD) + 
-									  ", Figure = " + SeriesEnum.getNumOfType(TypeEnum.FIGURE) + 
-									  ", Other = " + SeriesEnum.getNumOfType(TypeEnum.OTHER));*/
-			for (int j = 0; j < SeriesEnum.getNumOfType(TypeEnum.intToType(i)); j++) {
-				masterList[i][j] = new ArrayList<Amiibo>();
+
+		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
+			String amiiboType = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type")
+					.toString();
+			String seriesName = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name")
+					.toString();
+
+			if (seriesName.equals("Animal Crossing")) {
+				if (amiiboType.equals("Figure")) {
+					seriesName = seriesName + " (Figures)";
+				} else if (amiiboType.equals("Card")) {
+					seriesName = seriesName + " (Cards)";
+				}
+			}
+
+			if (!typeList.contains(amiiboType)) {
+				typeList.add(amiiboType);
+			}
+
+			if (!seriesList.contains(seriesName)) {
+				seriesList.add(seriesName);
+				comparisonList.add(amiiboType);
 			}
 		}
+
+		masterList = new ArrayList[typeList.size()][];
+
+		for (int typeIndex = 0; typeIndex < typeList.size(); typeIndex++) {
+			int count = 0;
+			for (String x : comparisonList) {
+				if (x.equals(typeList.get(typeIndex)))
+					count++;
+			}
+			System.out.println(comparisonList);
+			System.out.println(typeList);
+			System.out.println("Counting " + typeList.get(typeIndex) + ". Count is " + count);
+
+			masterList[typeIndex] = new ArrayList[count];
+
+			System.out.println("i size is " + masterList.length + ", j size is " + masterList[typeIndex].length);
+
+			int currSeriesIndex = 0;
+			for (int seriesIndex = 0; seriesIndex < seriesList.size(); seriesIndex++) {
+				
+				System.out.print("Testing arrayList (" + typeIndex + " " + seriesIndex + ") of amiibo for type ");
+				System.out.print(typeList.get(typeIndex));
+				System.out.println(", series " + seriesList.get(seriesIndex));
+
+				if (comparisonList.get(seriesIndex).equals(typeList.get(typeIndex))) {
+					System.out.println(comparisonList.get(seriesIndex) + " = " + typeList.get(typeIndex));
+					
+					masterList[typeIndex][currSeriesIndex] = new ArrayList<Amiibo>();
+					currSeriesIndex++;
+				}
+			}
+		}
+		
+		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
+			
+		}
+
+		System.out.println(seriesList);
+	}
+	
+	public void updateAmiibo() {
+		
 	}
 
-	public void updateMasterList() {
+	public void updateDataToUser() {
 
-		String name;
-		TypeEnum type;
-		SeriesEnum series;
-		String wholeLine;
-
-		File amiiboDatabaseFile = new File("src\\main\\resources\\amiiboDatabase.bin");
-		try {
-			Scanner amiiboDatabaseScanner = new Scanner(amiiboDatabaseFile);
-			while (amiiboDatabaseScanner.hasNextLine()) {
-				wholeLine = amiiboDatabaseScanner.nextLine();
-				name = wholeLine.substring(0, wholeLine.indexOf("/"));
-				series = SeriesEnum.valueOf(wholeLine.substring(wholeLine.indexOf("/") + 1));
-				type = series.amiiboType();
-				addAmiiboToList(new Amiibo(name, type, series));
-			}
-			amiiboDatabaseScanner.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("AMIIBODATABASE NOT FOUND");
-			e.printStackTrace();
-		}
 	}
 
 	public ArrayList<Amiibo>[][] getMasterList() {
 		return masterList;
-	}
-
-	public void addAmiiboToList(Amiibo amiiboToAdd) {
-		int type = amiiboToAdd.getType().typeToInt();
-		int series = amiiboToAdd.getSeries().seriesToInt(amiiboToAdd.getType());
-		/*System.out.println("Type = " + type + " (" + TypeEnum.intToType(type) + "), Series = " + series + ", ("
-				+ SeriesEnum.intToSeries(series, amiiboToAdd.getType()) + ") - " + amiiboToAdd.getName());*/
-
-		masterList[type][series].add(amiiboToAdd);
 	}
 }
