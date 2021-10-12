@@ -14,23 +14,34 @@ public class ListAmiiboCommand extends AbstractCommand {
 
 		String output = "";
 
-		int typeInt = 0;
+		int typeInt = 1;
 
-		output = output + "***" + TypeEnum.intToType(typeInt).toString() + ":***\n";
+		output = output + "***" + masterList.getTypeList().get(typeInt) + ":***\n";
+
 		for (int j = 0; j < masterList.getMasterList()[typeInt].length; j++) {
-			output = output + "\n**" + SeriesEnum.intToSeries(j, TypeEnum.intToType(typeInt)).toString() + ":** ";
+
+			output = output + "\n**" + masterList.getSeriesIndexInType(j, typeInt) + ":** ";
 			output = output + "*(" + masterList.getMasterList()[typeInt][j].size() + ")*\n";
+
 			for (int k = 0; k < masterList.getMasterList()[typeInt][j].size(); k++) {
+
 				output = output + masterList.getMasterList()[typeInt][j].get(k).getName();
+
 				if (k < masterList.getMasterList()[typeInt][j].size() - 2) {
+
 					output = output + ", ";
+
 				} else if (k == masterList.getMasterList()[typeInt][j].size() - 2) {
 					if (masterList.getMasterList()[typeInt][j].size() != 2) {
+
 						output = output + ",";
+
 					}
+
 					output = output + " and ";
 				}
 			}
+
 			output = output + "\n";
 		}
 

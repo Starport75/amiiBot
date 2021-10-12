@@ -1,12 +1,7 @@
 package amiiBot;
 
-import java.io.File;
-
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MasterList {
@@ -19,6 +14,7 @@ public class MasterList {
 	ArrayList<String> seriesList = new ArrayList<String>();
 	ArrayList<String> typeList = new ArrayList<String>();
 	ArrayList<String> comparisonList = new ArrayList<String>();
+	ArrayList<Integer> seriesIndexLookup = new ArrayList<Integer>();
 
 	@SuppressWarnings("unchecked")
 	public MasterList() {
@@ -29,13 +25,7 @@ public class MasterList {
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name")
 					.toString();
 
-			if (seriesName.equals("Animal Crossing")) {
-				if (amiiboType.equals("Figure")) {
-					seriesName = seriesName + " (Figures)";
-				} else if (amiiboType.equals("Card")) {
-					seriesName = seriesName + " (Cards)";
-				}
-			}
+			seriesName = seriesCheck(seriesName, amiiboType);
 
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
@@ -44,6 +34,13 @@ public class MasterList {
 			if (!seriesList.contains(seriesName)) {
 				seriesList.add(seriesName);
 				comparisonList.add(amiiboType);
+				int count = 0;
+				for (String x : comparisonList) {
+					if (x.equals(amiiboType))
+						count++;
+				}
+				seriesIndexLookup.add(count - 1);
+
 			}
 		}
 
@@ -55,43 +52,41 @@ public class MasterList {
 				if (x.equals(typeList.get(typeIndex)))
 					count++;
 			}
-			System.out.println(comparisonList);
-			System.out.println(typeList);
-			System.out.println("Counting " + typeList.get(typeIndex) + ". Count is " + count);
-
 			masterList[typeIndex] = new ArrayList[count];
-
-			System.out.println("i size is " + masterList.length + ", j size is " + masterList[typeIndex].length);
 
 			int currSeriesIndex = 0;
 			for (int seriesIndex = 0; seriesIndex < seriesList.size(); seriesIndex++) {
-				
-				System.out.print("Testing arrayList (" + typeIndex + " " + seriesIndex + ") of amiibo for type ");
-				System.out.print(typeList.get(typeIndex));
-				System.out.println(", series " + seriesList.get(seriesIndex));
-
 				if (comparisonList.get(seriesIndex).equals(typeList.get(typeIndex))) {
-					System.out.println(comparisonList.get(seriesIndex) + " = " + typeList.get(typeIndex));
-					
 					masterList[typeIndex][currSeriesIndex] = new ArrayList<Amiibo>();
 					currSeriesIndex++;
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
-			masterList[0][0].add(new Amiibo(
-					data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(),
-					data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type").toString(),
-					data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name").toString()
-					));
+			String series = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name")
+					.toString();
+			String type = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type").toString();
+			series = seriesCheck(series, type);
+			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(), type,
+					series);
+			System.out.println(seriesList);
+			System.out.println("Series: " + amiiboToAdd.getSeries());
+			System.out.println(seriesList.indexOf(amiiboToAdd.getSeries()));
+			System.out.println(seriesIndexLookup);
+			System.out.println("Attempting to add " + amiiboToAdd.getName() + " of type " + amiiboToAdd.getType()
+					+ " to series " + amiiboToAdd.getSeries() + " (index "
+					+ seriesIndexLookup.get(seriesList.indexOf(amiiboToAdd.getSeries())) + ")");
+			masterList[typeList.indexOf(amiiboToAdd.getType())][seriesIndexLookup
+					.get(seriesList.indexOf(amiiboToAdd.getSeries()))].add(amiiboToAdd);
 		}
 
 		System.out.println(seriesList);
+		System.out.println(seriesIndexLookup);
 	}
-	
+
 	public void updateAmiibo() {
-		
+
 	}
 
 	public void updateDataToUser() {
@@ -100,5 +95,39 @@ public class MasterList {
 
 	public ArrayList<Amiibo>[][] getMasterList() {
 		return masterList;
+	}
+
+	public String seriesCheck(String series, String type) {
+		if (series.equals("Animal Crossing") || series.equals("Others")) {
+			if (type.equals("Figure")) {
+				series = series + " (Figures)";
+			} else if (type.equals("Card")) {
+				series = series + " (Cards)";
+			}
+		}
+
+		return series;
+	}
+
+	public ArrayList<String> getSeriesList() {
+		return seriesList;
+	}
+
+	public ArrayList<String> getTypeList() {
+		return typeList;
+	}
+
+	public String getSeriesIndexInType(int seriesIndex, int typeIndex) {
+		int count = 0;
+		for (int i = 0; i < comparisonList.size(); i++) {
+			if (comparisonList.get(i).equals(typeList.get(typeIndex))) {
+				count++;
+			}
+			if (count == seriesIndex + 1) {
+				System.out.println("Returning " + seriesList.get(i));
+				return seriesList.get(i);
+			}	
+		}
+		return ("No series found");
 	}
 }
