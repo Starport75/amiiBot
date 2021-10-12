@@ -17,22 +17,21 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 public class AmiiboHuntAccess {
-	
 
-	public String sendPostRequest(){
+	public String sendPostRequest(String url, String discordID) {
 		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost("https://www.amiibohunt.com/api/discord/v1/getCollectionById");
+		HttpPost httpPost = new HttpPost(url);
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("api_key", "9b6e5039fdf8a36430ecf0d437c117b0"));
-		params.add(new BasicNameValuePair("discord_id", "240899417010470912"));
+		params.add(new BasicNameValuePair("discord_id", discordID));
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(params));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		CloseableHttpResponse response = null;
 		try {
 			response = client.execute(httpPost);

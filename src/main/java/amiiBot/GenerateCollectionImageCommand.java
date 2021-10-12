@@ -4,14 +4,23 @@ import java.util.ArrayList;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.channel.TextChannelEvent;
+import org.javacord.api.event.message.MessageEvent;
+import org.json.JSONObject;
 
-abstract class AbstractCommand {
+public class GenerateCollectionImageCommand extends AbstractCommand{
 	String description = "Default description. Contact the creator if you are reading this message";
-	String command;
+	String command = "generateImage";
 
 	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
+		
+		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
+
+		JSONObject data = new JSONObject(websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID));
+		System.out.println(data);
+		String output = data.get("val").toString();
+		
 		EmbedBuilder embed = new EmbedBuilder()
-				.setDescription("This command has not been set up. Please contact the creator");
+				.setImage(output);
 		return embed;
 	}
 

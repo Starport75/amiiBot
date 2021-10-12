@@ -1,26 +1,51 @@
 package amiiBot;
 
+import java.util.ArrayList;
+
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 public class ListAmiiboCommand extends AbstractCommand {
 	String description = "Lists all amiibo in the database";
 	String command = "listAmiibo";
 
-	public EmbedBuilder getOutput(MasterList masterList, String restOfCommand) {
-
-		// System.out.println(restOfCommand);
-		// System.out.println(restOfCommand.substring(restOfCommand.indexOf('<') + 1,
-		// restOfCommand.indexOf('>')));
+	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
 
 		String output = "";
 
-		int typeInt = 1;
+		if (parameters.size() < 1) {
+			EmbedBuilder embed = new EmbedBuilder()
+					.setDescription("Error: No parameters defined. Command structure is !listAmiibo <Type> [optional]<Series>");
+			return embed;
+		}
+		
+		int typeInt = masterList.getTypeList().indexOf(parameters.get(0));
+		if (typeInt == -1) {
+			EmbedBuilder embed = new EmbedBuilder()
+					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
+			return embed;
+		}
 
 		output = output + "***" + masterList.getTypeList().get(typeInt) + ":***\n";
 
-		for (int j = 0; j < masterList.getMasterList()[typeInt].length; j++) {
+		int min = 0;
+		int max = masterList.getMasterList()[typeInt].length;
+		if (parameters.size() >= 2) {
+		int tempSeriesIndex = masterList.getSeriesList().indexOf(parameters.get(1));
+			System.out.println(tempSeriesIndex);
+			System.out.println(masterList.getSeriesList());
+			if (tempSeriesIndex == -1) {
+				EmbedBuilder embed = new EmbedBuilder()
+						.setDescription("Error: Parameter \"" + parameters.get(1) + "\" was not recognized! #2");
+				return embed;
+			} else {
+				min = tempSeriesIndex;
+				max = min + 1;
+			}
+		}
+		
+		for (int j = min; j < max ; j++) {
 
-			output = output + "\n**" + masterList.getSeriesIndexInType(j, typeInt) + ":** ";
+			output = output + "\n**" + masterList.getSeriesList().get(masterList.getSeriesIndexInType(j, typeInt)) + ":** ";
 			output = output + "*(" + masterList.getMasterList()[typeInt][j].size() + ")*\n";
 
 			for (int k = 0; k < masterList.getMasterList()[typeInt][j].size(); k++) {

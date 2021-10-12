@@ -9,7 +9,8 @@ public class MasterList {
 	ArrayList<Amiibo>[][] masterList;
 	AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
-	JSONObject data = new JSONObject(websiteData.sendPostRequest());
+	JSONObject data = new JSONObject(websiteData
+			.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", "240899417010470912"));
 
 	ArrayList<String> seriesList = new ArrayList<String>();
 	ArrayList<String> typeList = new ArrayList<String>();
@@ -70,19 +71,9 @@ public class MasterList {
 			series = seriesCheck(series, type);
 			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(), type,
 					series);
-			System.out.println(seriesList);
-			System.out.println("Series: " + amiiboToAdd.getSeries());
-			System.out.println(seriesList.indexOf(amiiboToAdd.getSeries()));
-			System.out.println(seriesIndexLookup);
-			System.out.println("Attempting to add " + amiiboToAdd.getName() + " of type " + amiiboToAdd.getType()
-					+ " to series " + amiiboToAdd.getSeries() + " (index "
-					+ seriesIndexLookup.get(seriesList.indexOf(amiiboToAdd.getSeries())) + ")");
 			masterList[typeList.indexOf(amiiboToAdd.getType())][seriesIndexLookup
 					.get(seriesList.indexOf(amiiboToAdd.getSeries()))].add(amiiboToAdd);
 		}
-
-		System.out.println(seriesList);
-		System.out.println(seriesIndexLookup);
 	}
 
 	public void updateAmiibo() {
@@ -117,7 +108,8 @@ public class MasterList {
 		return typeList;
 	}
 
-	public String getSeriesIndexInType(int seriesIndex, int typeIndex) {
+	public int getSeriesIndexInType(int seriesIndex, int typeIndex) {
+		System.out.println("Receiving " + seriesIndex);
 		int count = 0;
 		for (int i = 0; i < comparisonList.size(); i++) {
 			if (comparisonList.get(i).equals(typeList.get(typeIndex))) {
@@ -125,9 +117,10 @@ public class MasterList {
 			}
 			if (count == seriesIndex + 1) {
 				System.out.println("Returning " + seriesList.get(i));
-				return seriesList.get(i);
-			}	
+				return i;
+			}
 		}
-		return ("No series found");
+		return (-1);
 	}
+
 }

@@ -14,9 +14,6 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		AmiiboHuntAccess AHA = new AmiiboHuntAccess();
-		AHA.sendPostRequest();
-
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
 
@@ -25,7 +22,7 @@ public class Main {
 
 		MasterList masterList = new MasterList();
 		masterList.updateDataToUser();
-
+		
 		String token = "";
 		File tokenFile = new File("src\\main\\resources\\token.txt");
 		try {
@@ -52,8 +49,16 @@ public class Main {
 					mainCommand = message;
 				}
 				if (mainCommand.equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
+					ArrayList<String> params = new ArrayList<String>();
+					while (message.contains("<") & message.contains(">") & message.indexOf("<") < message.indexOf(">")) {
+						
+						params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
+						message = message.substring(message.indexOf('>') + 1);
+						System.out.println(params);
+					}
+					
 					event.getChannel().sendMessage(commandList.get(i)
-							.getOutput(masterList, message.substring(mainCommand.length())).setColor(Color.BLUE));
+							.getOutput(masterList, event.getMessage().getAuthor().getIdAsString(), params).setColor(Color.blue));
 					i = commandList.size();
 				}
 
@@ -68,6 +73,7 @@ public class Main {
 		list.add(new PingCommand());
 		list.add(new HelpCommand());
 		list.add(new ListAmiiboCommand());
+		list.add(new GenerateCollectionImageCommand());
 
 		return list;
 	}

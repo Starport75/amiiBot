@@ -3,6 +3,8 @@ package amiiBot;
 import java.util.ArrayList;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.event.channel.TextChannelEvent;
+import org.javacord.api.event.message.MessageEvent;
 
 
 public class HelpCommand extends AbstractCommand {	
@@ -18,7 +20,7 @@ public class HelpCommand extends AbstractCommand {
 	String command = "help";
 	String description = "Lists the commands the user can use. You just used it!";
 
-	public EmbedBuilder getOutput(MasterList masterList, String restOfCommand) {
+	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
 		String output = "";
 		
 		for (int i = 0; i < commandList.size(); i++) {
