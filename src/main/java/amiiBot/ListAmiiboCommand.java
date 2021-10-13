@@ -18,46 +18,33 @@ public class ListAmiiboCommand extends AbstractCommand {
 			return embed;
 		}
 		
-		int typeInt = masterList.getTypeList().indexOf(parameters.get(0));
-		if (typeInt == -1) {
+		int typeIndex = masterList.getTypeList().indexOf(parameters.get(0));
+		if (typeIndex == -1) {
 			EmbedBuilder embed = new EmbedBuilder()
 					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 			return embed;
 		}
-
-		output = output + "***" + masterList.getTypeList().get(typeInt) + ":***\n";
-
-		int min = 0;
-		int max = masterList.getMasterList()[typeInt].length;
-		if (parameters.size() >= 2) {
-		int tempSeriesIndex = masterList.getSeriesList().indexOf(parameters.get(1));
-			System.out.println(tempSeriesIndex);
-			System.out.println(masterList.getSeriesList());
-			if (tempSeriesIndex == -1) {
-				EmbedBuilder embed = new EmbedBuilder()
-						.setDescription("Error: Parameter \"" + parameters.get(1) + "\" was not recognized! #2");
-				return embed;
-			} else {
-				min = tempSeriesIndex;
-				max = min + 1;
-			}
-		}
 		
-		for (int j = min; j < max ; j++) {
+		//outputs the type of amiibo listed
+		output = output + "***" + masterList.getTypeList().get(typeIndex) + ":***\n";
 
-			output = output + "\n**" + masterList.getSeriesList().get(1) + ":** ";
-			output = output + "*(" + masterList.getMasterList()[typeInt][j].size() + ")*\n";
+		for (int seriesIndex = 0; seriesIndex < masterList.getTypeList().size(); seriesIndex++) {
+			//outputs the current series being listed
+			output = output + "\n**" + masterList.getSeriesAt(seriesIndex, masterList.getTypeAt(typeIndex)) + ":** ";
+			//outputs the number in the current series being listed
+			output = output + "*(" + masterList.getSeriesList(masterList.getTypeAt(typeIndex)) + ")*\n";
 
-			for (int k = 0; k < masterList.getMasterList()[typeInt][j].size(); k++) {
+			for (int amiiboIndex = 0; amiiboIndex < masterList.getSeriesList(masterList.getTypeAt(typeIndex)).size(); amiiboIndex++) {
+				//outputs the name of the amiibo
+				output = output + masterList.getMasterList().get(typeIndex).get(seriesIndex).get(amiiboIndex).getName();
+				
 
-				output = output + masterList.getMasterList()[typeInt][j].get(k).getName();
-
-				if (k < masterList.getMasterList()[typeInt][j].size() - 2) {
+				if (amiiboIndex < masterList.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
 
 					output = output + ", ";
 
-				} else if (k == masterList.getMasterList()[typeInt][j].size() - 2) {
-					if (masterList.getMasterList()[typeInt][j].size() != 2) {
+				} else if (amiiboIndex == masterList.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
+					if (masterList.getMasterList().get(typeIndex).get(seriesIndex).size() != 2) {
 
 						output = output + ",";
 

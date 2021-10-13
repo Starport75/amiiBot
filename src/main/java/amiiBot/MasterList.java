@@ -6,83 +6,35 @@ import org.json.JSONObject;
 
 public class MasterList {
 
-	ArrayList<Amiibo>[][] masterList;
+	ArrayList<ArrayList<ArrayList<Amiibo>>> masterList = new ArrayList<ArrayList<ArrayList<Amiibo>>>();
 	AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
 	JSONObject data = new JSONObject(websiteData
 			.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", "240899417010470912"));
 
-	ArrayList<String> seriesList = new ArrayList<String>();
 	ArrayList<String> typeList = new ArrayList<String>();
-	ArrayList<String> comparisonList = new ArrayList<String>();
-	String[][] seriesListByType;
+	ArrayList<ArrayList<String>> seriesList = new ArrayList<ArrayList<String>>();
 
-	@SuppressWarnings("unchecked")
 	public MasterList() {
-
-		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
-			String amiiboType = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type")
+		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
+			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString();
-			String seriesName = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name")
+			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").get("name")
 					.toString();
-
 			seriesName = seriesCheck(seriesName, amiiboType);
-
+			
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
+				masterList.add(new ArrayList<ArrayList<Amiibo>>());
 			}
-
-			if (!seriesList.contains(seriesName)) {
-				seriesList.add(seriesName);
-				comparisonList.add(amiiboType);
+			//TODO seriesList stuff yayyyy
+			if (!seriesList.get(typeIndex).contains(seriesName)){
+				getSeriesList(amiiboType).get(amiiboIndex)
 			}
 			
-			
-			seriesListByType = new String[typeList.size()][];
-
-			for (int l = 0; l < typeList.size(); l++) {
-				int count = 0;
-				for (String x : comparisonList) {
-					if (x.equals(amiiboType))
-						count++;
-				}
-				seriesListByType[l] = new String[count - 1];
-				for (int m = 0; m < seriesListByType[l].length; m++) {
-					
-				seriesListByType[l][m] = "test";
-				}
-			}
-			System.out.println(seriesListByType.toString());
-
-		}
-
-		masterList = new ArrayList[typeList.size()][];
-
-		for (int typeIndex = 0; typeIndex < typeList.size(); typeIndex++) {
-			int count = 0;
-			for (String x : comparisonList) {
-				if (x.equals(typeList.get(typeIndex)))
-					count++;
-			}
-			masterList[typeIndex] = new ArrayList[count];
-
-			int currSeriesIndex = 0;
-			for (int seriesIndex = 0; seriesIndex < seriesList.size(); seriesIndex++) {
-				if (comparisonList.get(seriesIndex).equals(typeList.get(typeIndex))) {
-					masterList[typeIndex][currSeriesIndex] = new ArrayList<Amiibo>();
-					currSeriesIndex++;
-				}
-			}
-		}
-
-		for (int i = 0; i < data.getJSONArray("amiibo").length(); i++) {
-			String series = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("amiibo_series").get("name")
-					.toString();
-			String type = data.getJSONArray("amiibo").getJSONObject(i).getJSONObject("type").get("type").toString();
-			series = seriesCheck(series, type);
-			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(), type,
-					series);
-			// masterList[typeList.indexOf(amiiboToAdd.getType())][getSeriesListByType()[typeIndex][1]].add(amiiboToAdd);
+			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(), amiiboType, seriesName);
+			masterList.get(getTypeIndex(amiiboType)).get(getSeriesIndex(seriesName)).add(amiiboToAdd);
+			System.out.println(masterList);
 		}
 	}
 
@@ -94,7 +46,7 @@ public class MasterList {
 
 	}
 
-	public ArrayList<Amiibo>[][] getMasterList() {
+	public ArrayList<ArrayList<ArrayList<Amiibo>>> getMasterList() {
 		return masterList;
 	}
 
@@ -110,16 +62,34 @@ public class MasterList {
 		return series;
 	}
 
-	public ArrayList<String> getSeriesList() {
-		return seriesList;
-	}
-
 	public ArrayList<String> getTypeList() {
 		return typeList;
 	}
 
-	public String[][] getSeriesListByType() {
-		return seriesListByType;
+	public ArrayList<ArrayList<String>> getSeriesList(String type) {
+		return seriesList;
 	}
-
+	
+	public int getTypeIndex(String type) {
+		return typeList.indexOf(type);
+	}
+	
+	public int getSeriesIndex(String series) {
+		for (int i = 0; i < typeList.size(); i++) {
+			int currIndex = seriesList.get(i).indexOf(series);
+			if (currIndex != -1) {
+				return currIndex;
+			}
+			
+		}
+		return -1;
+	}
+	
+	public String getTypeAt(int location) {
+		return typeList.get(location);
+	}
+	
+	public String getSeriesAt(int location, String type) {
+		return seriesList.get(getTypeIndex(type)).get(location);
+	}
 }
