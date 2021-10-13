@@ -45,7 +45,7 @@ public class ListAmiiboCommand extends AbstractCommand {
 		
 		for (int j = min; j < max ; j++) {
 
-			output = output + "\n**" + masterList.getSeriesList().get(masterList.getSeriesIndexInType(j, typeInt)) + ":** ";
+			output = output + "\n**" + masterList.getSeriesList().get(1) + ":** ";
 			output = output + "*(" + masterList.getMasterList()[typeInt][j].size() + ")*\n";
 
 			for (int k = 0; k < masterList.getMasterList()[typeInt][j].size(); k++) {

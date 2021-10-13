@@ -15,7 +15,7 @@ public class MasterList {
 	ArrayList<String> seriesList = new ArrayList<String>();
 	ArrayList<String> typeList = new ArrayList<String>();
 	ArrayList<String> comparisonList = new ArrayList<String>();
-	ArrayList<Integer> seriesIndexLookup = new ArrayList<Integer>();
+	String[][] seriesListByType;
 
 	@SuppressWarnings("unchecked")
 	public MasterList() {
@@ -35,14 +35,25 @@ public class MasterList {
 			if (!seriesList.contains(seriesName)) {
 				seriesList.add(seriesName);
 				comparisonList.add(amiiboType);
+			}
+			
+			
+			seriesListByType = new String[typeList.size()][];
+
+			for (int l = 0; l < typeList.size(); l++) {
 				int count = 0;
 				for (String x : comparisonList) {
 					if (x.equals(amiiboType))
 						count++;
 				}
-				seriesIndexLookup.add(count - 1);
-
+				seriesListByType[l] = new String[count - 1];
+				for (int m = 0; m < seriesListByType[l].length; m++) {
+					
+				seriesListByType[l][m] = "test";
+				}
 			}
+			System.out.println(seriesListByType.toString());
+
 		}
 
 		masterList = new ArrayList[typeList.size()][];
@@ -71,8 +82,7 @@ public class MasterList {
 			series = seriesCheck(series, type);
 			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(i).get("name").toString(), type,
 					series);
-			masterList[typeList.indexOf(amiiboToAdd.getType())][seriesIndexLookup
-					.get(seriesList.indexOf(amiiboToAdd.getSeries()))].add(amiiboToAdd);
+			// masterList[typeList.indexOf(amiiboToAdd.getType())][getSeriesListByType()[typeIndex][1]].add(amiiboToAdd);
 		}
 	}
 
@@ -108,19 +118,8 @@ public class MasterList {
 		return typeList;
 	}
 
-	public int getSeriesIndexInType(int seriesIndex, int typeIndex) {
-		System.out.println("Receiving " + seriesIndex);
-		int count = 0;
-		for (int i = 0; i < comparisonList.size(); i++) {
-			if (comparisonList.get(i).equals(typeList.get(typeIndex))) {
-				count++;
-			}
-			if (count == seriesIndex + 1) {
-				System.out.println("Returning " + seriesList.get(i));
-				return i;
-			}
-		}
-		return (-1);
+	public String[][] getSeriesListByType() {
+		return seriesListByType;
 	}
 
 }
