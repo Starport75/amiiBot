@@ -26,10 +26,12 @@ public class MasterList {
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
 				masterList.add(new ArrayList<ArrayList<Amiibo>>());
+				masterList.get(getTypeIndex(amiiboType)).add(new ArrayList<Amiibo>());
 			}
-			//TODO seriesList stuff yayyyy
-			if (!seriesList.get(typeIndex).contains(seriesName)){
-				getSeriesList(amiiboType).get(amiiboIndex)
+
+			if (!seriesList.get(getSeriesIndex(amiiboType)).contains(seriesName)){
+				seriesList.get(getSeriesIndex(amiiboType)).add(seriesName);
+				masterList.get(getSeriesIndex(amiiboType)).add(new ArrayList<Amiibo>());
 			}
 			
 			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(), amiiboType, seriesName);
