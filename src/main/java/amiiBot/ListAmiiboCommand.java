@@ -24,20 +24,21 @@ public class ListAmiiboCommand extends AbstractCommand {
 					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 			return embed;
 		}
+		String typeName = masterList.getTypeList().get(typeIndex);
 		
 		//outputs the type of amiibo listed
 		output = output + "***" + masterList.getTypeList().get(typeIndex) + ":***\n";
 
-		for (int seriesIndex = 0; seriesIndex < masterList.getTypeList().size(); seriesIndex++) {
+		for (int seriesIndex = 0; seriesIndex < masterList.getNumOfSeries(typeName); seriesIndex++) {
+			String seriesName = masterList.getSeriesList(typeName).get(seriesIndex);
 			//outputs the current series being listed
-			output = output + "\n**" + masterList.getSeriesAt(seriesIndex, masterList.getTypeAt(typeIndex)) + ":** ";
+			output = output + "\n**" + masterList.getSeriesAt(seriesIndex, typeName) + ":** ";
 			//outputs the number in the current series being listed
-			output = output + "*(" + masterList.getSeriesList(masterList.getTypeAt(typeIndex)) + ")*\n";
+			output = output + "*(" + masterList.getNumOfAmiibo(seriesName) + ")*\n";
 
-			for (int amiiboIndex = 0; amiiboIndex < masterList.getSeriesList(masterList.getTypeAt(typeIndex)).size(); amiiboIndex++) {
+			for (int amiiboIndex = 0; amiiboIndex < masterList.getNumOfAmiibo(seriesName); amiiboIndex++) {
 				//outputs the name of the amiibo
-				output = output + masterList.getMasterList().get(typeIndex).get(seriesIndex).get(amiiboIndex).getName();
-				
+				output = output + masterList.getAmiiboList(seriesName).get(amiiboIndex).getName();
 
 				if (amiiboIndex < masterList.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
 

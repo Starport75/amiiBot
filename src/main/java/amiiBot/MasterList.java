@@ -16,28 +16,32 @@ public class MasterList {
 	ArrayList<ArrayList<String>> seriesList = new ArrayList<ArrayList<String>>();
 
 	public MasterList() {
+
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString();
-			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").get("name")
-					.toString();
+			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
+					.get("name").toString();
 			seriesName = seriesCheck(seriesName, amiiboType);
-			
+
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
+				seriesList.add(new ArrayList<String>());
 				masterList.add(new ArrayList<ArrayList<Amiibo>>());
+			}
+
+			if (!seriesList.get(getTypeIndex(amiiboType)).contains(seriesName)) {
+				seriesList.get(getTypeIndex(amiiboType)).add(seriesName);
 				masterList.get(getTypeIndex(amiiboType)).add(new ArrayList<Amiibo>());
 			}
 
-			if (!seriesList.get(getSeriesIndex(amiiboType)).contains(seriesName)){
-				seriesList.get(getSeriesIndex(amiiboType)).add(seriesName);
-				masterList.get(getSeriesIndex(amiiboType)).add(new ArrayList<Amiibo>());
-			}
-			
-			Amiibo amiiboToAdd = new Amiibo(data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(), amiiboType, seriesName);
+			Amiibo amiiboToAdd = new Amiibo(
+					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(), amiiboType,
+					seriesName);
 			masterList.get(getTypeIndex(amiiboType)).get(getSeriesIndex(seriesName)).add(amiiboToAdd);
-			System.out.println(masterList);
 		}
+		
+		
 	}
 
 	public void updateAmiibo() {
@@ -68,30 +72,61 @@ public class MasterList {
 		return typeList;
 	}
 
-	public ArrayList<ArrayList<String>> getSeriesList(String type) {
-		return seriesList;
+	public ArrayList<String> getSeriesList(String type) {
+		return seriesList.get(getTypeIndex(type));
+
 	}
-	
+
 	public int getTypeIndex(String type) {
 		return typeList.indexOf(type);
 	}
-	
+
 	public int getSeriesIndex(String series) {
 		for (int i = 0; i < typeList.size(); i++) {
-			int currIndex = seriesList.get(i).indexOf(series);
-			if (currIndex != -1) {
-				return currIndex;
+			if (seriesList.get(i).contains(series)) {
+				return seriesList.get(i).indexOf(series);
 			}
-			
 		}
 		return -1;
 	}
-	
+
+	public int seriesToTypeIndex(String series) {
+		for (int i = 0; i < typeList.size(); i++) {
+			if (seriesList.get(i).contains(series)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public String getTypeAt(int location) {
 		return typeList.get(location);
 	}
-	
+
 	public String getSeriesAt(int location, String type) {
+		System.out.println("Returning " + seriesList.get(getTypeIndex(type)).get(location));
 		return seriesList.get(getTypeIndex(type)).get(location);
+	}
+
+	public int getNumOfTypes() {
+		return typeList.size();
+	}
+
+	public int getNumOfSeries(String type) {
+		System.out.println("Returning num of series in type as " + getSeriesList(type).size());
+		System.out.println(getSeriesList(type));
+		return getSeriesList(type).size();
+	}
+
+	public int getNumOfAmiibo(String series) {
+		System.out.println("Returning num of amiibo in series " + series + " as "
+				+ getAmiiboList(series).size());
+		return getAmiiboList(series).size();
+	}
+
+	public ArrayList<Amiibo> getAmiiboList(String series) {
+		int typeIndex = seriesToTypeIndex(series);
+		int seriesIndex = getSeriesIndex(series);
+		return masterList.get(typeIndex).get(seriesIndex);
 	}
 }
