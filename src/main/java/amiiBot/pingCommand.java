@@ -8,7 +8,7 @@ class PingCommand extends AbstractCommand {
 	String command = "ping";
 	String description = "A test command";
 
-	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
+	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
 		EmbedBuilder embed = new EmbedBuilder()
 				.setDescription("Pong!");
 		return embed;

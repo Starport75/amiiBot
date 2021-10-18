@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 public class Main {
 
@@ -20,9 +21,6 @@ public class Main {
 		HelpCommand.setCommandList(commandList);
 		HelpCommand.setCommandToken(commandToken);
 
-		MasterList masterList = new MasterList();
-		masterList.updateDataToUser();
-		
 		String token = "";
 		File tokenFile = new File("src\\main\\resources\\token.txt");
 		try {
@@ -50,15 +48,22 @@ public class Main {
 				}
 				if (mainCommand.equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
 					ArrayList<String> params = new ArrayList<String>();
-					while (message.contains("<") & message.contains(">") & message.indexOf("<") < message.indexOf(">")) {
-						
+					while (message.contains("<") & message.contains(">")
+							& message.indexOf("<") < message.indexOf(">")) {
+
 						params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
 						message = message.substring(message.indexOf('>') + 1);
-						System.out.println(params);
 					}
-					
-					event.getChannel().sendMessage(commandList.get(i)
-							.getOutput(masterList, event.getMessage().getAuthor().getIdAsString(), params).setColor(Color.blue));
+
+					EmbedBuilder messageOutput = commandList.get(i)
+							.getOutput(event.getMessage().getAuthor().getIdAsString(), params).setColor(Color.blue);
+					System.out.println("Output size = " + messageOutput.toString());
+					if ((messageOutput).toString().length() > 6000) {
+						event.getChannel().sendMessage(
+								"Error: The message is too long to be sent. Please refine your query and try again");
+					} else {
+						event.getChannel().sendMessage(messageOutput);
+					}
 					i = commandList.size();
 				}
 
@@ -75,6 +80,7 @@ public class Main {
 		list.add(new ListAmiiboCommand());
 		list.add(new GenerateCollectionImageCommand());
 		list.add(new ListTypesCommand());
+		list.add(new ListCollectionCommand());
 
 		return list;
 	}

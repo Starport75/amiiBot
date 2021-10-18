@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-public class MasterList {
+public class UserAmiiboList {
 
 	ArrayList<ArrayList<ArrayList<Amiibo>>> masterList = new ArrayList<ArrayList<ArrayList<Amiibo>>>();
 	AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
-	JSONObject data = new JSONObject(websiteData
-			.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", "240899417010470912"));
-
 	ArrayList<String> typeList = new ArrayList<String>();
 	ArrayList<ArrayList<String>> seriesList = new ArrayList<ArrayList<String>>();
 
-	public MasterList() {
+	public UserAmiiboList(String userDiscordID) {
+
+		JSONObject data = new JSONObject(websiteData
+				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", userDiscordID));
 
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
@@ -37,11 +37,10 @@ public class MasterList {
 
 			Amiibo amiiboToAdd = new Amiibo(
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(), amiiboType,
-					seriesName);
+					seriesName, (int) data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("owned_qty"));
 			masterList.get(getTypeIndex(amiiboType)).get(getSeriesIndex(seriesName)).add(amiiboToAdd);
 		}
-		
-		
+
 	}
 
 	public void updateAmiibo() {
@@ -119,8 +118,7 @@ public class MasterList {
 	}
 
 	public int getNumOfAmiibo(String series) {
-		System.out.println("Returning num of amiibo in series " + series + " as "
-				+ getAmiiboList(series).size());
+		System.out.println("Returning num of amiibo in series " + series + " as " + getAmiiboList(series).size());
 		return getAmiiboList(series).size();
 	}
 
@@ -128,5 +126,15 @@ public class MasterList {
 		int typeIndex = seriesToTypeIndex(series);
 		int seriesIndex = getSeriesIndex(series);
 		return masterList.get(typeIndex).get(seriesIndex);
+	}
+
+	public int getNumCollectedInSeries(String series) {
+		int total = 0;
+		for (int i = 0; i < getAmiiboList(series).size(); i++) {
+			if (getAmiiboList(series).get(i).getNumObtained() > 0) {
+				total++;
+			}
+		}
+		return total;
 	}
 }

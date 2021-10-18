@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-public class ListAmiiboCommand extends AbstractCommand {
-	String description = "Lists all amiibo in the database";
-	String command = "listAmiibo";
+public class ListCollectionCommand extends AbstractCommand {
+	String description = "Lists all amiibo in the user's collection";
+	String command = "listCollection";
 
 	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
 
@@ -15,7 +15,7 @@ public class ListAmiiboCommand extends AbstractCommand {
 
 		if (parameters.size() < 1) {
 			EmbedBuilder embed = new EmbedBuilder().setDescription(
-					"Error: No parameters defined. Command structure is !listAmiibo <Type> [optional]<Series>");
+					"Error: No parameters defined. Command structure is !listCollection <Type/Series>");
 			return embed;
 		}
 
@@ -25,6 +25,9 @@ public class ListAmiiboCommand extends AbstractCommand {
 					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 			return embed;
 		}
+		
+		boolean uncollected = (parameters.size() > 1 &&  parameters.get(1).equals("Missing"));
+
 		String typeName = userCollection.getTypeList().get(typeIndex);
 
 		// outputs the type of amiibo listed
@@ -35,30 +38,33 @@ public class ListAmiiboCommand extends AbstractCommand {
 			// outputs the current series being listed
 			output = output + "\n**" + userCollection.getSeriesAt(seriesIndex, typeName) + ":** ";
 			// outputs the number in the current series being listed
-			output = output + "*(" + userCollection.getNumOfAmiibo(seriesName) + ")*\n";
+			output = output + "*(";
+			if (uncollected) {
+				output = output + (userCollection.getNumOfAmiibo(seriesName) - userCollection.getNumCollectedInSeries(seriesName));
+			} else {
+				output = output + userCollection.getNumCollectedInSeries(seriesName);
+			}
+			output = output + "/" + userCollection.getNumOfAmiibo(seriesName) + ")*\n";
 
+			ArrayList<String> collectionList = new ArrayList<String>();
+			
 			for (int amiiboIndex = 0; amiiboIndex < userCollection.getNumOfAmiibo(seriesName); amiiboIndex++) {
-				// outputs the name of the amiibo
-				output = output + userCollection.getAmiiboList(seriesName).get(amiiboIndex).getName();
+				if (userCollection.getAmiiboList(seriesName).get(amiiboIndex).getNumObtained() > 0) {
 
-				if (amiiboIndex < userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
-
-					output = output + ", ";
-
-				} else if (amiiboIndex == userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
-					if (userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() != 2) {
-
-						output = output + ",";
-
+					// outputs the name of the amiibo
+					collectionList.add(userCollection.getAmiiboList(seriesName).get(amiiboIndex).getName());
+					
+					int i;
+					for (i = 0; i < collectionList.size() - 2; i++) {
+						output = output + collectionList.get(i) + ", ";
 					}
-
-					output = output + " and ";
+					//output = output + collectionList.get(i + 1) + ", and " + collectionList.get(i + 1);
 				}
 			}
 
 			output = output + "\n";
 		}
-
+		System.out.println(output);
 		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
 		return embed;
 	}

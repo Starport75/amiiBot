@@ -11,12 +11,11 @@ public class GenerateCollectionImageCommand extends AbstractCommand{
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "generateImage";
 
-	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
+	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
 		
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
 		JSONObject data = new JSONObject(websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID));
-		System.out.println(data);
 		String output = data.get("val").toString();
 		
 		EmbedBuilder embed = new EmbedBuilder()

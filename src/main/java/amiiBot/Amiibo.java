@@ -1,22 +1,19 @@
 package amiiBot;
 
-public class Amiibo {
-	//Set for all amiibo, saved to data sheet
-	
-	
+public class Amiibo {	
 	String amiiboName;
 	String amiiboType;
 	String amiiboSeries;
 	
 	
-	//Specific to each user, saved in user document
 	int numberObtained;
 	boolean wantsNotifications;
 	
-	public Amiibo(String name, String type, String series) {
+	public Amiibo(String name, String type, String series, int num) {
 		amiiboName = name;
 		amiiboType = type;
 		amiiboSeries = series;
+		numberObtained = num;
 	}
 	
 	public String getName() {
@@ -29,6 +26,10 @@ public class Amiibo {
 	
 	public String getSeries() {
 		return amiiboSeries;
+	}
+	
+	public int getNumObtained() {
+		return numberObtained;
 	}
 	
 }

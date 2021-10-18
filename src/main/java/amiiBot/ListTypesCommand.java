@@ -8,9 +8,11 @@ public class ListTypesCommand extends AbstractCommand{
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "listTypes";
 
-	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
+	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
+		UserAmiiboList userCollection = new UserAmiiboList(userDiscordID);
+
 		EmbedBuilder embed = new EmbedBuilder()
-				.setDescription(masterList.getTypeList().toString());
+				.setDescription(userCollection.getTypeList().toString());
 		return embed;
 	}
 
