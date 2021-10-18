@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-abstract class AbstractCommand {
+public class ListTypesCommand extends AbstractCommand{
 	String description = "Default description. Contact the creator if you are reading this message";
-	String command;
+	String command = "listTypes";
 
 	public EmbedBuilder getOutput(MasterList masterList, String userDiscordID, ArrayList<String> parameters) {
 		EmbedBuilder embed = new EmbedBuilder()
-				.setDescription("This command has not been set up. Please contact the creator");
+				.setDescription(masterList.getTypeList().toString());
 		return embed;
 	}
 
@@ -21,4 +21,5 @@ abstract class AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
+
 }
