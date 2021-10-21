@@ -80,6 +80,7 @@ public class Main {
 		list.add(new ListAmiiboCommand());
 		list.add(new GenerateCollectionImageCommand());
 		list.add(new ListTypesCommand());
+		list.add(new ListSeriesCommand());
 		list.add(new ListCollectionCommand());
 
 		return list;

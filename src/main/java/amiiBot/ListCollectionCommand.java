@@ -13,6 +13,10 @@ public class ListCollectionCommand extends AbstractCommand {
 		String output = "";
 		UserAmiiboList userCollection = new UserAmiiboList(userDiscordID);
 
+		int seriesMin;
+		int seriesMax;
+		String typeName;
+		
 		if (parameters.size() < 1) {
 			EmbedBuilder embed = new EmbedBuilder()
 					.setDescription("Error: No parameters defined. Command structure is !listCollection <Type/Series>");
@@ -20,20 +24,37 @@ public class ListCollectionCommand extends AbstractCommand {
 		}
 
 		int typeIndex = userCollection.getTypeList().indexOf(parameters.get(0));
+		
 		if (typeIndex == -1) {
-			EmbedBuilder embed = new EmbedBuilder()
-					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
-			return embed;
+			int seriesIndex;
+			if (userCollection.seriesToTypeIndex(parameters.get(0)) != -1) {
+				String currType = userCollection.getTypeList().get(userCollection.seriesToTypeIndex(parameters.get(0)));
+				System.out.println("currType = " + currType);
+				seriesIndex = userCollection.getSeriesList(currType).indexOf(parameters.get(0));
+				typeIndex = userCollection.seriesToTypeIndex(parameters.get(0));
+				typeName = userCollection.getTypeList().get(typeIndex);
+				System.out.println("typeIndex = " + typeIndex);
+				System.out.println("seriesIndex = " + seriesIndex);
+				seriesMin = seriesIndex;
+				seriesMax = seriesIndex + 1;
+			} else {
+
+				EmbedBuilder embed = new EmbedBuilder()
+						.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
+				return embed;
+			}
+		} else {
+			typeName = userCollection.getTypeList().get(typeIndex);
+			seriesMin = 0;
+			seriesMax = userCollection.getNumOfSeries(typeName);
 		}
 
 		boolean uncollected = (parameters.size() > 1 && parameters.get(1).equals("Missing"));
 
-		String typeName = userCollection.getTypeList().get(typeIndex);
-
 		// outputs the type of amiibo listed
 		output = output + "***" + userCollection.getTypeList().get(typeIndex) + ":***\n";
 
-		for (int seriesIndex = 0; seriesIndex < userCollection.getNumOfSeries(typeName); seriesIndex++) {
+		for (int seriesIndex = seriesMin; seriesIndex < seriesMax; seriesIndex++) {
 			String seriesName = userCollection.getSeriesList(typeName).get(seriesIndex);
 			// outputs the current series being listed
 			output = output + "\n**" + userCollection.getSeriesAt(seriesIndex, typeName) + ":** ";

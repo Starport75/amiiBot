@@ -14,6 +14,7 @@ public class Amiibo {
 		amiiboType = type;
 		amiiboSeries = series;
 		numberObtained = num;
+		
 	}
 	
 	public String getName() {
