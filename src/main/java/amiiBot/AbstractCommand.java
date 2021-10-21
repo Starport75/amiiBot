@@ -7,6 +7,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 abstract class AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command;
+	int length = -1;
 
 	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
 		EmbedBuilder embed = new EmbedBuilder()
@@ -20,5 +21,13 @@ abstract class AbstractCommand {
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void updateLength(String output) {
+		length = output.length();
+	}
+	
+	public int getLength() {
+		return length;
 	}
 }

@@ -14,8 +14,8 @@ public class ListCollectionCommand extends AbstractCommand {
 		UserAmiiboList userCollection = new UserAmiiboList(userDiscordID);
 
 		if (parameters.size() < 1) {
-			EmbedBuilder embed = new EmbedBuilder().setDescription(
-					"Error: No parameters defined. Command structure is !listCollection <Type/Series>");
+			EmbedBuilder embed = new EmbedBuilder()
+					.setDescription("Error: No parameters defined. Command structure is !listCollection <Type/Series>");
 			return embed;
 		}
 
@@ -25,8 +25,8 @@ public class ListCollectionCommand extends AbstractCommand {
 					.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 			return embed;
 		}
-		
-		boolean uncollected = (parameters.size() > 1 &&  parameters.get(1).equals("Missing"));
+
+		boolean uncollected = (parameters.size() > 1 && parameters.get(1).equals("Missing"));
 
 		String typeName = userCollection.getTypeList().get(typeIndex);
 
@@ -40,32 +40,50 @@ public class ListCollectionCommand extends AbstractCommand {
 			// outputs the number in the current series being listed
 			output = output + "*(";
 			if (uncollected) {
-				output = output + (userCollection.getNumOfAmiibo(seriesName) - userCollection.getNumCollectedInSeries(seriesName));
+				output = output + (userCollection.getNumOfAmiibo(seriesName)
+						- userCollection.getNumCollectedInSeries(seriesName));
 			} else {
 				output = output + userCollection.getNumCollectedInSeries(seriesName);
 			}
 			output = output + "/" + userCollection.getNumOfAmiibo(seriesName) + ")*\n";
 
 			ArrayList<String> collectionList = new ArrayList<String>();
-			
+
 			for (int amiiboIndex = 0; amiiboIndex < userCollection.getNumOfAmiibo(seriesName); amiiboIndex++) {
 				if (userCollection.getAmiiboList(seriesName).get(amiiboIndex).getNumObtained() > 0) {
 
 					// outputs the name of the amiibo
 					collectionList.add(userCollection.getAmiiboList(seriesName).get(amiiboIndex).getName());
-					
-					int i;
-					for (i = 0; i < collectionList.size() - 2; i++) {
-						output = output + collectionList.get(i) + ", ";
-					}
-					//output = output + collectionList.get(i + 1) + ", and " + collectionList.get(i + 1);
+
+					// output = output + collectionList.get(i + 1) + ", and " + collectionList.get(i
+					// + 1);
 				}
 			}
 
+			if (collectionList.size() > 1) {
+
+				int i;
+				
+				for (i = 0; i < collectionList.size() - 1; i++) {
+					output = output + collectionList.get(i);
+					
+					if (collectionList.size() > 2) {
+						output = output + ", ";
+					}
+				}
+				
+				output = output + " and " + collectionList.get(i);
+				
+			} else  if (collectionList.size() == 1){
+				
+				output = output + collectionList.get(0);
+			}
+			
 			output = output + "\n";
+
 		}
-		System.out.println(output);
 		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
+		updateLength(output);
 		return embed;
 	}
 
@@ -75,5 +93,13 @@ public class ListCollectionCommand extends AbstractCommand {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public void updateLength(String output) {
+		length = output.length();
+	}
+
+	public int getLength() {
+		return length;
 	}
 }

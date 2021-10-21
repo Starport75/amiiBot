@@ -21,4 +21,12 @@ class PingCommand extends AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
+	
+	public void updateLength(String output) {
+		length = output.length();
+	}
+	
+	public int getLength() {
+		return length;
+	}
 }

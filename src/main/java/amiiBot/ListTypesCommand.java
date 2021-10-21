@@ -13,6 +13,7 @@ public class ListTypesCommand extends AbstractCommand{
 
 		EmbedBuilder embed = new EmbedBuilder()
 				.setDescription(userCollection.getTypeList().toString());
+		updateLength(userCollection.getTypeList().toString());
 		return embed;
 	}
 
@@ -22,6 +23,14 @@ public class ListTypesCommand extends AbstractCommand{
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void updateLength(String output) {
+		length = output.length();
+	}
+	
+	public int getLength() {
+		return length;
 	}
 
 }

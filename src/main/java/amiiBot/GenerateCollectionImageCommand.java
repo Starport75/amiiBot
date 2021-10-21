@@ -20,6 +20,7 @@ public class GenerateCollectionImageCommand extends AbstractCommand{
 		
 		EmbedBuilder embed = new EmbedBuilder()
 				.setImage(output);
+		updateLength(output);
 		return embed;
 	}
 
@@ -29,5 +30,13 @@ public class GenerateCollectionImageCommand extends AbstractCommand{
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void updateLength(String output) {
+		length = output.length();
+	}
+	
+	public int getLength() {
+		return length;
 	}
 }

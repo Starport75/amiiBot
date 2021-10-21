@@ -57,10 +57,10 @@ public class Main {
 
 					EmbedBuilder messageOutput = commandList.get(i)
 							.getOutput(event.getMessage().getAuthor().getIdAsString(), params).setColor(Color.blue);
-					System.out.println("Output size = " + messageOutput.toString());
-					if ((messageOutput).toString().length() > 6000) {
+					int outputSize = commandList.get(i).getLength();
+					if (outputSize > 5000) {
 						event.getChannel().sendMessage(
-								"Error: The message is too long to be sent. Please refine your query and try again");
+								new EmbedBuilder().setDescription("Error: This message exceeds the maximum length by " + (outputSize - 5000) + " characters. Please refine your query and try again"));
 					} else {
 						event.getChannel().sendMessage(messageOutput);
 					}

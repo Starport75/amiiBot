@@ -60,6 +60,7 @@ public class ListAmiiboCommand extends AbstractCommand {
 		}
 
 		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
+		updateLength(output);
 		return embed;
 	}
 
@@ -69,5 +70,13 @@ public class ListAmiiboCommand extends AbstractCommand {
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void updateLength(String output) {
+		length = output.length();
+	}
+	
+	public int getLength() {
+		return length;
 	}
 }

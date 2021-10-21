@@ -103,7 +103,6 @@ public class UserAmiiboList {
 	}
 
 	public String getSeriesAt(int location, String type) {
-		System.out.println("Returning " + seriesList.get(getTypeIndex(type)).get(location));
 		return seriesList.get(getTypeIndex(type)).get(location);
 	}
 
@@ -112,13 +111,10 @@ public class UserAmiiboList {
 	}
 
 	public int getNumOfSeries(String type) {
-		System.out.println("Returning num of series in type as " + getSeriesList(type).size());
-		System.out.println(getSeriesList(type));
 		return getSeriesList(type).size();
 	}
 
 	public int getNumOfAmiibo(String series) {
-		System.out.println("Returning num of amiibo in series " + series + " as " + getAmiiboList(series).size());
 		return getAmiiboList(series).size();
 	}
 
