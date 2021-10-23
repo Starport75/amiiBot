@@ -7,36 +7,36 @@ import org.javacord.api.event.channel.TextChannelEvent;
 import org.javacord.api.event.message.MessageEvent;
 import org.json.JSONObject;
 
-public class GenerateCollectionImageCommand extends AbstractCommand{
-	String description = "Default description. Contact the creator if you are reading this message";
-	String command = "generateImage";
+public class GenerateCollectionImageCommand extends AbstractCommand {
+    String description = "Default description. Contact the creator if you are reading this message";
+    String command = "generateImage";
 
-	public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
-		
-		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
+    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
 
-		JSONObject data = new JSONObject(websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID));
-		String output = data.get("val").toString();
-		
-		EmbedBuilder embed = new EmbedBuilder()
-				.setImage(output);
-		updateLength(output);
-		return embed;
-	}
+        AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
-	public String getCommand() {
-		return command;
-	}
+        JSONObject data = new JSONObject(websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID));
+        String output = data.get("val").toString();
 
-	public String getDescription() {
-		return description;
-	}
-	
-	public void updateLength(String output) {
-		length = output.length();
-	}
-	
-	public int getLength() {
-		return length;
-	}
+        EmbedBuilder embed = new EmbedBuilder()
+                .setImage(output);
+        updateLength(output);
+        return embed;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void updateLength(String output) {
+        length = output.length();
+    }
+
+    public int getLength() {
+        return length;
+    }
 }
