@@ -1,3 +1,12 @@
+target/
 
+# Eclipse
+.settings/
+.classpath
+.project
+
+# IntelliJ IDEA
+.idea/
+
+# User
 src/main/resources/token.txt
-*.txt
