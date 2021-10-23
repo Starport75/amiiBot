@@ -1,15 +1,14 @@
 package amiiBot;
 
-import java.awt.Color;
+import org.javacord.api.DiscordApi;
+import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 public class Main {
 

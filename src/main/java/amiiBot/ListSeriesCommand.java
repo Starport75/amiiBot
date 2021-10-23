@@ -1,8 +1,8 @@
 package amiiBot;
 
-import java.util.ArrayList;
-
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+
+import java.util.ArrayList;
 
 public class ListSeriesCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";

@@ -1,8 +1,8 @@
 package amiiBot;
 
-import java.util.ArrayList;
-
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class UserAmiiboList {
 
