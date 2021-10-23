@@ -1,8 +1,8 @@
 package amiiBot;
 
-import java.util.ArrayList;
-
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+
+import java.util.ArrayList;
 
 public class ListCollectionCommand extends AbstractCommand {
     String description = "Lists all amiibo in the user's collection";

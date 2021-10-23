@@ -1,10 +1,8 @@
 package amiiBot;
 
-import java.util.ArrayList;
-
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.event.channel.TextChannelEvent;
-import org.javacord.api.event.message.MessageEvent;
+
+import java.util.ArrayList;
 
 public class HelpCommand extends AbstractCommand {
     static ArrayList<AbstractCommand> commandList;

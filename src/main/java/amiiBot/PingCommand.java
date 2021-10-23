@@ -1,8 +1,8 @@
 package amiiBot;
 
-import java.util.ArrayList;
-
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+
+import java.util.ArrayList;
 
 class PingCommand extends AbstractCommand {
     String command = "ping";
