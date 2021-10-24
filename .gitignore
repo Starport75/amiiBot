@@ -10,3 +10,4 @@ target/
 
 # User
 src/main/resources/token.txt
+*.txt
