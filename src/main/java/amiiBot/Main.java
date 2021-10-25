@@ -16,6 +16,10 @@ public class Main {
 
         ArrayList<AbstractCommand> commandList = addCommands();
         String commandToken = "!";
+        
+        UserAmiiboList mainList = new UserAmiiboList("205877471067766784");
+        UserAmiiboList secondaryList = mainList;
+
 
         HelpCommand.setCommandList(commandList);
         HelpCommand.setCommandToken(commandToken);
@@ -54,8 +58,10 @@ public class Main {
                         message = message.substring(message.indexOf('>') + 1);
                     }
 
+                    String discordID = event.getMessage().getAuthor().getIdAsString();
+                    
                     EmbedBuilder messageOutput = commandList.get(i)
-                            .getOutput(event.getMessage().getAuthor().getIdAsString(), params).setColor(Color.blue);
+                            .getOutput(discordID, mainList, params).setColor(Color.blue);
                     int outputSize = commandList.get(i).getLength();
                     if (outputSize > 5000) {
                         event.getChannel().sendMessage(
@@ -81,6 +87,7 @@ public class Main {
         list.add(new ListTypesCommand());
         list.add(new ListSeriesCommand());
         list.add(new ListCollectionCommand());
+        list.add(new ShowInfoCommand());
 
         return list;
     }

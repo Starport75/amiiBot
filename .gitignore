@@ -1,5 +1,5 @@
-target/
 
+<<<<<<< HEAD
 # Eclipse
 .settings/
 .classpath
@@ -9,5 +9,8 @@ target/
 .idea/
 
 # User
+=======
+>>>>>>> parent of 0aed817 (Remove IDE-specific files and compiled classes)
 src/main/resources/token.txt
 *.txt
+/target/

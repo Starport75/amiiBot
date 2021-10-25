@@ -9,7 +9,7 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command = "generateImage";
 
-    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
+    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
 
         AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 

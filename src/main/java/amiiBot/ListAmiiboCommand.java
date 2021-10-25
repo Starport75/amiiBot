@@ -8,11 +8,10 @@ public class ListAmiiboCommand extends AbstractCommand {
     String description = "Lists all amiibo in the database";
     String command = "listAmiibo";
 
-    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
+    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
 
         String output = "";
-        UserAmiiboList userCollection = new UserAmiiboList(userDiscordID);
-
+        
         int seriesMin;
         int seriesMax;
         String typeName;
@@ -23,16 +22,16 @@ public class ListAmiiboCommand extends AbstractCommand {
             return embed;
         }
 
-        int typeIndex = userCollection.getTypeList().indexOf(parameters.get(0));
+        int typeIndex = amiiboList.getTypeList().indexOf(parameters.get(0));
 
         if (typeIndex == -1) {
             int seriesIndex;
-            if (userCollection.seriesToTypeIndex(parameters.get(0)) != -1) {
-                String currType = userCollection.getTypeList().get(userCollection.seriesToTypeIndex(parameters.get(0)));
+            if (amiiboList.seriesToTypeIndex(parameters.get(0)) != -1) {
+                String currType = amiiboList.getTypeList().get(amiiboList.seriesToTypeIndex(parameters.get(0)));
                 System.out.println("currType = " + currType);
-                seriesIndex = userCollection.getSeriesList(currType).indexOf(parameters.get(0));
-                typeIndex = userCollection.seriesToTypeIndex(parameters.get(0));
-                typeName = userCollection.getTypeList().get(typeIndex);
+                seriesIndex = amiiboList.getSeriesList(currType).indexOf(parameters.get(0));
+                typeIndex = amiiboList.seriesToTypeIndex(parameters.get(0));
+                typeName = amiiboList.getTypeList().get(typeIndex);
                 System.out.println("typeIndex = " + typeIndex);
                 System.out.println("seriesIndex = " + seriesIndex);
                 seriesMin = seriesIndex;
@@ -44,31 +43,31 @@ public class ListAmiiboCommand extends AbstractCommand {
                 return embed;
             }
         } else {
-            typeName = userCollection.getTypeList().get(typeIndex);
+            typeName = amiiboList.getTypeList().get(typeIndex);
             seriesMin = 0;
-            seriesMax = userCollection.getNumOfSeries(typeName);
+            seriesMax = amiiboList.getNumOfSeries(typeName);
         }
 
         // outputs the type of amiibo listed
-        output = output + "***" + userCollection.getTypeList().get(typeIndex) + ":***\n";
+        output = output + "***" + amiiboList.getTypeList().get(typeIndex) + ":***\n";
 
         for (int seriesIndex = seriesMin; seriesIndex < seriesMax; seriesIndex++) {
-            String seriesName = userCollection.getSeriesList(typeName).get(seriesIndex);
+            String seriesName = amiiboList.getSeriesList(typeName).get(seriesIndex);
             // outputs the current series being listed
-            output = output + "\n**" + userCollection.getSeriesAt(seriesIndex, typeName) + ":** ";
+            output = output + "\n**" + amiiboList.getSeriesAt(seriesIndex, typeName) + ":** ";
             // outputs the number in the current series being listed
-            output = output + "*(" + userCollection.getNumOfAmiibo(seriesName) + ")*\n";
+            output = output + "*(" + amiiboList.getNumOfAmiibo(seriesName) + ")*\n";
 
-            for (int amiiboIndex = 0; amiiboIndex < userCollection.getNumOfAmiibo(seriesName); amiiboIndex++) {
+            for (int amiiboIndex = 0; amiiboIndex < amiiboList.getNumOfAmiibo(seriesName); amiiboIndex++) {
                 // outputs the name of the amiibo
-                output = output + userCollection.getAmiiboList(seriesName).get(amiiboIndex).getName();
+                output = output + amiiboList.getAmiiboList(seriesName).get(amiiboIndex).getName();
 
-                if (amiiboIndex < userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
+                if (amiiboIndex < amiiboList.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
 
                     output = output + ", ";
 
-                } else if (amiiboIndex == userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
-                    if (userCollection.getMasterList().get(typeIndex).get(seriesIndex).size() != 2) {
+                } else if (amiiboIndex == amiiboList.getMasterList().get(typeIndex).get(seriesIndex).size() - 2) {
+                    if (amiiboList.getMasterList().get(typeIndex).get(seriesIndex).size() != 2) {
 
                         output = output + ",";
 

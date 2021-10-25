@@ -19,7 +19,7 @@ public class HelpCommand extends AbstractCommand {
     String command = "help";
     String description = "Lists the commands the user can use. You just used it!";
 
-    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
+    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
         String output = "";
 
         for (int i = 0; i < commandList.size(); i++) {

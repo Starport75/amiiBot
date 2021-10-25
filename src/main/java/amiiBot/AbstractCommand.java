@@ -9,7 +9,7 @@ abstract class AbstractCommand {
     String command;
     int length = -1;
 
-    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
+    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
         EmbedBuilder embed = new EmbedBuilder()
                 .setDescription("This command has not been set up. Please contact the creator");
         return embed;

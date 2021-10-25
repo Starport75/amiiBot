@@ -8,8 +8,7 @@ public class ListSeriesCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command = "listSeries";
 
-    public EmbedBuilder getOutput(String userDiscordID, ArrayList<String> parameters) {
-        UserAmiiboList userCollection = new UserAmiiboList(userDiscordID);
+    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
 
         if (parameters.size() < 1) {
             EmbedBuilder embed = new EmbedBuilder().setDescription(
@@ -17,15 +16,15 @@ public class ListSeriesCommand extends AbstractCommand {
             return embed;
         }
 
-        if (userCollection.getTypeIndex(parameters.get(0)) == -1) {
+        if (amiiboList.getTypeIndex(parameters.get(0)) == -1) {
             EmbedBuilder embed = new EmbedBuilder()
                     .setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
             return embed;
         }
 
         EmbedBuilder embed = new EmbedBuilder()
-                .setDescription(userCollection.getSeriesList(userCollection.getTypeAt(userCollection.getTypeIndex(parameters.get(0)))).toString());
-        updateLength(userCollection.getSeriesList(userCollection.getTypeAt(userCollection.getTypeIndex(parameters.get(0)))).toString());
+                .setDescription(amiiboList.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0)))).toString());
+        updateLength(amiiboList.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0)))).toString());
         return embed;
     }
 
