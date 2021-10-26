@@ -36,7 +36,7 @@ public class UserAmiiboList {
 				seriesList.get(getTypeIndex(amiiboType)).add(seriesName);
 				masterList.get(getTypeIndex(amiiboType)).add(new ArrayList<Amiibo>());
 			}
-
+			
 			Amiibo amiiboToAdd = new Amiibo(
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(),
 					(int) data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("amiibo_id"), amiiboType,
@@ -47,7 +47,7 @@ public class UserAmiiboList {
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("release_jp").toString(),
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("release_na").toString(),
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("background_color").toString(),
-					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("image_s3_full").toString());
+					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("image_imgix_small").toString());
 			masterList.get(getTypeIndex(amiiboType)).get(getSeriesIndex(seriesName)).add(amiiboToAdd);
 		}
 
@@ -78,12 +78,13 @@ public class UserAmiiboList {
 					OOB++;
 				}
 			}
+						
+			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").get("name").toString();
+			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type").toString();
+			seriesName = seriesCheck(seriesName, amiiboType);
+			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString();
 			
-			System.out.println(data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").toString());
-			
-			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").getJSONObject("name").toString();
-			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("character").toString();
-			
+						
 			getAmiibo(amiiboName, seriesName).setNibAndOob(NIB, OOB);
 		}
 	}
@@ -206,10 +207,11 @@ public class UserAmiiboList {
 		for (int i = 0; i < getNumOfTypes(); i++) {
 			for (int j = 0; j < getNumOfSeries(typeList.get(i)); j++) {
 				if (getAmiibo(name, getSeriesList(typeList.get(i)).get(j)) != null) {
-					return getAmiibo(name, getSeriesList(typeList.get(i)).get(i));
+					return getAmiibo(name, getSeriesList(typeList.get(i)).get(j));
 				}
 			}
 		}
+		System.out.println("I'm returning null tbh");
 		return null;
 	}
 }
