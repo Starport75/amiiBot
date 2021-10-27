@@ -1,5 +1,6 @@
 package amiiBot;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -57,22 +58,28 @@ public class ShowInfoCommand extends AbstractCommand {
 
 		// currAmiibo.updateCollectionData(userDiscordID);
 		String output = "";
-		output = output + "**" +currAmiibo.getName() + "**\n";
+		String colorStr = currAmiibo.getColor();
 
-		EmbedBuilder embed = new EmbedBuilder().setDescription(output).setImage(currAmiibo.getImage())
+		EmbedBuilder embed = new EmbedBuilder().setTitle(currAmiibo.getName()).setImage(currAmiibo.getImage())
 				.addField("Release Dates:",
 						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
 								+ currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
-				.addField("Completed & Sold Prices", "*based on eBay sales over the last month*")
+				.addField("\u200b", "**Average Completed & Sold Prices** *(est.)*")
 				.addInlineField("Average Price NiB",
-						"$" + currAmiibo.getNewPriceCompletedNA() + "\n£" + currAmiibo.getNewPriceCompletedUK())
+						currAmiibo.getFormattedNewPriceCompletedNA() + "\n"
+								+ currAmiibo.getFormattedNewPriceCompletedUK())
 				.addInlineField("Average Price OoB",
-						"$" + currAmiibo.getUsedPriceCompletedNA() + "\n£" + currAmiibo.getUsedPriceCompletedUK())
-				.addField("Current Listed Prices", "*based on eBay listings over the last month*")
+						currAmiibo.getFormattedUsedPriceCompletedNA() + "\n"
+								+ currAmiibo.getFormattedUsedPriceCompletedUK())
+				.addField("\u200b", "**Average Current Listed Prices** *(est.)*")
 				.addInlineField("Average Price NiB",
-						"$" + currAmiibo.getNewPriceListedNA() + "\n£" + currAmiibo.getNewPriceListedUK())
+						currAmiibo.getFormattedNewPriceListedNA() + "\n"
+								+ currAmiibo.getFormattedNewPriceListedUK())
 				.addInlineField("Average Price OoB",
-						"$" + currAmiibo.getUsedPriceListedNA() + "\n£" + currAmiibo.getUsedPriceListedUK());
+						currAmiibo.getFormattedUsedPriceListedNA() + "\n"
+								+ currAmiibo.getFormattedUsedPriceListedUK())
+				.setColor(new Color(Integer.valueOf(colorStr.substring(1, 3), 16),
+						Integer.valueOf(colorStr.substring(3, 5), 16), Integer.valueOf(colorStr.substring(5, 7), 16)));
 		return embed;
 	}
 

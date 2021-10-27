@@ -61,7 +61,7 @@ public class Main {
                     String discordID = event.getMessage().getAuthor().getIdAsString();
                     
                     EmbedBuilder messageOutput = commandList.get(i)
-                            .getOutput(discordID, mainList, params).setColor(Color.blue);
+                            .getOutput(discordID, mainList, params);
                     int outputSize = commandList.get(i).getLength();
                     if (outputSize > 5000) {
                         event.getChannel().sendMessage(
@@ -87,6 +87,7 @@ public class Main {
         list.add(new ListSeriesCommand());
         list.add(new ListCollectionCommand());
         list.add(new ShowInfoCommand());
+        list.add(new AddAmiiboCommand());
 
         return list;
     }

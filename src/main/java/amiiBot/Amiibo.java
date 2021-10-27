@@ -132,6 +132,62 @@ public class Amiibo {
 		return avgUsedPriceListedUK;
 	}
 	
+	public String getFormattedNewPriceCompletedNA() {
+		if (avgNewPriceCompletedNA == 0) {
+			return "*Lack of Data*";
+		}
+		return "$" + String.format("%.2f", avgNewPriceCompletedNA);
+	}
+	
+	public String getFormattedNewPriceCompletedUK() {
+		if (avgNewPriceCompletedUK == 0) {
+			return "*Lack of Data*";
+		}
+		return "£" + String.format("%.2f", avgNewPriceCompletedUK);
+	}
+	
+	public String getFormattedUsedPriceCompletedNA() {
+		if (avgUsedPriceCompletedNA == 0) {
+			return "*Lack of Data*";
+		}
+		return "$" + String.format("%.2f", avgUsedPriceCompletedNA);
+	}
+	
+	public String getFormattedUsedPriceCompletedUK() {
+		if (avgUsedPriceCompletedUK == 0) {
+			return "*Lack of Data*";
+		}
+		return "£" + String.format("%.2f", avgUsedPriceCompletedUK);
+	}
+	
+	public String getFormattedNewPriceListedNA() {
+		if (avgNewPriceListedNA == 0) {
+			return "*Lack of Data*";
+		}
+		return "$" + String.format("%.2f", avgNewPriceListedNA);
+	}
+	
+	public String getFormattedNewPriceListedUK() {
+		if (avgNewPriceListedUK == 0) {
+			return "*Lack of Data*";
+		}
+		return "£" + String.format("%.2f", avgNewPriceListedUK);
+	}
+	
+	public String getFormattedUsedPriceListedNA() {
+		if (avgUsedPriceListedNA == 0) {
+			return "*Lack of Data*";
+		}
+		return "$" + String.format("%.2f", avgUsedPriceListedNA);
+	}
+	
+	public String getFormattedUsedPriceListedUK() {
+		if (avgUsedPriceListedUK == 0) {
+			return "*Lack of Data*";
+		}
+		return "£" + String.format("%.2f", avgUsedPriceListedUK);
+	}
+	
 	public String getReleaseJP() {
 		if (releaseJP.equals("null")) {
 			return "N/A";
@@ -158,6 +214,10 @@ public class Amiibo {
 			return "N/A";
 		}
 		return releaseAU;
+	}
+	
+	public String getColor() {
+		return backgroundColor;
 	}
 
 }

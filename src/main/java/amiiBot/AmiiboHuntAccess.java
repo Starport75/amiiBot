@@ -145,4 +145,61 @@ public class AmiiboHuntAccess {
         }
         return result;
 	}
+	
+	public String sendPostRequest(String url, String discordID, String amiiboID, String isBoxed) {
+		CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("api_key", key));
+        params.add(new BasicNameValuePair("discord_id", discordID));
+        params.add(new BasicNameValuePair("amiibo_id", amiiboID));
+        params.add(new BasicNameValuePair("is_boxed", isBoxed));
+
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        CloseableHttpResponse response = null;
+        try {
+            response = client.execute(httpPost);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String result = null;
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            InputStream instream = null;
+            try {
+                instream = entity.getContent();
+            } catch (UnsupportedOperationException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            byte[] bytes = null;
+            try {
+                bytes = IOUtils.toByteArray(instream);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                result = new String(bytes, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                instream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return result;
+	}
 }

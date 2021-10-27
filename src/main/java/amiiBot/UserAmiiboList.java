@@ -47,7 +47,7 @@ public class UserAmiiboList {
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("release_jp").toString(),
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("release_na").toString(),
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("background_color").toString(),
-					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("image_imgix_small").toString());
+					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("image_imgix_full_card").toString());
 			masterList.get(getTypeIndex(amiiboType)).get(getSeriesIndex(seriesName)).add(amiiboToAdd);
 		}
 
