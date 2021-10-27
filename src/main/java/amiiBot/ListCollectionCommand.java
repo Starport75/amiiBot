@@ -1,19 +1,16 @@
 package amiiBot;
 
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-
 import java.util.ArrayList;
 
 public class ListCollectionCommand extends AbstractCommand {
 	String description = "Lists amiibo for the user";
 	String command = "listAmiibo";
 
-	public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
 
 		amiiboList.updateCollectionData(userDiscordID);
 
 		boolean listAll = (parameters.size() < 2);
-		System.out.println("Parameters size = " + parameters.size());
 		boolean listObtained = true;
 
 		String output = "";
@@ -23,9 +20,7 @@ public class ListCollectionCommand extends AbstractCommand {
 		String typeName;
 
 		if (parameters.size() < 1) {
-			EmbedBuilder embed = new EmbedBuilder()
-					.setDescription("Error: No parameters defined. Command structure is !listCollection <Type/Series>");
-			return embed;
+			return new BetterEmbed().setError("Error: No parameters defined. Command structure is !listCollection <Type/Series>");
 		}
 
 		if (!listAll) {
@@ -34,9 +29,7 @@ public class ListCollectionCommand extends AbstractCommand {
 			} else if (parameters.get(1).equals("Not Obtained")) {
 				listObtained = false;
 			} else {
-				EmbedBuilder embed = new EmbedBuilder().setDescription(
-						"Error: Parameter \"" + parameters.get(1) + "\" not recognized as <Obtained/Not Obtained>");
-				return embed;
+				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(1) + "\" not recognized as <Obtained/Not Obtained>");
 			}
 		}
 
@@ -46,19 +39,14 @@ public class ListCollectionCommand extends AbstractCommand {
 			int seriesIndex;
 			if (amiiboList.seriesToTypeIndex(parameters.get(0)) != -1) {
 				String currType = amiiboList.getTypeList().get(amiiboList.seriesToTypeIndex(parameters.get(0)));
-				System.out.println("currType = " + currType);
 				seriesIndex = amiiboList.getSeriesList(currType).indexOf(parameters.get(0));
 				typeIndex = amiiboList.seriesToTypeIndex(parameters.get(0));
 				typeName = amiiboList.getTypeList().get(typeIndex);
-				System.out.println("typeIndex = " + typeIndex);
-				System.out.println("seriesIndex = " + seriesIndex);
 				seriesMin = seriesIndex;
 				seriesMax = seriesIndex + 1;
 			} else {
 
-				EmbedBuilder embed = new EmbedBuilder()
-						.setDescription("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
-				return embed;
+				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 			}
 		} else {
 			typeName = amiiboList.getTypeList().get(typeIndex);
@@ -124,7 +112,7 @@ public class ListCollectionCommand extends AbstractCommand {
 			output = output + "\n";
 
 		}
-		EmbedBuilder embed = new EmbedBuilder().setDescription(output);
+		BetterEmbed embed = new BetterEmbed().setDescription(output);
 		updateLength(output);
 		return embed;
 	}

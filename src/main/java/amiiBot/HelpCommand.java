@@ -1,7 +1,5 @@
 package amiiBot;
 
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-
 import java.util.ArrayList;
 
 public class HelpCommand extends AbstractCommand {
@@ -19,14 +17,14 @@ public class HelpCommand extends AbstractCommand {
     String command = "help";
     String description = "Lists the commands the user can use. You just used it!";
 
-    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
         String output = "";
 
         for (int i = 0; i < commandList.size(); i++) {
             output = output + "\n**" + commandToken + commandList.get(i).getCommand() + "**\n\t*"
                     + commandList.get(i).getDescription() + "*";
         }
-        EmbedBuilder embed = new EmbedBuilder().setDescription(output);
+        BetterEmbed embed = new BetterEmbed().setDescription(output);
         updateLength(output);
         return embed;
     }

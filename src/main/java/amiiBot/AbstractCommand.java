@@ -1,7 +1,5 @@
 package amiiBot;
 
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-
 import java.util.ArrayList;
 
 abstract class AbstractCommand {
@@ -9,10 +7,8 @@ abstract class AbstractCommand {
     String command;
     int length = -1;
 
-    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
-        EmbedBuilder embed = new EmbedBuilder()
-                .setDescription("This command has not been set up. Please contact the creator");
-        return embed;
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+                return new BetterEmbed().setError("This command has not been set up. Please contact the creator");
     }
 
     public String getCommand() {

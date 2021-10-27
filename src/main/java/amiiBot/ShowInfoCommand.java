@@ -3,19 +3,15 @@ package amiiBot;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-
 public class ShowInfoCommand extends AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "showInfo";
 	int length = -1;
 
-	public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
 
 		if (parameters.size() < 1) {
-			EmbedBuilder embed = new EmbedBuilder().setDescription(
-					"Error: Not all parameters defined. Command structure is !showInfo <amiibo Name> <Series (if needed)>");
-			return embed;
+			return new BetterEmbed().setError("Error: Not all parameters defined. Command structure is !showInfo <amiibo Name> <Series (if needed)>");
 		}
 
 		String amiiboName = "";
@@ -27,24 +23,18 @@ public class ShowInfoCommand extends AbstractCommand {
 				seriesName = tempAmiibo.getSeries();
 				amiiboName = tempAmiibo.getName();
 			} else {
-				EmbedBuilder embed = new EmbedBuilder().setDescription(
-						"Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
-				return embed;
+				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
 			}
 		}
 
 		if (parameters.size() >= 2) {
 
 			if (!amiiboList.doesSeriesExist(parameters.get(1))) {
-				EmbedBuilder embed = new EmbedBuilder().setDescription(
-						"Error: Parameter \"" + parameters.get(1) + "\" was not recognized as <series>!");
-				return embed;
+				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(1) + "\" was not recognized as <series>!");
 			}
 
 			if (!amiiboList.isInSeries(parameters.get(0), parameters.get(1))) {
-				EmbedBuilder embed = new EmbedBuilder().setDescription(
-						"Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
-				return embed;
+				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
 			}
 
 			amiiboName = parameters.get(0);
@@ -58,9 +48,8 @@ public class ShowInfoCommand extends AbstractCommand {
 
 		// currAmiibo.updateCollectionData(userDiscordID);
 		String output = "";
-		String colorStr = currAmiibo.getColor();
 
-		EmbedBuilder embed = new EmbedBuilder().setTitle(currAmiibo.getName()).setImage(currAmiibo.getImage())
+		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName()).setImage(currAmiibo.getImage())
 				.addField("Release Dates:",
 						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
 								+ currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
@@ -78,8 +67,7 @@ public class ShowInfoCommand extends AbstractCommand {
 				.addInlineField("Average Price OoB",
 						currAmiibo.getFormattedUsedPriceListedNA() + "\n"
 								+ currAmiibo.getFormattedUsedPriceListedUK())
-				.setColor(new Color(Integer.valueOf(colorStr.substring(1, 3), 16),
-						Integer.valueOf(colorStr.substring(3, 5), 16), Integer.valueOf(colorStr.substring(5, 7), 16)));
+				.setColor(currAmiibo.getColor());
 		return embed;
 	}
 

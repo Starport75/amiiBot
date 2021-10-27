@@ -1,7 +1,6 @@
 package amiiBot;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ public class Amiibo {
 	String releaseEU;
 	String releaseJP;
 	String releaseNA;
-	String backgroundColor;
+	Color backgroundColor;
 	String imgUrl;
 
 	// Figure data that changes over time
@@ -30,7 +29,7 @@ public class Amiibo {
 	double avgUsedPriceListedUK;
 	double avgNewPriceListedNA;
 	double avgNewPriceListedUK;
-	
+
 	ArrayList<String[]> retailerList = new ArrayList<String[]>();
 
 	// Data specific to each person
@@ -49,7 +48,13 @@ public class Amiibo {
 		releaseEU = EU;
 		releaseJP = JP;
 		releaseNA = NA;
-		backgroundColor = color;
+		if (color != "null") {
+			backgroundColor = new Color(Integer.valueOf(color.substring(1, 3), 16),
+					Integer.valueOf(color.substring(3, 5), 16), Integer.valueOf(color.substring(5, 7), 16));
+		} else {
+			backgroundColor = Color.black;
+			System.out.println(color + " is the color for " + amiiboName);
+		}
 		imgUrl = image;
 	}
 
@@ -57,14 +62,14 @@ public class Amiibo {
 		numberNIB = NIB;
 		numberOOB = OOB;
 	}
-	
+
 	public void updateIndividualFigureData() {
 		String discordID = "205877471067766784";
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
-		
+
 		JSONObject data = new JSONObject(websiteData
 				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID, amiiboID + ""));
-		
+
 		avgUsedPriceCompletedNA = data.getJSONObject("amiibo").getDouble("average_price_this_month_us_used");
 		avgUsedPriceCompletedUK = data.getJSONObject("amiibo").getDouble("average_price_this_month_uk_used");
 		avgNewPriceCompletedNA = data.getJSONObject("amiibo").getDouble("average_price_this_month_us_new");
@@ -73,7 +78,7 @@ public class Amiibo {
 		avgUsedPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_used");
 		avgNewPriceListedNA = data.getJSONObject("amiibo").getDouble("average_listed_this_month_us_new");
 		avgNewPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_new");
-	
+
 	}
 
 	public String getName() {
@@ -99,124 +104,124 @@ public class Amiibo {
 	public int getAmiiboID() {
 		return amiiboID;
 	}
-	
+
 	public double getNewPriceCompletedNA() {
 		return avgNewPriceCompletedNA;
 	}
-	
+
 	public double getNewPriceCompletedUK() {
 		return avgNewPriceCompletedUK;
 	}
-	
+
 	public double getUsedPriceCompletedNA() {
 		return avgUsedPriceCompletedNA;
 	}
-	
+
 	public double getUsedPriceCompletedUK() {
 		return avgUsedPriceCompletedUK;
 	}
-	
+
 	public double getNewPriceListedNA() {
 		return avgNewPriceListedNA;
 	}
-	
+
 	public double getNewPriceListedUK() {
 		return avgNewPriceListedUK;
 	}
-	
+
 	public double getUsedPriceListedNA() {
 		return avgUsedPriceListedNA;
 	}
-	
+
 	public double getUsedPriceListedUK() {
 		return avgUsedPriceListedUK;
 	}
-	
+
 	public String getFormattedNewPriceCompletedNA() {
 		if (avgNewPriceCompletedNA == 0) {
 			return "*Lack of Data*";
 		}
 		return "$" + String.format("%.2f", avgNewPriceCompletedNA);
 	}
-	
+
 	public String getFormattedNewPriceCompletedUK() {
 		if (avgNewPriceCompletedUK == 0) {
 			return "*Lack of Data*";
 		}
 		return "£" + String.format("%.2f", avgNewPriceCompletedUK);
 	}
-	
+
 	public String getFormattedUsedPriceCompletedNA() {
 		if (avgUsedPriceCompletedNA == 0) {
 			return "*Lack of Data*";
 		}
 		return "$" + String.format("%.2f", avgUsedPriceCompletedNA);
 	}
-	
+
 	public String getFormattedUsedPriceCompletedUK() {
 		if (avgUsedPriceCompletedUK == 0) {
 			return "*Lack of Data*";
 		}
 		return "£" + String.format("%.2f", avgUsedPriceCompletedUK);
 	}
-	
+
 	public String getFormattedNewPriceListedNA() {
 		if (avgNewPriceListedNA == 0) {
 			return "*Lack of Data*";
 		}
 		return "$" + String.format("%.2f", avgNewPriceListedNA);
 	}
-	
+
 	public String getFormattedNewPriceListedUK() {
 		if (avgNewPriceListedUK == 0) {
 			return "*Lack of Data*";
 		}
 		return "£" + String.format("%.2f", avgNewPriceListedUK);
 	}
-	
+
 	public String getFormattedUsedPriceListedNA() {
 		if (avgUsedPriceListedNA == 0) {
 			return "*Lack of Data*";
 		}
 		return "$" + String.format("%.2f", avgUsedPriceListedNA);
 	}
-	
+
 	public String getFormattedUsedPriceListedUK() {
 		if (avgUsedPriceListedUK == 0) {
 			return "*Lack of Data*";
 		}
 		return "£" + String.format("%.2f", avgUsedPriceListedUK);
 	}
-	
+
 	public String getReleaseJP() {
 		if (releaseJP.equals("null")) {
 			return "N/A";
 		}
 		return releaseJP;
 	}
-	
+
 	public String getReleaseNA() {
 		if (releaseNA.equals("null")) {
 			return "N/A";
 		}
 		return releaseNA;
 	}
-	
+
 	public String getReleaseEU() {
 		if (releaseEU.equals("null")) {
 			return "N/A";
 		}
 		return releaseEU;
 	}
-	
+
 	public String getReleaseAU() {
 		if (releaseAU.equals("null")) {
 			return "N/A";
 		}
 		return releaseAU;
 	}
-	
-	public String getColor() {
+
+	public Color getColor() {
 		return backgroundColor;
 	}
 

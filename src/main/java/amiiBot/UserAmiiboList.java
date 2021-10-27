@@ -56,15 +56,6 @@ public class UserAmiiboList {
 	public void updateCollectionData(String discordID) {
 		JSONObject data = new JSONObject(
 				websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID));
-		try {
-			FileWriter myWriter = new FileWriter("filename.txt");
-			myWriter.write(data.toString());
-			myWriter.close();
-			System.out.println("Successfully wrote to the file.");
-		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
 
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			int NIB = 0;

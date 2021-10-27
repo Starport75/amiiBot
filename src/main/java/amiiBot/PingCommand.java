@@ -1,15 +1,13 @@
 package amiiBot;
 
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-
 import java.util.ArrayList;
 
 class PingCommand extends AbstractCommand {
     String command = "ping";
     String description = "A test command";
 
-    public EmbedBuilder getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
-        EmbedBuilder embed = new EmbedBuilder()
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    	BetterEmbed embed = new BetterEmbed()
                 .setDescription("Pong!");
         return embed;
     }
