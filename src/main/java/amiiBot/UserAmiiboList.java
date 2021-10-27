@@ -89,10 +89,6 @@ public class UserAmiiboList {
 		}
 	}
 
-	public void updateUserData(String discordID) {
-
-	}
-
 	public ArrayList<ArrayList<ArrayList<Amiibo>>> getMasterList() {
 		return masterList;
 	}
@@ -211,7 +207,6 @@ public class UserAmiiboList {
 				}
 			}
 		}
-		System.out.println("I'm returning null tbh");
 		return null;
 	}
 }

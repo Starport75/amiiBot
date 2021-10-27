@@ -82,7 +82,6 @@ public class Main {
 
         list.add(new PingCommand());
         list.add(new HelpCommand());
-        list.add(new ListAmiiboCommand());
         list.add(new GenerateCollectionImageCommand());
         list.add(new ListTypesCommand());
         list.add(new ListSeriesCommand());

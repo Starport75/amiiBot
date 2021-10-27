@@ -22,8 +22,15 @@ public class Amiibo {
 	String imgUrl;
 
 	// Figure data that changes over time
-	double avgMonthPriceNA;
-	double avgMonthPriceUK;
+	double avgUsedPriceCompletedNA;
+	double avgUsedPriceCompletedUK;
+	double avgNewPriceCompletedNA;
+	double avgNewPriceCompletedUK;
+	double avgUsedPriceListedNA;
+	double avgUsedPriceListedUK;
+	double avgNewPriceListedNA;
+	double avgNewPriceListedUK;
+	
 	ArrayList<String[]> retailerList = new ArrayList<String[]>();
 
 	// Data specific to each person
@@ -51,15 +58,22 @@ public class Amiibo {
 		numberOOB = OOB;
 	}
 	
-	public void updateIndividualData() {
+	public void updateIndividualFigureData() {
 		String discordID = "205877471067766784";
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		
 		JSONObject data = new JSONObject(websiteData
 				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID, amiiboID + ""));
-
-		avgMonthPriceNA = (double) data.getJSONObject("amiibo").get("average_price_this_month_us");
-		avgMonthPriceUK = (double) data.getJSONObject("amiibo").get("average_price_this_month_uk");
+		
+		avgUsedPriceCompletedNA = data.getJSONObject("amiibo").getDouble("average_price_this_month_us_used");
+		avgUsedPriceCompletedUK = data.getJSONObject("amiibo").getDouble("average_price_this_month_uk_used");
+		avgNewPriceCompletedNA = data.getJSONObject("amiibo").getDouble("average_price_this_month_us_new");
+		avgNewPriceCompletedUK = data.getJSONObject("amiibo").getDouble("average_price_this_month_uk_new");
+		avgUsedPriceListedNA = data.getJSONObject("amiibo").getDouble("average_listed_this_month_us_used");
+		avgUsedPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_used");
+		avgNewPriceListedNA = data.getJSONObject("amiibo").getDouble("average_listed_this_month_us_new");
+		avgNewPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_new");
+	
 	}
 
 	public String getName() {
@@ -84,6 +98,66 @@ public class Amiibo {
 
 	public int getAmiiboID() {
 		return amiiboID;
+	}
+	
+	public double getNewPriceCompletedNA() {
+		return avgNewPriceCompletedNA;
+	}
+	
+	public double getNewPriceCompletedUK() {
+		return avgNewPriceCompletedUK;
+	}
+	
+	public double getUsedPriceCompletedNA() {
+		return avgUsedPriceCompletedNA;
+	}
+	
+	public double getUsedPriceCompletedUK() {
+		return avgUsedPriceCompletedUK;
+	}
+	
+	public double getNewPriceListedNA() {
+		return avgNewPriceListedNA;
+	}
+	
+	public double getNewPriceListedUK() {
+		return avgNewPriceListedUK;
+	}
+	
+	public double getUsedPriceListedNA() {
+		return avgUsedPriceListedNA;
+	}
+	
+	public double getUsedPriceListedUK() {
+		return avgUsedPriceListedUK;
+	}
+	
+	public String getReleaseJP() {
+		if (releaseJP.equals("null")) {
+			return "N/A";
+		}
+		return releaseJP;
+	}
+	
+	public String getReleaseNA() {
+		if (releaseNA.equals("null")) {
+			return "N/A";
+		}
+		return releaseNA;
+	}
+	
+	public String getReleaseEU() {
+		if (releaseEU.equals("null")) {
+			return "N/A";
+		}
+		return releaseEU;
+	}
+	
+	public String getReleaseAU() {
+		if (releaseAU.equals("null")) {
+			return "N/A";
+		}
+		return releaseAU;
 	}
 
 }
