@@ -21,14 +21,38 @@ public class Main {
 		HelpCommand.setCommandToken(commandToken);
 
 		String token = "";
+		String seniorToken = "";
+		String juniorToken = "";
+		String debugString = "";
+		Boolean debugMode = true;
+		
+		
 		File tokenFile = new File("src\\main\\resources\\token.txt");
 		try {
 			Scanner tokenScanner = new Scanner(tokenFile);
-			token = tokenScanner.next();
+			debugString = tokenScanner.next();
+			seniorToken = tokenScanner.next();
+			juniorToken = tokenScanner.next();
 			tokenScanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("FILE NOT FOUND");
 			e.printStackTrace();
+		}
+		
+		if (debugString.equals("True")) {
+			debugMode = true;
+		} else if (debugString.equals("False")){
+			debugMode = false;
+		} else {
+			System.out.println("ERROR: The debug string in the token.txt could not be read");
+		}
+		
+		System.out.println("Debug mode is set to <" + debugMode.toString().toUpperCase() + ">");
+		
+		if (debugMode) {
+			token = juniorToken;
+		} else {
+			token = seniorToken;
 		}
 
 		DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
