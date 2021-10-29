@@ -17,7 +17,7 @@ public class HelpCommand extends AbstractCommand {
     String command = "help";
     String description = "Lists the commands the user can use. You just used it!";
 
-    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
         String output = "";
 
         for (int i = 0; i < commandList.size(); i++) {
@@ -25,7 +25,6 @@ public class HelpCommand extends AbstractCommand {
                     + commandList.get(i).getDescription() + "*";
         }
         BetterEmbed embed = new BetterEmbed().setDescription(output);
-        updateLength(output);
         return embed;
     }
 
@@ -35,13 +34,5 @@ public class HelpCommand extends AbstractCommand {
 
     public String getDescription() {
         return description;
-    }
-
-    public void updateLength(String output) {
-        length = output.length();
-    }
-
-    public int getLength() {
-        return length;
     }
 }

@@ -8,15 +8,22 @@ import java.util.Scanner;
 public class EasterEgg {
 
 	ArrayList<String[]> imageList = new ArrayList<String[]>();
+	ArrayList<String> eggList = new ArrayList<String>();
 
-	public EasterEgg() throws FileNotFoundException {
+	public EasterEgg(){
 
-		File eeFile = new File("src\\main\\resources\\easterEgg.txt");
+		File eeFile = new File("src\\main\\resources\\easterEgg.dat");
 		String fullString;
 		String url = null;
 		String name = null;
 		String series = null;
-		Scanner eeScanner = new Scanner(eeFile);
+		Scanner eeScanner = null;
+		try {
+			eeScanner = new Scanner(eeFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		while (eeScanner.hasNextLine()) {
 		fullString = eeScanner.nextLine();
@@ -34,5 +41,23 @@ public class EasterEgg {
 			System.out.println("Name: " + imageList.get(i)[1] + ", Series: " + imageList.get(i)[2]);
 			amiiboList.getAmiibo(imageList.get(i)[1], imageList.get(i)[2]).setEEImage(imageList.get(i)[0]);
 		}
+	}
+	
+	public String setEE(boolean bool, String discordID) {
+		if (bool) {
+			if (!eggList.contains(discordID)) {
+				eggList.add(discordID);
+				return "You sense a disquieting metamorphosis... you now have ligma!\n*...whatever that means*";
+			} else {
+				return "Silly goose, you already have ligma!";
+			}
+		} else {
+			eggList.remove(discordID);
+			return "You feel a weight off your shoulders. You no longer have ligma!";
+		}
+	}
+	
+	public boolean getEE(String discordID) {
+		return eggList.contains(discordID);
 	}
 }

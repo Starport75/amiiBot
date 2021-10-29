@@ -83,7 +83,7 @@ public class Main {
 
 					String discordID = event.getMessage().getAuthor().getIdAsString();
 
-					BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, mainList, params);
+					BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, mainList, params, easterEgg);
 					event.getChannel().sendMessage(messageOutput.getEmbed());
 				}
 
@@ -103,6 +103,7 @@ public class Main {
 		list.add(new ListCollectionCommand());
 		list.add(new ShowInfoCommand());
 		list.add(new AddAmiiboCommand());
+		list.add(new EasterEggCommand());
 
 		return list;
 	}

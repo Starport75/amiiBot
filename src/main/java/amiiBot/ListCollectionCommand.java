@@ -6,7 +6,7 @@ public class ListCollectionCommand extends AbstractCommand {
 	String description = "Lists amiibo for the user";
 	String command = "listAmiibo";
 
-	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
 		amiiboList.updateCollectionData(userDiscordID);
 
@@ -113,7 +113,6 @@ public class ListCollectionCommand extends AbstractCommand {
 
 		}
 		BetterEmbed embed = new BetterEmbed().setDescription(output);
-		updateLength(output);
 		return embed;
 	}
 
@@ -123,13 +122,5 @@ public class ListCollectionCommand extends AbstractCommand {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public void updateLength(String output) {
-		length = output.length();
-	}
-
-	public int getLength() {
-		return length;
 	}
 }

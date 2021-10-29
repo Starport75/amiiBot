@@ -193,11 +193,8 @@ public class UserAmiiboList {
 		for (int i = 0; i < getAmiiboList(series).size(); i++) {
 			if (getAmiiboList(series).get(i).getName().equals(name)) {
 				return getAmiiboList(series).get(i);
-			} else {
-				System.out.println(getAmiiboList(series).get(i).getName() + " != " + name);
 			}
 		}
-		System.out.println("Could not find character <" + name + "> in series <" + series + ">");
 		return null;
 	}
 

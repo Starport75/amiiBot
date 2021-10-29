@@ -98,8 +98,9 @@ public class Amiibo {
 		return numberNIB + numberOOB;
 	}
 
-	public String getImage() {
-		if (/*getEEImage() != null*/ false) {
+	public String getImage(EasterEgg egg, String discordID) {
+		if (getEEImage() != null && egg.getEE(discordID)) {
+			egg.setEE(false, discordID);
 			return eeImgUrl;
 		}
 		return imgUrl;

@@ -8,7 +8,7 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command = "generateImage";
 
-    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
         AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
@@ -17,7 +17,6 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
 
         BetterEmbed embed = new BetterEmbed()
                 .setImage(output);
-        updateLength(output);
         return embed;
     }
 
@@ -27,13 +26,5 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
 
     public String getDescription() {
         return description;
-    }
-
-    public void updateLength(String output) {
-        length = output.length();
-    }
-
-    public int getLength() {
-        return length;
     }
 }

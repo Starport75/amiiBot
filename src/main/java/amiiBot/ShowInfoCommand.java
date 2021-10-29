@@ -8,7 +8,7 @@ public class ShowInfoCommand extends AbstractCommand {
 	String command = "showInfo";
 	int length = -1;
 
-	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
 		if (parameters.size() < 1) {
 			return new BetterEmbed().setError("Error: Not all parameters defined. Command structure is !showInfo <amiibo Name> <Series (if needed)>");
@@ -46,10 +46,9 @@ public class ShowInfoCommand extends AbstractCommand {
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 		currAmiibo.updateIndividualFigureData();
 
-		// currAmiibo.updateCollectionData(userDiscordID);
 		String output = "";
 
-		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName()).setImage(currAmiibo.getImage())
+		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName()).setImage(currAmiibo.getImage(egg, userDiscordID))
 				.addField("Release Dates:",
 						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
 								+ currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
@@ -77,13 +76,5 @@ public class ShowInfoCommand extends AbstractCommand {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public void updateLength(String output) {
-		length = output.length();
-	}
-
-	public int getLength() {
-		return length;
 	}
 }

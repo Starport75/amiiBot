@@ -6,11 +6,10 @@ public class ListTypesCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command = "listTypes";
 
-    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
     	BetterEmbed embed = new BetterEmbed()
                 .setDescription(amiiboList.getTypeList().toString());
-        updateLength(amiiboList.getTypeList().toString());
         return embed;
     }
 
@@ -21,13 +20,4 @@ public class ListTypesCommand extends AbstractCommand {
     public String getDescription() {
         return description;
     }
-
-    public void updateLength(String output) {
-        length = output.length();
-    }
-
-    public int getLength() {
-        return length;
-    }
-
 }

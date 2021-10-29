@@ -7,9 +7,8 @@ import org.json.JSONObject;
 public class AddAmiiboCommand extends AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "addAmiibo";
-	int length = -1;
 
-	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		String seriesName;
@@ -58,13 +57,5 @@ public class AddAmiiboCommand extends AbstractCommand {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public void updateLength(String output) {
-		length = output.length();
-	}
-
-	public int getLength() {
-		return length;
 	}
 }

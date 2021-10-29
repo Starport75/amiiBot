@@ -6,7 +6,7 @@ public class ListSeriesCommand extends AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command = "listSeries";
 
-    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters) {
+    public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
         if (parameters.size() < 1) {
         	return new BetterEmbed().setError("Error: No parameters defined. Command structure is !listSeries <Type>");
@@ -18,7 +18,6 @@ public class ListSeriesCommand extends AbstractCommand {
 
         BetterEmbed embed = new BetterEmbed()
                 .setDescription(amiiboList.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0)))).toString());
-        updateLength(amiiboList.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0)))).toString());
         return embed;
     }
 
@@ -29,13 +28,4 @@ public class ListSeriesCommand extends AbstractCommand {
     public String getDescription() {
         return description;
     }
-
-    public void updateLength(String output) {
-        length = output.length();
-    }
-
-    public int getLength() {
-        return length;
-    }
-
 }
