@@ -19,6 +19,7 @@ public class Amiibo {
 	String releaseNA;
 	Color backgroundColor;
 	String imgUrl;
+	String eeImgUrl;
 
 	// Figure data that changes over time
 	double avgUsedPriceCompletedNA;
@@ -98,6 +99,9 @@ public class Amiibo {
 	}
 
 	public String getImage() {
+		if (/*getEEImage() != null*/ false) {
+			return eeImgUrl;
+		}
 		return imgUrl;
 	}
 
@@ -223,6 +227,14 @@ public class Amiibo {
 
 	public Color getColor() {
 		return backgroundColor;
+	}
+	
+	public void setEEImage(String imageUrl) {
+		eeImgUrl = imageUrl;
+	}
+	
+	public String getEEImage() {
+		return eeImgUrl;
 	}
 
 }

@@ -22,6 +22,7 @@ public class UserAmiiboList {
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString();
+			amiiboType = typeCheck(amiiboType);
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
 					.get("name").toString();
 			seriesName = seriesCheck(seriesName, amiiboType);
@@ -94,6 +95,13 @@ public class UserAmiiboList {
 		}
 
 		return series;
+	}
+	
+	public String typeCheck(String type) {
+		if (type.equals("Yarn")) {
+			type = "Figure";
+		}
+		return type;
 	}
 
 	public ArrayList<String> getTypeList() {
@@ -185,8 +193,11 @@ public class UserAmiiboList {
 		for (int i = 0; i < getAmiiboList(series).size(); i++) {
 			if (getAmiiboList(series).get(i).getName().equals(name)) {
 				return getAmiiboList(series).get(i);
+			} else {
+				System.out.println(getAmiiboList(series).get(i).getName() + " != " + name);
 			}
 		}
+		System.out.println("Could not find character <" + name + "> in series <" + series + ">");
 		return null;
 	}
 

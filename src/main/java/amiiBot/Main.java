@@ -9,13 +9,16 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
 
 		UserAmiiboList mainList = new UserAmiiboList("205877471067766784");
 		UserAmiiboList secondaryList = mainList;
+		EasterEgg easterEgg = new EasterEgg();
+		
+		easterEgg.addEasterEgg(mainList);
 
 		HelpCommand.setCommandList(commandList);
 		HelpCommand.setCommandToken(commandToken);
