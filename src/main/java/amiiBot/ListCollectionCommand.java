@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class ListCollectionCommand extends AbstractCommand {
 	String description = "Lists amiibo for the user";
 	String command = "listAmiibo";
+    int accessLevel = 0;
 
-	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
+	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
 		amiiboList.updateCollectionData(userDiscordID);
 
@@ -123,4 +124,8 @@ public class ListCollectionCommand extends AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
+	
+	public int getAccessLevel() {
+    	return accessLevel;
+    }
 }

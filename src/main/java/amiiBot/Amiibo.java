@@ -54,7 +54,7 @@ public class Amiibo {
 					Integer.valueOf(color.substring(3, 5), 16), Integer.valueOf(color.substring(5, 7), 16));
 		} else {
 			backgroundColor = Color.black;
-			System.out.println(color + " is the color for " + amiiboName);
+			System.out.println("ERROR: " + color + " is the color for " + amiiboName);
 		}
 		imgUrl = image;
 	}
@@ -99,7 +99,7 @@ public class Amiibo {
 	}
 
 	public String getImage(EasterEgg egg, String discordID) {
-		if (getEEImage() != null && egg.getEE(discordID)) {
+		if (getEEImage() != null && egg.getEE(discordID) && egg.isActive()) {
 			egg.setEE(false, discordID);
 			return eeImgUrl;
 		}

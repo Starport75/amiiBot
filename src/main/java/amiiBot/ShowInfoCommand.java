@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class ShowInfoCommand extends AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "showInfo";
-	int length = -1;
+    int accessLevel = 0;
 
-	public BetterEmbed getOutput(String userDiscordID, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
+	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
 		if (parameters.size() < 1) {
 			return new BetterEmbed().setError("Error: Not all parameters defined. Command structure is !showInfo <amiibo Name> <Series (if needed)>");
@@ -77,4 +77,8 @@ public class ShowInfoCommand extends AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
+	
+	public int getAccessLevel() {
+    	return accessLevel;
+    }
 }

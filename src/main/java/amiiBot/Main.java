@@ -2,10 +2,17 @@ package amiiBot;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.intent.Intent;
+import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class Main {
 
@@ -17,7 +24,10 @@ public class Main {
 		UserAmiiboList mainList = new UserAmiiboList("205877471067766784");
 		UserAmiiboList secondaryList = mainList;
 		EasterEgg easterEgg = new EasterEgg();
-		
+		String modRoleID;
+		String adminRoleID;
+		String serverID;
+
 		easterEgg.addEasterEgg(mainList);
 
 		HelpCommand.setCommandList(commandList);
@@ -28,8 +38,7 @@ public class Main {
 		String juniorToken = "";
 		String debugString = "";
 		Boolean debugMode = true;
-		
-		
+
 		File tokenFile = new File("src\\main\\resources\\token.txt");
 		try {
 			Scanner tokenScanner = new Scanner(tokenFile);
@@ -41,52 +50,89 @@ public class Main {
 			System.out.println("FILE NOT FOUND");
 			e.printStackTrace();
 		}
-		
+
 		if (debugString.equals("True")) {
 			debugMode = true;
-		} else if (debugString.equals("False")){
+		} else if (debugString.equals("False")) {
 			debugMode = false;
 		} else {
 			System.out.println("ERROR: The debug string in the token.txt could not be read");
 		}
-		
+
 		System.out.println("Debug mode is set to <" + debugMode.toString().toUpperCase() + ">");
-		
+
 		if (debugMode) {
 			token = juniorToken;
+			// amiibo testing server
+			modRoleID = "904857029485670431";
+			adminRoleID = "904856959025549323";
+			serverID = "895083537647149067";
+
 		} else {
 			token = seniorToken;
+			// r/amiibo server
+			modRoleID = "137302149389484032"; // mod ID
+			adminRoleID = "900157089983373323"; // admin ID
+			serverID = "115840745549725703";
 		}
-
-		DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
+		
+		
+		DiscordApi api = new DiscordApiBuilder().setAllIntentsExcept(Intent.GUILD_PRESENCES).setToken(token).login().join();
+		Server currServer = api.getServerById(serverID).get();
+		Role adminRole = api.getRoleById(adminRoleID).get();
+		Role modRole = api.getRoleById(modRoleID).get();
 
 		// Print the invite url of your bot
 		System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
 
 		api.addMessageCreateListener(event -> {
-			for (int i = 0; i < commandList.size(); i++) {
-				String message = event.getMessageContent();
-				String mainCommand = "";
-				if (message.indexOf(' ') > 0) {
-					mainCommand = message.substring(0, message.indexOf(' '));
-				} else {
-					mainCommand = message;
-				}
-				if (mainCommand.equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
-					ArrayList<String> params = new ArrayList<String>();
-					while (message.contains("<") & message.contains(">")
-							& message.indexOf("<") < message.indexOf(">")) {
+			if (!event.getServer().get().getIdAsString().equals(serverID)) {
+				System.out.println("ERROR: The Discord ID does not match");
+			} else {
+				for (int i = 0; i < commandList.size(); i++) {
+					String message = event.getMessageContent();
+					String mainCommand = "";
+					if (message.indexOf(' ') > 0) {
+						mainCommand = message.substring(0, message.indexOf(' '));
+					} else {
+						mainCommand = message;
+					}
+					if (mainCommand.equalsIgnoreCase(commandToken + commandList.get(i).getCommand())) {
+						String discordID = event.getMessage().getAuthor().getIdAsString();
+						User currUser = null;
+						try {
+							currUser = api.getUserById(discordID).get();
+						} catch (InterruptedException | ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						int accessLevel;
+						if (currUser.getRoles(currServer).contains(adminRole)) {
+							accessLevel = 2;
+						} else if (currUser.getRoles(currServer).contains(modRole)) {
+							accessLevel = 1;
+						} else {
+							accessLevel = 0;
+						}
+						
+						if (commandList.get(i).getAccessLevel() <= accessLevel) {
+							ArrayList<String> params = new ArrayList<String>();
+							while (message.contains("<") & message.contains(">")
+									& message.indexOf("<") < message.indexOf(">")) {
 
-						params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
-						message = message.substring(message.indexOf('>') + 1);
+								params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
+								message = message.substring(message.indexOf('>') + 1);
+							}
+
+
+							BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, accessLevel, mainList, params,
+									easterEgg);
+							event.getChannel().sendMessage(messageOutput.getEmbed());
+						}
 					}
 
-					String discordID = event.getMessage().getAuthor().getIdAsString();
-
-					BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, mainList, params, easterEgg);
-					event.getChannel().sendMessage(messageOutput.getEmbed());
 				}
-
 			}
 
 		});

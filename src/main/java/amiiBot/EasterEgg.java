@@ -9,6 +9,7 @@ public class EasterEgg {
 
 	ArrayList<String[]> imageList = new ArrayList<String[]>();
 	ArrayList<String> eggList = new ArrayList<String>();
+	boolean active = false;
 
 	public EasterEgg(){
 
@@ -27,7 +28,6 @@ public class EasterEgg {
 		
 		while (eeScanner.hasNextLine()) {
 		fullString = eeScanner.nextLine();
-		System.out.println(fullString);
 		url = fullString.substring(0, fullString.indexOf('<'));
 		name = fullString.substring(fullString.indexOf('<') + 1, fullString.indexOf('>'));
 		series = fullString.substring(fullString.indexOf('>') + 1);
@@ -38,7 +38,6 @@ public class EasterEgg {
 	
 	public void addEasterEgg(UserAmiiboList amiiboList) {
 		for (int i = 0; i < imageList.size(); i++) {
-			System.out.println("Name: " + imageList.get(i)[1] + ", Series: " + imageList.get(i)[2]);
 			amiiboList.getAmiibo(imageList.get(i)[1], imageList.get(i)[2]).setEEImage(imageList.get(i)[0]);
 		}
 	}
@@ -60,4 +59,11 @@ public class EasterEgg {
 	public boolean getEE(String discordID) {
 		return eggList.contains(discordID);
 	}
+	
+
+    
+    public boolean isActive() {
+    	return active;
+    }
+    
 }
