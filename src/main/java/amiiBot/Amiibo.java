@@ -1,8 +1,11 @@
 package amiiBot;
 
 import java.awt.Color;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Amiibo {
@@ -30,8 +33,7 @@ public class Amiibo {
 	double avgUsedPriceListedUK;
 	double avgNewPriceListedNA;
 	double avgNewPriceListedUK;
-
-	ArrayList<String[]> retailerList = new ArrayList<String[]>();
+	ArrayList<String[]> retailerList;
 
 	// Data specific to each person
 	int numberNIB;
@@ -67,9 +69,32 @@ public class Amiibo {
 	public void updateIndividualFigureData() {
 		String discordID = "205877471067766784";
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
+		
+		retailerList = new ArrayList<String[]>();
 
 		JSONObject data = new JSONObject(websiteData
 				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID, amiiboID + ""));
+
+		
+		JSONArray retailerJSON = data.getJSONObject("amiibo").getJSONArray("stock_count");
+
+		for (int retailIndex = 0; retailIndex < retailerJSON.length(); retailIndex++) {
+			JSONObject currRetailer = (JSONObject) retailerJSON.get(retailIndex);
+			String[] retailArray = { (String) currRetailer.get("in_stock"), (String) currRetailer.get("retailer"),
+					(String) currRetailer.get("web_url") };
+			retailerList.add(retailArray);
+		}
+		
+		
+		try {
+			FileWriter myWriter = new FileWriter("filename.txt");
+			myWriter.write(data.toString());
+			myWriter.close();
+			System.out.println("Successfully wrote to the file.");
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
 
 		avgUsedPriceCompletedNA = data.getJSONObject("amiibo").getDouble("average_price_this_month_us_used");
 		avgUsedPriceCompletedUK = data.getJSONObject("amiibo").getDouble("average_price_this_month_uk_used");
@@ -79,7 +104,6 @@ public class Amiibo {
 		avgUsedPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_used");
 		avgNewPriceListedNA = data.getJSONObject("amiibo").getDouble("average_listed_this_month_us_new");
 		avgNewPriceListedUK = data.getJSONObject("amiibo").getDouble("average_listed_this_month_uk_new");
-
 	}
 
 	public String getName() {
@@ -229,13 +253,17 @@ public class Amiibo {
 	public Color getColor() {
 		return backgroundColor;
 	}
-	
+
 	public void setEEImage(String imageUrl) {
 		eeImgUrl = imageUrl;
 	}
-	
+
 	public String getEEImage() {
 		return eeImgUrl;
+	}
+
+	public ArrayList<String[]> getRetailerList() {
+		return retailerList;
 	}
 
 }

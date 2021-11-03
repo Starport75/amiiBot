@@ -1,5 +1,6 @@
 package amiiBot;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileWriter;
@@ -13,6 +14,8 @@ public class UserAmiiboList {
 
 	ArrayList<String> typeList = new ArrayList<String>();
 	ArrayList<ArrayList<String>> seriesList = new ArrayList<ArrayList<String>>();
+
+	ArrayList<String[]> retailerList;
 
 	public UserAmiiboList(String userDiscordID) {
 
@@ -37,7 +40,7 @@ public class UserAmiiboList {
 				seriesList.get(getTypeIndex(amiiboType)).add(seriesName);
 				masterList.get(getTypeIndex(amiiboType)).add(new ArrayList<Amiibo>());
 			}
-			
+
 			Amiibo amiiboToAdd = new Amiibo(
 					data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString(),
 					(int) data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("amiibo_id"), amiiboType,
@@ -70,13 +73,14 @@ public class UserAmiiboList {
 					OOB++;
 				}
 			}
-						
-			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series").get("name").toString();
-			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type").toString();
+
+			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
+					.get("name").toString();
+			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
+					.toString();
 			seriesName = seriesCheck(seriesName, amiiboType);
 			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString();
-			
-						
+
 			getAmiibo(amiiboName, seriesName).setNibAndOob(NIB, OOB);
 		}
 	}
@@ -96,7 +100,7 @@ public class UserAmiiboList {
 
 		return series;
 	}
-	
+
 	public String typeCheck(String type) {
 		if (type.equals("Yarn")) {
 			type = "Figure";
