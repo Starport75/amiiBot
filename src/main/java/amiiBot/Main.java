@@ -18,6 +18,8 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
+		pressAnyKeyToContinue();
+		
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
 
@@ -153,4 +155,15 @@ public class Main {
 
 		return list;
 	}
+	
+	 private static void pressAnyKeyToContinue()
+	 { 
+	        System.out.println("Press Enter key to continue...");
+	        try
+	        {
+	            System.in.read();
+	        }  
+	        catch(Exception e)
+	        {}  
+	 }
 }
