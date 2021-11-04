@@ -17,8 +17,6 @@ import java.util.concurrent.ExecutionException;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
-
-		pressAnyKeyToContinue();
 		
 		ArrayList<AbstractCommand> commandList = addCommands();
 		String commandToken = "!";
@@ -78,6 +76,9 @@ public class Main {
 			serverID = "115840745549725703";
 		}
 		
+		if (!debugMode) {
+			pressAnyKeyToContinue();
+		}
 		
 		DiscordApi api = new DiscordApiBuilder().setAllIntentsExcept(Intent.GUILD_PRESENCES).setToken(token).login().join();
 		Server currServer = api.getServerById(serverID).get();
