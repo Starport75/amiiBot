@@ -136,7 +136,7 @@ public class Main {
 						}
 					}
 				}
-				if (mainCommand.charAt(0) == commandToken && !commandFound) {
+				if (mainCommand.length() > 0 && !commandFound && mainCommand.charAt(0) == commandToken) {
 					event.getChannel().sendMessage(
 							new BetterEmbed().setError("Error: Unknown command \"" + mainCommand + "\"").getEmbed());
 				}
