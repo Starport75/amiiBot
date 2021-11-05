@@ -5,6 +5,7 @@ import java.util.ArrayList;
 abstract class AbstractCommand {
     String description = "Default description. Contact the creator if you are reading this message";
     String command;
+    String parameterString;
     int accessLevel = 0;
 
     public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
@@ -21,5 +22,9 @@ abstract class AbstractCommand {
     
     public int getAccessLevel() {
     	return accessLevel;
+    }
+    
+    public String getParameters() {
+    	return parameterString;
     }
 }

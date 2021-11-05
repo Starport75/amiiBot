@@ -19,8 +19,8 @@ public class UserAmiiboList {
 
 	public UserAmiiboList(String userDiscordID) {
 
-		JSONObject data = new JSONObject(websiteData
-				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", userDiscordID));
+		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", userDiscordID, null, null);
+		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
@@ -57,10 +57,13 @@ public class UserAmiiboList {
 
 	}
 
-	public void updateCollectionData(String discordID) {
-		JSONObject data = new JSONObject(
-				websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID));
-
+	public boolean updateCollectionData(String discordID) {
+		JSONObject data = null;
+		if (websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID, null, null)) {
+			data = new JSONObject(websiteData.getLastRequestString());
+		} else {
+			return false;
+		}
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			int NIB = 0;
 			int OOB = 0;
@@ -83,6 +86,7 @@ public class UserAmiiboList {
 
 			getAmiibo(amiiboName, seriesName).setNibAndOob(NIB, OOB);
 		}
+		return true;
 	}
 
 	public ArrayList<ArrayList<ArrayList<Amiibo>>> getMasterList() {

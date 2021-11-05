@@ -2,15 +2,17 @@ package amiiBot;
 
 import java.util.ArrayList;
 
-public class ListCollectionCommand extends AbstractCommand {
-	String description = "Lists amiibo for the user";
+public class ListAmiiboCommand extends AbstractCommand {
+	String description = "Lists all the amiibo within the specified series or type";
 	String command = "listAmiibo";
+    String parameterString = "<type/series>";
     int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
-		amiiboList.updateCollectionData(userDiscordID);
-
+		if (!amiiboList.updateCollectionData(userDiscordID)) {
+			return new BetterEmbed().getRegisterError();
+		}
 		boolean listAll = (parameters.size() < 2);
 		boolean listObtained = true;
 
@@ -21,7 +23,8 @@ public class ListCollectionCommand extends AbstractCommand {
 		String typeName;
 
 		if (parameters.size() < 1) {
-			return new BetterEmbed().setError("Error: No parameters defined. Command structure is !listCollection <Type/Series>");
+			return new BetterEmbed().setError(
+					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
 		}
 
 		if (!listAll) {
@@ -127,5 +130,9 @@ public class ListCollectionCommand extends AbstractCommand {
 	
 	public int getAccessLevel() {
     	return accessLevel;
+    }
+	
+	public String getParameters() {
+    	return parameterString;
     }
 }

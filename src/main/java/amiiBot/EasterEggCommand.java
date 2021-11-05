@@ -3,8 +3,9 @@ package amiiBot;
 import java.util.ArrayList;
 
 public class EasterEggCommand extends AbstractCommand{
-	String description = "Default description. Contact the creator if you are reading this message";
+	String description = "...?";
     String command = "ligma";
+    String parameterString = "";
     int accessLevel = 0;
     EasterEgg egg = new EasterEgg();
 
@@ -22,5 +23,9 @@ public class EasterEggCommand extends AbstractCommand{
     
     public int getAccessLevel() {
     	return accessLevel;
+    }
+    
+    public String getParameters() {
+    	return parameterString;
     }
 }

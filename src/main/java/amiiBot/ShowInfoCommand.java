@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class ShowInfoCommand extends AbstractCommand {
-	String description = "Default description. Contact the creator if you are reading this message";
+	String description = "Shows various information about the specified amiibo";
 	String command = "showInfo";
+    String parameterString = "<amiibo name> <series (if needed)>";
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
@@ -13,7 +14,7 @@ public class ShowInfoCommand extends AbstractCommand {
 
 		if (parameters.size() < 1) {
 			return new BetterEmbed().setError(
-					"Error: Not all parameters defined. Command structure is !showInfo <amiibo Name> <Series (if needed)>");
+					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
 		}
 
 		String amiiboName = "";
@@ -47,7 +48,9 @@ public class ShowInfoCommand extends AbstractCommand {
 
 		}
 
-		amiiboList.updateCollectionData(userDiscordID);
+		if (!amiiboList.updateCollectionData(userDiscordID)) {
+			return new BetterEmbed().getRegisterError();
+		}
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 		currAmiibo.updateIndividualFigureData();
 
@@ -105,4 +108,8 @@ public class ShowInfoCommand extends AbstractCommand {
 	public int getAccessLevel() {
 		return accessLevel;
 	}
+	
+	public String getParameters() {
+    	return parameterString;
+    }
 }

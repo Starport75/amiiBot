@@ -3,34 +3,49 @@ package amiiBot;
 import java.util.ArrayList;
 
 public class ListSeriesCommand extends AbstractCommand {
-    String description = "Default description. Contact the creator if you are reading this message";
-    String command = "listSeries";
-    int accessLevel = 0;
+	String description = "Lists all the amiibo series within the specified type";
+	String command = "listSeries";
+	String parameterString = "<type>";
+	int accessLevel = 0;
 
-    public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
+	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
+			ArrayList<String> parameters, EasterEgg egg) {
 
-        if (parameters.size() < 1) {
-        	return new BetterEmbed().setError("Error: No parameters defined. Command structure is !listSeries <Type>");
-        }
+		if (parameters.size() < 1) {
+			return new BetterEmbed()
+					.setError("Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
+		}
 
-        if (amiiboList.getTypeIndex(parameters.get(0)) == -1) {
-        	return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
-        }
+		if (amiiboList.getTypeIndex(parameters.get(0)) == -1) {
+			return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
+		}
 
-        BetterEmbed embed = new BetterEmbed()
-                .setDescription(amiiboList.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0)))).toString());
-        return embed;
-    }
+		String output = "**amiibo " + parameters.get(0) + " Series:**";
 
-    public String getCommand() {
-        return command;
-    }
+		ArrayList<String> currSeriesList = amiiboList
+				.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0))));
 
-    public String getDescription() {
-        return description;
-    }
-    
-    public int getAccessLevel() {
-    	return accessLevel;
+		for (int listIndex = 0; listIndex < currSeriesList.size(); listIndex++) {
+			output = output + "\n*" + currSeriesList.get(listIndex) + "*";
+		}
+
+		BetterEmbed embed = new BetterEmbed().setDescription(output);
+		return embed;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public int getAccessLevel() {
+		return accessLevel;
+	}
+
+	public String getParameters() {
+    	return parameterString;
     }
 }

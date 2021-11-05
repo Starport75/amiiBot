@@ -5,6 +5,7 @@ import java.util.ArrayList;
 class PingCommand extends AbstractCommand {
     String command = "ping";
     String description = "A test command";
+    String parameterString = "";
     int accessLevel = 1;
 
     public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
@@ -23,5 +24,9 @@ class PingCommand extends AbstractCommand {
     
     public int getAccessLevel() {
     	return accessLevel;
+    }
+    
+    public String getParameters() {
+    	return parameterString;
     }
 }

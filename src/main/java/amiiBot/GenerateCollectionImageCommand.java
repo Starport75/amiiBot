@@ -5,15 +5,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class GenerateCollectionImageCommand extends AbstractCommand {
-    String description = "Default description. Contact the creator if you are reading this message";
+    String description = "Generates an image of all the figures you have collected";
     String command = "generateImage";
+    String parameterString = "";
     int accessLevel = 0;
 
     public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
         AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
-        JSONObject data = new JSONObject(websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID));
+        if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID, null, null)) {
+        	return new BetterEmbed().getRegisterError();
+        }
+        JSONObject data = new JSONObject(websiteData.getLastRequestString());
         String output = data.get("val").toString();
 
         BetterEmbed embed = new BetterEmbed()
@@ -31,5 +35,9 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
     
     public int getAccessLevel() {
     	return accessLevel;
+    }
+    
+    public String getParameters() {
+    	return parameterString;
     }
 }

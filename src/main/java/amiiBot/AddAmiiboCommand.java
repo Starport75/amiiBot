@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 public class AddAmiiboCommand extends AbstractCommand {
-	String description = "Default description. Contact the creator if you are reading this message";
+	String description = "Adds an amiibo to your amiiboHunt collection";
 	String command = "addAmiibo";
-    int accessLevel = 0;
+	String parameterString = "<amiibo name> <series name> <NiB/OoB>";
+	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
@@ -16,9 +17,9 @@ public class AddAmiiboCommand extends AbstractCommand {
 		String amiiboName;
 		String isBoxed;
 
-		if (parameters.size() < 1) {
+		if (parameters.size() < 3) {
 			return new BetterEmbed().setError(
-					"Error: Not all parameters defined. Command structure is !addAmiibo <amiibo Name> <Series Name> <NiB/OoB>");
+					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
 		}
 
 		if (!amiiboList.doesSeriesExist(parameters.get(1))) {
@@ -44,11 +45,15 @@ public class AddAmiiboCommand extends AbstractCommand {
 			return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(2) + "\" was not recognized as <NiB/OoB>!");
 		}
 
-		JSONObject data = new JSONObject(
-				websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/addAmiiboToCollection",
-						userDiscordID, "" + currAmiibo.getAmiiboID(), isBoxed));
+		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/addAmiiboToCollection",
+				userDiscordID, "" + currAmiibo.getAmiiboID(), isBoxed)) {
+			return new BetterEmbed().getRegisterError();
+		}
+		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 
-		BetterEmbed embed = new BetterEmbed().setDescription(data.toString());
+		String output = ("Successfully added 1 " + data.get("amiibo_name") + " to your collection! You now have " + data.get("qty_owned") + " " + data.get("amiibo_name") + " amiibo!");
+		
+		BetterEmbed embed = new BetterEmbed().setDescription(output);
 		return embed;
 	}
 
@@ -59,8 +64,12 @@ public class AddAmiiboCommand extends AbstractCommand {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public int getAccessLevel() {
-    	return accessLevel;
+		return accessLevel;
+	}
+	
+	public String getParameters() {
+    	return parameterString;
     }
 }

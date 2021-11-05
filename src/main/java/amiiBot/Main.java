@@ -17,9 +17,9 @@ import java.util.concurrent.ExecutionException;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		
+
 		ArrayList<AbstractCommand> commandList = addCommands();
-		String commandToken = "!";
+		char commandToken = '!';
 
 		UserAmiiboList mainList = new UserAmiiboList("205877471067766784");
 		UserAmiiboList secondaryList = mainList;
@@ -75,12 +75,13 @@ public class Main {
 			adminRoleID = "900157089983373323"; // admin ID
 			serverID = "115840745549725703";
 		}
-		
+
 		if (!debugMode) {
 			pressAnyKeyToContinue();
 		}
-		
-		DiscordApi api = new DiscordApiBuilder().setAllIntentsExcept(Intent.GUILD_PRESENCES).setToken(token).login().join();
+
+		DiscordApi api = new DiscordApiBuilder().setAllIntentsExcept(Intent.GUILD_PRESENCES).setToken(token).login()
+				.join();
 		Server currServer = api.getServerById(serverID).get();
 		Role adminRole = api.getRoleById(adminRoleID).get();
 		Role modRole = api.getRoleById(modRoleID).get();
@@ -92,9 +93,10 @@ public class Main {
 			if (!event.getServer().get().getIdAsString().equals(serverID)) {
 				System.out.println("ERROR: The Discord ID does not match");
 			} else {
+				String mainCommand = "";
+				boolean commandFound = false;
 				for (int i = 0; i < commandList.size(); i++) {
 					String message = event.getMessageContent();
-					String mainCommand = "";
 					if (message.indexOf(' ') > 0) {
 						mainCommand = message.substring(0, message.indexOf(' '));
 					} else {
@@ -109,7 +111,7 @@ public class Main {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
+
 						int accessLevel;
 						if (currUser.getRoles(currServer).contains(adminRole)) {
 							accessLevel = 2;
@@ -118,7 +120,7 @@ public class Main {
 						} else {
 							accessLevel = 0;
 						}
-						
+
 						if (commandList.get(i).getAccessLevel() <= accessLevel) {
 							ArrayList<String> params = new ArrayList<String>();
 							while (message.contains("<") & message.contains(">")
@@ -127,17 +129,18 @@ public class Main {
 								params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
 								message = message.substring(message.indexOf('>') + 1);
 							}
-
-
-							BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, accessLevel, mainList, params,
-									easterEgg);
+							commandFound = true;
+							BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, accessLevel, mainList,
+									params, easterEgg);
 							event.getChannel().sendMessage(messageOutput.getEmbed());
 						}
 					}
-
+				}
+				if (mainCommand.charAt(0) == commandToken && !commandFound) {
+					event.getChannel().sendMessage(
+							new BetterEmbed().setError("Error: Unknown command \"" + mainCommand + "\"").getEmbed());
 				}
 			}
-
 		});
 	}
 
@@ -149,22 +152,19 @@ public class Main {
 		list.add(new GenerateCollectionImageCommand());
 		list.add(new ListTypesCommand());
 		list.add(new ListSeriesCommand());
-		list.add(new ListCollectionCommand());
+		list.add(new ListAmiiboCommand());
 		list.add(new ShowInfoCommand());
 		list.add(new AddAmiiboCommand());
 		list.add(new EasterEggCommand());
 
 		return list;
 	}
-	
-	 private static void pressAnyKeyToContinue()
-	 { 
-	        System.out.println("Press Enter key to continue...");
-	        try
-	        {
-	            System.in.read();
-	        }  
-	        catch(Exception e)
-	        {}  
-	 }
+
+	private static void pressAnyKeyToContinue() {
+		System.out.println("Press Enter key to continue...");
+		try {
+			System.in.read();
+		} catch (Exception e) {
+		}
+	}
 }

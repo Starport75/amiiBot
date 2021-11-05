@@ -9,7 +9,7 @@ public class EasterEgg {
 
 	ArrayList<String[]> imageList = new ArrayList<String[]>();
 	ArrayList<String> eggList = new ArrayList<String>();
-	boolean active = true;
+	boolean active = false;
 
 	public EasterEgg(){
 

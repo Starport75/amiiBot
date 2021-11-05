@@ -69,13 +69,13 @@ public class Amiibo {
 	public void updateIndividualFigureData() {
 		String discordID = "205877471067766784";
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
-		
+
 		retailerList = new ArrayList<String[]>();
 
-		JSONObject data = new JSONObject(websiteData
-				.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID, amiiboID + ""));
+		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID,
+				amiiboID + "", null);
+		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 
-		
 		JSONArray retailerJSON = data.getJSONObject("amiibo").getJSONArray("stock_count");
 
 		for (int retailIndex = 0; retailIndex < retailerJSON.length(); retailIndex++) {
@@ -84,8 +84,7 @@ public class Amiibo {
 					(String) currRetailer.get("web_url") };
 			retailerList.add(retailArray);
 		}
-		
-		
+
 		try {
 			FileWriter myWriter = new FileWriter("filename.txt");
 			myWriter.write(data.toString());
