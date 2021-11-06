@@ -10,14 +10,14 @@ public class ListTypesCommand extends AbstractCommand {
 
     public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
-    	
-    	String output = "**amiibo Types:**";
-    	
-    	for (int listIndex = 0; listIndex < amiiboList.getTypeList().size(); listIndex++) {
-    		output = output + "\n*" + amiiboList.getTypeList().get(listIndex) + "*";
-    	}
-    	
-    	BetterEmbed embed = new BetterEmbed()
+
+        String output = "**amiibo Types:**";
+
+        for (int listIndex = 0; listIndex < amiiboList.getTypeList().size(); listIndex++) {
+            output = output + "\n*" + amiiboList.getTypeList().get(listIndex) + "*";
+        }
+
+        BetterEmbed embed = new BetterEmbed()
                 .setDescription(output);
         return embed;
     }
@@ -29,12 +29,12 @@ public class ListTypesCommand extends AbstractCommand {
     public String getDescription() {
         return description;
     }
-    
+
     public int getAccessLevel() {
-    	return accessLevel;
+        return accessLevel;
     }
-    
+
     public String getParameters() {
-    	return parameterString;
+        return parameterString;
     }
 }
