@@ -155,6 +155,7 @@ public class Main {
 		list.add(new ListAmiiboCommand());
 		list.add(new ShowInfoCommand());
 		list.add(new AddAmiiboCommand());
+		list.add(new RemoveAmiiboCommand());
 		list.add(new EasterEggCommand());
 
 		return list;
