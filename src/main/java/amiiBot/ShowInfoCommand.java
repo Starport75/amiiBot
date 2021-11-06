@@ -1,115 +1,114 @@
 package amiiBot;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class ShowInfoCommand extends AbstractCommand {
-	String description = "Shows various information about the specified amiibo";
-	String command = "showInfo";
+    String description = "Shows various information about the specified amiibo";
+    String command = "showInfo";
     String parameterString = "<amiibo name> <series (if needed)>";
-	int accessLevel = 0;
+    int accessLevel = 0;
 
-	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
-			ArrayList<String> parameters, EasterEgg egg) {
+    public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
+                                 ArrayList<String> parameters, EasterEgg egg) {
 
-		if (parameters.size() < 1) {
-			return new BetterEmbed().setError(
-					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
-		}
+        if (parameters.size() < 1) {
+            return new BetterEmbed().setError(
+                    "Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
+        }
 
-		String amiiboName = "";
-		String seriesName = "";
+        String amiiboName = "";
+        String seriesName = "";
 
-		if (parameters.size() == 1) {
-			Amiibo tempAmiibo = amiiboList.amiiboNameLookup(parameters.get(0));
-			if (tempAmiibo != null) {
-				seriesName = tempAmiibo.getSeries();
-				amiiboName = tempAmiibo.getName();
-			} else {
-				return new BetterEmbed().setError(
-						"Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
-			}
-		}
+        if (parameters.size() == 1) {
+            Amiibo tempAmiibo = amiiboList.amiiboNameLookup(parameters.get(0));
+            if (tempAmiibo != null) {
+                seriesName = tempAmiibo.getSeries();
+                amiiboName = tempAmiibo.getName();
+            } else {
+                return new BetterEmbed().setError(
+                        "Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
+            }
+        }
 
-		if (parameters.size() >= 2) {
+        if (parameters.size() >= 2) {
 
-			if (!amiiboList.doesSeriesExist(parameters.get(1))) {
-				return new BetterEmbed()
-						.setError("Error: Parameter \"" + parameters.get(1) + "\" was not recognized as <series>!");
-			}
+            if (!amiiboList.doesSeriesExist(parameters.get(1))) {
+                return new BetterEmbed()
+                        .setError("Error: Parameter \"" + parameters.get(1) + "\" was not recognized as <series>!");
+            }
 
-			if (!amiiboList.isInSeries(parameters.get(0), parameters.get(1))) {
-				return new BetterEmbed().setError(
-						"Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
-			}
+            if (!amiiboList.isInSeries(parameters.get(0), parameters.get(1))) {
+                return new BetterEmbed().setError(
+                        "Error: Parameter \"" + parameters.get(0) + "\" was not recognized as <amiibo Name>!");
+            }
 
-			amiiboName = parameters.get(0);
-			seriesName = parameters.get(1);
+            amiiboName = parameters.get(0);
+            seriesName = parameters.get(1);
 
-		}
+        }
 
-		if (!amiiboList.updateCollectionData(userDiscordID)) {
-			return new BetterEmbed().getRegisterError();
-		}
-		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
-		currAmiibo.updateIndividualFigureData();
+        if (!amiiboList.updateCollectionData(userDiscordID)) {
+            return new BetterEmbed().getRegisterError();
+        }
+        Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
+        currAmiibo.updateIndividualFigureData();
 
-		String output = "";
-		String retailOutput = "";
+        String output = "";
+        String retailOutput = "";
 
-		ArrayList<String[]> retailerData = currAmiibo.getRetailerList();
-		int numWithStock = 0;
+        ArrayList<String[]> retailerData = currAmiibo.getRetailerList();
+        int numWithStock = 0;
 
-		if (retailerData.size() == 0) {
-			retailOutput = "*No retailers found*";
-		} else {
-			for (int retailIndex = 0; retailIndex < retailerData.size(); retailIndex++) {
-				if (retailerData.get(retailIndex)[0].equals("1")) {
-					retailOutput = retailOutput + "[" + retailerData.get(retailIndex)[1] + "]("
-							+ retailerData.get(retailIndex)[2] + ")\n";
-					numWithStock++;
-				}
-			}
-			
-			if (numWithStock == 0) {
-				retailOutput = "*No retailers with stock found*";
-			}
-		}
+        if (retailerData.size() == 0) {
+            retailOutput = "*No retailers found*";
+        } else {
+            for (int retailIndex = 0; retailIndex < retailerData.size(); retailIndex++) {
+                if (retailerData.get(retailIndex)[0].equals("1")) {
+                    retailOutput = retailOutput + "[" + retailerData.get(retailIndex)[1] + "]("
+                            + retailerData.get(retailIndex)[2] + ")\n";
+                    numWithStock++;
+                }
+            }
 
-		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName())
-				.setImage(currAmiibo.getImage(egg, userDiscordID))
-				.addField("Release Dates:",
-						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
-								+ currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
-				.addField("**Retailers with Stock**", retailOutput).setColor(currAmiibo.getColor())
-				.addField("\u200b", "**Average Completed & Sold Prices** *(est.)*")
-				.addInlineField("Average Price NiB",
-						currAmiibo.getFormattedNewPriceCompletedNA() + "\n"
-								+ currAmiibo.getFormattedNewPriceCompletedUK())
-				.addInlineField("Average Price OoB",
-						currAmiibo.getFormattedUsedPriceCompletedNA() + "\n"
-								+ currAmiibo.getFormattedUsedPriceCompletedUK())
-				.addField("\u200b", "**Average Current Listed Prices** *(est.)*")
-				.addInlineField("Average Price NiB",
-						currAmiibo.getFormattedNewPriceListedNA() + "\n" + currAmiibo.getFormattedNewPriceListedUK())
-				.addInlineField("Average Price OoB",
-						currAmiibo.getFormattedUsedPriceListedNA() + "\n" + currAmiibo.getFormattedUsedPriceListedUK());
-		return embed;
-	}
+            if (numWithStock == 0) {
+                retailOutput = "*No retailers with stock found*";
+            }
+        }
 
-	public String getCommand() {
-		return command;
-	}
+        BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName())
+                .setImage(currAmiibo.getImage(egg, userDiscordID))
+                .addField("Release Dates:",
+                        "🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
+                                + currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
+                .addField("**Retailers with Stock**", retailOutput).setColor(currAmiibo.getColor())
+                .addField("\u200b", "**Average Completed & Sold Prices** *(est.)*")
+                .addInlineField("Average Price NiB",
+                        currAmiibo.getFormattedNewPriceCompletedNA() + "\n"
+                                + currAmiibo.getFormattedNewPriceCompletedUK())
+                .addInlineField("Average Price OoB",
+                        currAmiibo.getFormattedUsedPriceCompletedNA() + "\n"
+                                + currAmiibo.getFormattedUsedPriceCompletedUK())
+                .addField("\u200b", "**Average Current Listed Prices** *(est.)*")
+                .addInlineField("Average Price NiB",
+                        currAmiibo.getFormattedNewPriceListedNA() + "\n" + currAmiibo.getFormattedNewPriceListedUK())
+                .addInlineField("Average Price OoB",
+                        currAmiibo.getFormattedUsedPriceListedNA() + "\n" + currAmiibo.getFormattedUsedPriceListedUK());
+        return embed;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getCommand() {
+        return command;
+    }
 
-	public int getAccessLevel() {
-		return accessLevel;
-	}
-	
-	public String getParameters() {
-    	return parameterString;
+    public String getDescription() {
+        return description;
+    }
+
+    public int getAccessLevel() {
+        return accessLevel;
+    }
+
+    public String getParameters() {
+        return parameterString;
     }
 }

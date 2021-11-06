@@ -9,7 +9,7 @@ class PingCommand extends AbstractCommand {
     int accessLevel = 1;
 
     public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
-    	BetterEmbed embed = new BetterEmbed()
+        BetterEmbed embed = new BetterEmbed()
                 .setDescription("Pong!");
         return embed;
     }
@@ -21,12 +21,12 @@ class PingCommand extends AbstractCommand {
     public String getDescription() {
         return description;
     }
-    
+
     public int getAccessLevel() {
-    	return accessLevel;
+        return accessLevel;
     }
-    
+
     public String getParameters() {
-    	return parameterString;
+        return parameterString;
     }
 }
