@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-public class AddAmiiboCommand extends AbstractCommand {
-	String description = "Adds an amiibo to your amiiboHunt collection";
-	String command = "addAmiibo";
-	String parameterString = "<amiibo name> <series name> <NiB/OoB>";
+public class RemoveAmiiboCommand extends AbstractCommand {
+	String description = "Removes **all** instances of an amiibo in your amiiboHunt collection";
+	String command = "removeAmiibo";
+	String parameterString = "<amiibo name> <series name>";
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
@@ -16,9 +16,8 @@ public class AddAmiiboCommand extends AbstractCommand {
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		String seriesName;
 		String amiiboName;
-		String isBoxed = null;
 
-		if (parameters.size() < 3) {
+		if (parameters.size() < 2) {
 			return new BetterEmbed().setError(
 					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
 		}
@@ -38,25 +37,17 @@ public class AddAmiiboCommand extends AbstractCommand {
 
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 
-		if (parameters.get(2).equals("NiB")) {
-			isBoxed = "true";
-		} else if (!parameters.get(2).equals("OoB")) {
-			return new BetterEmbed()
-					.setError("Error: Parameter \"" + parameters.get(2) + "\" was not recognized as <NiB/OoB>!");
-		}
-
-		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/addAmiiboToCollection",
-				userDiscordID, "" + currAmiibo.getAmiiboID(), isBoxed)) {
+		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/removeAmiiboFromCollection",
+				userDiscordID, "" + currAmiibo.getAmiiboID(), null)) {
 			return new BetterEmbed().getRegisterError();
 		}
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 
-		System.out.println("Data sent: " + "https://www.amiibohunt.com/api/discord/v1/addAmiiboToCollection" + ", "
-				+ userDiscordID + ", " + currAmiibo.getAmiiboID() + ", " + isBoxed);
+		System.out.println("Data sent: " + "https://www.amiibohunt.com/api/discord/v1/removeAmiiboFromCollection" + ", "
+				+ userDiscordID + ", " + currAmiibo.getAmiiboID() + ", ");
 		System.out.println("Server Response: " + data.toString());
 
-		String output = ("Successfully added 1 " + data.get("amiibo_name") + " to your collection! You now have "
-				+ data.get("qty_owned") + " " + data.get("amiibo_name") + " amiibo!");
+		String output = ("Successfully removed " + data.get("amiibo_name") + " from your collection!");
 
 		BetterEmbed embed = new BetterEmbed().setDescription(output);
 		return embed;

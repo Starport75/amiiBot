@@ -80,7 +80,13 @@ public class AmiiboHuntAccess {
 		lastOutput = result;
 		
 		boolean isError;
-		isError = result.substring(0, 50).contains("error");
+		int endpoint;
+		if (result.length() > 50) {
+			endpoint = 50;
+		} else {
+			endpoint = result.length();
+		}
+		isError = result.substring(0, endpoint).contains("error");
 		return !isError;
 	}
 
