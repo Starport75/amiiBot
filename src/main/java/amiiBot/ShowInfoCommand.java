@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ShowInfoCommand extends AbstractCommand {
 	String description = "Shows various information about the specified amiibo";
 	String command = "showInfo";
-    String parameterString = "<amiibo name> <series (if needed)>";
+	String parameterString = "<amiibo name> <series (if needed)>";
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
@@ -48,11 +48,12 @@ public class ShowInfoCommand extends AbstractCommand {
 
 		}
 
-		if (!amiiboList.updateCollectionData(userDiscordID)) {
-			return new BetterEmbed().getRegisterError();
-		}
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 		currAmiibo.updateIndividualFigureData();
+
+		if (!amiiboList.updateCollectionData(userDiscordID)) {
+
+		}
 
 		String output = "";
 		String retailOutput = "";
@@ -70,7 +71,7 @@ public class ShowInfoCommand extends AbstractCommand {
 					numWithStock++;
 				}
 			}
-			
+
 			if (numWithStock == 0) {
 				retailOutput = "*No retailers with stock found*";
 			}
@@ -108,8 +109,8 @@ public class ShowInfoCommand extends AbstractCommand {
 	public int getAccessLevel() {
 		return accessLevel;
 	}
-	
+
 	public String getParameters() {
-    	return parameterString;
-    }
+		return parameterString;
+	}
 }

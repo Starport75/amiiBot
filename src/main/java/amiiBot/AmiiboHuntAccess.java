@@ -89,6 +89,7 @@ public class AmiiboHuntAccess {
 			endpoint = result.length();
 		}
 		isError = result.substring(0, endpoint).contains("error");
+		System.out.println("Error Found: " + result.toString().substring(0, endpoint));
 		return !isError;
 	}
 

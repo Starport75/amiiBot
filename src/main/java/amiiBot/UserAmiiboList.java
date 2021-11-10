@@ -21,7 +21,6 @@ public class UserAmiiboList {
 
 		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/init", null, null, null);
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
-		System.out.println(data.toString().substring(0, 10000));
 
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
