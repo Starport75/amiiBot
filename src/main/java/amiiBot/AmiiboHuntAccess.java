@@ -25,7 +25,9 @@ public class AmiiboHuntAccess {
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("api_key", key));
-		params.add(new BasicNameValuePair("discord_id", discordID));
+		if (discordID != null) {
+			params.add(new BasicNameValuePair("discord_id", discordID));
+		}
 		if (amiiboID != null) {
 			params.add(new BasicNameValuePair("amiibo_id", amiiboID));
 		}
@@ -78,7 +80,7 @@ public class AmiiboHuntAccess {
 			}
 		}
 		lastOutput = result;
-		
+
 		boolean isError;
 		int endpoint;
 		if (result.length() > 50) {

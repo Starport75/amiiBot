@@ -21,7 +21,7 @@ public class Main {
 		ArrayList<AbstractCommand> commandList = addCommands();
 		char commandToken = '!';
 
-		UserAmiiboList mainList = new UserAmiiboList("205877471067766784");
+		UserAmiiboList mainList = new UserAmiiboList();
 		UserAmiiboList secondaryList = mainList;
 		EasterEgg easterEgg = new EasterEgg();
 		String modRoleID;
