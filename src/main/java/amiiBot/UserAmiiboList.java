@@ -62,7 +62,7 @@ public class UserAmiiboList {
 		if (websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID, null, null)) {
 			data = new JSONObject(websiteData.getLastRequestString());
 		} else {
-			return false;
+			
 		}
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			int NIB = 0;

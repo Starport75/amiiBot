@@ -51,10 +51,6 @@ public class ShowInfoCommand extends AbstractCommand {
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 		currAmiibo.updateIndividualFigureData();
 
-		if (!amiiboList.updateCollectionData(userDiscordID)) {
-
-		}
-
 		String output = "";
 		String retailOutput = "";
 
