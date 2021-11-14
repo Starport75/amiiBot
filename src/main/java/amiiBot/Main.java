@@ -1,3 +1,11 @@
+/*
+ * amiiBot v1.0.0
+ * 11/14/2021
+ * Created by Starport75 in collaboration with rob
+ */
+
+
+
 package amiiBot;
 
 import org.javacord.api.DiscordApi;
