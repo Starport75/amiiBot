@@ -10,7 +10,6 @@ import org.javacord.api.entity.user.User;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 

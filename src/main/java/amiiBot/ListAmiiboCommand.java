@@ -5,14 +5,13 @@ import java.util.ArrayList;
 public class ListAmiiboCommand extends AbstractCommand {
 	String description = "Lists all the amiibo within the specified series or type";
 	String command = "listAmiibo";
-    String parameterString = "<type/series>";
+    String parameterString = "<type/series> (optional)<obtained/not obtained>";
     int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
 
-		if (!amiiboList.updateCollectionData(userDiscordID)) {
-			return new BetterEmbed().getRegisterError();
-		}
+		boolean hasAccount = amiiboList.updateCollectionData(userDiscordID);
+		
 		boolean listAll = (parameters.size() < 2);
 		boolean listObtained = true;
 
@@ -28,6 +27,9 @@ public class ListAmiiboCommand extends AbstractCommand {
 		}
 
 		if (!listAll) {
+			if (!hasAccount) {
+				return new BetterEmbed().getRegisterError();
+			}
 			if (parameters.get(1).equals("Obtained")) {
 				listObtained = true;
 			} else if (parameters.get(1).equals("Not Obtained")) {

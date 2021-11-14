@@ -1,10 +1,7 @@
 package amiiBot;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserAmiiboList {
@@ -21,15 +18,30 @@ public class UserAmiiboList {
 
 		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/init", null, null, null);
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
+		
+		/*
+		try {
+		      FileWriter myWriter = new FileWriter("filename.txt");
+		      myWriter.write(data.toString());
+		      myWriter.close();
+		      System.out.println("Successfully wrote to the file.");
+		    } catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
+		*/
 
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
+		
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString();
 			amiiboType = typeCheck(amiiboType);
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
 					.get("name").toString();
-			seriesName = seriesCheck(seriesName, amiiboType);
-
+			int amiiboCardNumber = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("card_number").getInt("animal_crossing_number");
+			
+			seriesName = seriesCheck(seriesName, amiiboType, amiiboCardNumber);
+			
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
 				seriesList.add(new ArrayList<String>());
@@ -62,8 +74,9 @@ public class UserAmiiboList {
 		if (websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID, null, null)) {
 			data = new JSONObject(websiteData.getLastRequestString());
 		} else {
-			
+			return false;
 		}
+		
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 			int NIB = 0;
 			int OOB = 0;
@@ -81,7 +94,8 @@ public class UserAmiiboList {
 					.get("name").toString();
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString();
-			seriesName = seriesCheck(seriesName, amiiboType);
+			int amiiboCardNumber = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("card_number").getInt("animal_crossing_number");
+			seriesName = seriesCheck(seriesName, amiiboType, amiiboCardNumber);
 			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString();
 
 			getAmiibo(amiiboName, seriesName).setNibAndOob(NIB, OOB);
@@ -93,12 +107,30 @@ public class UserAmiiboList {
 		return masterList;
 	}
 
-	public String seriesCheck(String series, String type) {
+	public String seriesCheck(String series, String type, int cardNumber) {
 		if (series.equals("Animal Crossing") || series.equals("Others")) {
 			if (type.equals("Figure")) {
 				series = series + " (Figures)";
 			} else if (type.equals("Card")) {
-				series = series + " (Cards)";
+				if (cardNumber <= 100) {
+					series = series + " (Series 1)";
+				} else if (cardNumber >= 101 && cardNumber <= 200) {
+					series = series + " (Series 2)";
+				} else if (cardNumber >= 201 && cardNumber <= 300) {
+					series = series + " (Series 3)";
+				} else if (cardNumber >= 301 && cardNumber <= 400) {
+					series = series + " (Series 4)";
+				} else if (cardNumber >= 401 && cardNumber <= 500) {
+					series = series + " (Series 5)";
+				} else if (cardNumber >= 501 && cardNumber <= 550) {
+					series = series + " (Welcome amiibo)";
+				} else if (cardNumber >= 601 && cardNumber <= 650) {
+					series = series + " (Sanrio)";
+				} else if (cardNumber >= 651 && cardNumber <= 700) {
+					series = series + " (Promo Cards)";
+				} else {
+					series = series + " (Error)";
+				}
 			}
 		}
 

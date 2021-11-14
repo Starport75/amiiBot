@@ -1,6 +1,5 @@
 package amiiBot;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class ShowInfoCommand extends AbstractCommand {
@@ -51,7 +50,6 @@ public class ShowInfoCommand extends AbstractCommand {
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 		currAmiibo.updateIndividualFigureData();
 
-		String output = "";
 		String retailOutput = "";
 
 		ArrayList<String[]> retailerData = currAmiibo.getRetailerList();
