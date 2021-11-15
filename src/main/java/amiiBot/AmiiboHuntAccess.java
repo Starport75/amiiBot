@@ -89,10 +89,6 @@ public class AmiiboHuntAccess {
 		} else {
 			endpoint = result.length();
 		}
-<<<<<<< Updated upstream
-		isError = result.substring(0, endpoint).contains("error");
-		//System.out.println("Error Found: " + result.toString().substring(0, endpoint));
-=======
 		String subResult = result.substring(0, endpoint);
 		isError = subResult.contains("error");
 		if (isError) {
@@ -109,7 +105,6 @@ public class AmiiboHuntAccess {
 				lastError = "An unknown error has occured. Please contact Starport75 for assistance.";
 			}
 		}
->>>>>>> Stashed changes
 		return !isError;
 	}
 
