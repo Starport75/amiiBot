@@ -18,6 +18,7 @@ public class AmiiboHuntAccess {
 
 	String key = getKey();
 	String lastOutput;
+	String lastError;
 
 	public boolean sendPostRequest(String url, String discordID, String amiiboID, String isBoxed) {
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -88,8 +89,27 @@ public class AmiiboHuntAccess {
 		} else {
 			endpoint = result.length();
 		}
+<<<<<<< Updated upstream
 		isError = result.substring(0, endpoint).contains("error");
 		//System.out.println("Error Found: " + result.toString().substring(0, endpoint));
+=======
+		String subResult = result.substring(0, endpoint);
+		isError = subResult.contains("error");
+		if (isError) {
+			System.out.println("Error Found: " + result.toString().substring(0, endpoint));
+			if (subResult.contains("user profile is not public")) {
+				lastError = "Error: Cannot access account data, as the user is set to Private.";
+			} else if (subResult.contains("discord ID not found")) {
+				lastError = "Error: You don't have an AmiiboHunt account linked to their Discord account! Click [here](https://www.amiibohunt.com/oauth/discord/redirect) to link and/or create your account!";
+			} else if (subResult.contains("invalid discord ID")) {
+				lastError = "An error has occured while interacting with Discord. Please contact Starport75 for assistance";
+			} else if (subResult.contains("invalid key")) {
+				lastError = "An error has occured while interacting with amiiboHunt. Please contact Starport75 for assistance";
+			} else {
+				lastError = "An unknown error has occured. Please contact Starport75 for assistance.";
+			}
+		}
+>>>>>>> Stashed changes
 		return !isError;
 	}
 
@@ -109,5 +129,9 @@ public class AmiiboHuntAccess {
 
 	public String getLastRequestString() {
 		return lastOutput;
+	}
+	
+	public String getLastError() {
+		return lastError;
 	}
 }

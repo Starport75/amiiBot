@@ -9,9 +9,18 @@ public class ListAmiiboCommand extends AbstractCommand {
     int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList, ArrayList<String> parameters, EasterEgg egg) {
+<<<<<<< Updated upstream
 
 		boolean hasAccount = amiiboList.updateCollectionData(userDiscordID);
 		
+=======
+		
+		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
+		
+		if (!amiiboList.updateCollectionData(userDiscordID, websiteData) && parameters.size() > 1) {
+			return new BetterEmbed().setError(websiteData.getLastError());
+		}
+>>>>>>> Stashed changes
 		boolean listAll = (parameters.size() < 2);
 		boolean listObtained = true;
 
