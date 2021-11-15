@@ -67,8 +67,4 @@ public class BetterEmbed {
 		color = nColor;
 		return this;
 	}
-	
-	public BetterEmbed getRegisterError() {
-		return new BetterEmbed().setError("You don't have an AmiiboHunt account linked to your Discord account! Click [here](https://www.amiibohunt.com/oauth/discord/redirect) to link and/or create your account!");
-	}
 }

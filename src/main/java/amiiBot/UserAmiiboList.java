@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class UserAmiiboList {
 
 	ArrayList<ArrayList<ArrayList<Amiibo>>> masterList = new ArrayList<ArrayList<ArrayList<Amiibo>>>();
-	AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
+	//AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
 	ArrayList<String> typeList = new ArrayList<String>();
 	ArrayList<ArrayList<String>> seriesList = new ArrayList<ArrayList<String>>();
@@ -16,6 +16,7 @@ public class UserAmiiboList {
 
 	public UserAmiiboList() {
 
+		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/init", null, null, null);
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 		
@@ -69,7 +70,7 @@ public class UserAmiiboList {
 
 	}
 
-	public boolean updateCollectionData(String discordID) {
+	public boolean updateCollectionData(String discordID, AmiiboHuntAccess websiteData) {
 		JSONObject data = null;
 		if (websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionById", discordID, null, null)) {
 			data = new JSONObject(websiteData.getLastRequestString());

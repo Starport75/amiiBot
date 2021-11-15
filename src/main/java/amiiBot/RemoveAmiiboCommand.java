@@ -39,7 +39,7 @@ public class RemoveAmiiboCommand extends AbstractCommand {
 
 		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/removeAmiiboFromCollection",
 				userDiscordID, "" + currAmiibo.getAmiiboID(), null)) {
-			return new BetterEmbed().getRegisterError();
+			return new BetterEmbed().setError(websiteData.getLastError());
 		}
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 

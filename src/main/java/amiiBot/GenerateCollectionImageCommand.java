@@ -15,7 +15,7 @@ public class GenerateCollectionImageCommand extends AbstractCommand {
         AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
         if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getCollectionImageById", userDiscordID, null, null)) {
-        	return new BetterEmbed().getRegisterError();
+        	return new BetterEmbed().setError(websiteData.getLastError());
         }
         JSONObject data = new JSONObject(websiteData.getLastRequestString());
         String output = data.get("val").toString();
