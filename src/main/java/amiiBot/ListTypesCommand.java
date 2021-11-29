@@ -14,7 +14,7 @@ public class ListTypesCommand extends AbstractCommand {
     	String output = "**amiibo Types:**";
     	
     	for (int listIndex = 0; listIndex < amiiboList.getTypeList().size(); listIndex++) {
-    		output = output + "\n*" + amiiboList.getTypeList().get(listIndex) + "*";
+    		output = output + "\n*" + capitalize(amiiboList.getTypeList().get(listIndex)) + "*";
     	}
     	
     	BetterEmbed embed = new BetterEmbed()
@@ -37,4 +37,17 @@ public class ListTypesCommand extends AbstractCommand {
     public String getParameters() {
     	return parameterString;
     }
+    
+    public String capitalize(String word) {
+		String cOutput = ("" + word.charAt(0)).toUpperCase();
+
+		for (int i = 1; i < word.length(); i++) {
+			if (word.charAt(i - 1) == ' ' || word.charAt(i - 1) == '(' || word.charAt(i -1) == '-') {
+				cOutput = cOutput + ("" + word.charAt(i)).toUpperCase();
+			} else {
+				cOutput = cOutput + word.charAt(i);
+			}
+		}
+		return cOutput;
+	}
 }

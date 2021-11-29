@@ -35,14 +35,14 @@ public class UserAmiiboList {
 		for (int amiiboIndex = 0; amiiboIndex < data.getJSONArray("amiibo").length(); amiiboIndex++) {
 		
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
-					.toString();
+					.toString().toLowerCase();
 			amiiboType = typeCheck(amiiboType);
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
-					.get("name").toString();
+					.get("name").toString().toLowerCase();
 			int amiiboCardNumber = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("card_number").getInt("animal_crossing_number");
 			
 			seriesName = seriesCheck(seriesName, amiiboType, amiiboCardNumber);
-			
+						
 			if (!typeList.contains(amiiboType)) {
 				typeList.add(amiiboType);
 				seriesList.add(new ArrayList<String>());
@@ -92,12 +92,12 @@ public class UserAmiiboList {
 			}
 
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
-					.get("name").toString();
+					.get("name").toString().toLowerCase();
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
-					.toString();
+					.toString().toLowerCase();
 			int amiiboCardNumber = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("card_number").getInt("animal_crossing_number");
 			seriesName = seriesCheck(seriesName, amiiboType, amiiboCardNumber);
-			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString();
+			String amiiboName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).get("name").toString().toLowerCase();
 
 			getAmiibo(amiiboName, seriesName).setNibAndOob(NIB, OOB);
 		}
@@ -109,38 +109,42 @@ public class UserAmiiboList {
 	}
 
 	public String seriesCheck(String series, String type, int cardNumber) {
-		if (series.equals("Animal Crossing") || series.equals("Others")) {
-			if (type.equals("Figure")) {
-				series = series + " (Figures)";
-			} else if (type.equals("Card")) {
+		if (series.equals("animal crossing") || series.equals("others")) {
+			if (type.equals("figure")) {
+				series = series + " (figures)";
+			} else if (type.equals("card")) {
 				if (cardNumber <= 100) {
-					series = series + " (Series 1)";
+					series = series + " (series 1)";
 				} else if (cardNumber >= 101 && cardNumber <= 200) {
-					series = series + " (Series 2)";
+					series = series + " (series 2)";
 				} else if (cardNumber >= 201 && cardNumber <= 300) {
-					series = series + " (Series 3)";
+					series = series + " (series 3)";
 				} else if (cardNumber >= 301 && cardNumber <= 400) {
-					series = series + " (Series 4)";
+					series = series + " (series 4)";
 				} else if (cardNumber >= 401 && cardNumber <= 500) {
-					series = series + " (Series 5)";
+					series = series + " (series 5)";
 				} else if (cardNumber >= 501 && cardNumber <= 550) {
-					series = series + " (Welcome amiibo)";
+					series = series + " (welcome amiibo)";
 				} else if (cardNumber >= 601 && cardNumber <= 650) {
-					series = series + " (Sanrio)";
+					series = series + " (sanrio)";
 				} else if (cardNumber >= 651 && cardNumber <= 700) {
-					series = series + " (Promo Cards)";
+					series = series + " (promo cards)";
 				} else {
-					series = series + " (Error)";
+					series = series + " (error)";
 				}
 			}
 		}
-
+		
+		if (series.charAt(series.length() - 1) == '.') {
+			series = series.substring(0, series.length() - 1);
+		}
+		
 		return series;
 	}
 
 	public String typeCheck(String type) {
-		if (type.equals("Yarn")) {
-			type = "Figure";
+		if (type.equals("yarn")) {
+			type = "figure";
 		}
 		return type;
 	}
@@ -168,6 +172,7 @@ public class UserAmiiboList {
 	}
 
 	public int seriesToTypeIndex(String series) {
+				
 		for (int i = 0; i < typeList.size(); i++) {
 			if (seriesList.get(i).contains(series)) {
 				return i;
@@ -199,6 +204,7 @@ public class UserAmiiboList {
 	public ArrayList<Amiibo> getAmiiboList(String series) {
 		int typeIndex = seriesToTypeIndex(series);
 		int seriesIndex = getSeriesIndex(series);
+				
 		return masterList.get(typeIndex).get(seriesIndex);
 	}
 
@@ -223,7 +229,7 @@ public class UserAmiiboList {
 
 	public boolean isInSeries(String name, String series) {
 		for (int i = 0; i < getAmiiboList(series).size(); i++) {
-			if (getAmiiboList(series).get(i).getName().equals(name)) {
+			if (getAmiiboList(series).get(i).getName().equals(name.toLowerCase())) {
 				return true;
 			}
 		}
@@ -231,8 +237,10 @@ public class UserAmiiboList {
 	}
 
 	public Amiibo getAmiibo(String name, String series) {
+		name = name.toLowerCase();
+		series = series.toLowerCase();
 		for (int i = 0; i < getAmiiboList(series).size(); i++) {
-			if (getAmiiboList(series).get(i).getName().equals(name)) {
+			if (getAmiiboList(series).get(i).getName().equals(name.toLowerCase())) {
 				return getAmiiboList(series).get(i);
 			}
 		}

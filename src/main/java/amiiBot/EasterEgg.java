@@ -28,9 +28,9 @@ public class EasterEgg {
 		
 		while (eeScanner.hasNextLine()) {
 		fullString = eeScanner.nextLine();
-		url = fullString.substring(0, fullString.indexOf('<'));
-		name = fullString.substring(fullString.indexOf('<') + 1, fullString.indexOf('>'));
-		series = fullString.substring(fullString.indexOf('>') + 1);
+		url = fullString.substring(0, fullString.indexOf('<')).toLowerCase();
+		name = fullString.substring(fullString.indexOf('<') + 1, fullString.indexOf('>')).toLowerCase();
+		series = fullString.substring(fullString.indexOf('>') + 1).toLowerCase();
 		imageList.add(new String[] {url, name, series});
 		}
 		eeScanner.close();

@@ -66,13 +66,13 @@ public class ListAmiiboCommand extends AbstractCommand {
 		}
 
 		// outputs the type of amiibo listed
-		output = output + "***" + amiiboList.getTypeList().get(typeIndex) + ":***\n";
+		output = output + "***" + capitalize(amiiboList.getTypeList().get(typeIndex)) + ":***\n";
 
 		for (int seriesIndex = seriesMin; seriesIndex < seriesMax; seriesIndex++) {
 			String seriesName = amiiboList.getSeriesList(typeName).get(seriesIndex);
 
 			// outputs the current series being listed
-			output = output + "\n**" + amiiboList.getSeriesAt(seriesIndex, typeName) + ":** ";
+			output = output + "\n**" + capitalize(amiiboList.getSeriesAt(seriesIndex, typeName)) + ":** ";
 
 			// outputs the number in the current series being listed
 			output = output + "*(";
@@ -96,7 +96,7 @@ public class ListAmiiboCommand extends AbstractCommand {
 				// adds the amiibo to collectionList
 				if (listAll || ((amiiboList.getAmiiboList(seriesName).get(amiiboIndex)
 						.getNumObtained() == 0) != listObtained)) {
-					collectionList.add(amiiboList.getAmiiboList(seriesName).get(amiiboIndex).getName());
+					collectionList.add(amiiboList.getAmiiboList(seriesName).get(amiiboIndex).getNameUppercase());
 				}
 			}
 
@@ -142,4 +142,17 @@ public class ListAmiiboCommand extends AbstractCommand {
 	public String getParameters() {
     	return parameterString;
     }
+	
+	public String capitalize(String word) {
+		String cOutput = ("" + word.charAt(0)).toUpperCase();
+
+		for (int i = 1; i < word.length(); i++) {
+			if (word.charAt(i - 1) == ' ' || word.charAt(i - 1) == '(' || word.charAt(i -1) == '-') {
+				cOutput = cOutput + ("" + word.charAt(i)).toUpperCase();
+			} else {
+				cOutput = cOutput + word.charAt(i);
+			}
+		}
+		return cOutput;
+	}
 }

@@ -38,9 +38,9 @@ public class AddAmiiboCommand extends AbstractCommand {
 
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 
-		if (parameters.get(2).equals("NiB")) {
+		if (parameters.get(2).equals("nib")) {
 			isBoxed = "true";
-		} else if (!parameters.get(2).equals("OoB")) {
+		} else if (!parameters.get(2).equals("oob")) {
 			return new BetterEmbed()
 					.setError("Error: Parameter \"" + parameters.get(2) + "\" was not recognized as <NiB/OoB>!");
 		}

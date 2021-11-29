@@ -12,21 +12,21 @@ public class ListSeriesCommand extends AbstractCommand {
 			ArrayList<String> parameters, EasterEgg egg) {
 
 		if (parameters.size() < 1) {
-			return new BetterEmbed()
-					.setError("Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
+			return new BetterEmbed().setError(
+					"Error: Not all parameters defined. Command structure is !" + command + " " + parameterString);
 		}
 
 		if (amiiboList.getTypeIndex(parameters.get(0)) == -1) {
 			return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(0) + "\" was not recognized!");
 		}
 
-		String output = "**amiibo " + parameters.get(0) + " Series:**";
+		String output = "**amiibo " + capitalize(parameters.get(0)) + " Series:**";
 
 		ArrayList<String> currSeriesList = amiiboList
 				.getSeriesList(amiiboList.getTypeAt(amiiboList.getTypeIndex(parameters.get(0))));
 
 		for (int listIndex = 0; listIndex < currSeriesList.size(); listIndex++) {
-			output = output + "\n*" + currSeriesList.get(listIndex) + "*";
+			output = output + "\n*" + capitalize(currSeriesList.get(listIndex)) + "*";
 		}
 
 		BetterEmbed embed = new BetterEmbed().setDescription(output);
@@ -46,6 +46,19 @@ public class ListSeriesCommand extends AbstractCommand {
 	}
 
 	public String getParameters() {
-    	return parameterString;
-    }
+		return parameterString;
+	}
+
+	public String capitalize(String word) {
+		String cOutput = ("" + word.charAt(0)).toUpperCase();
+
+		for (int i = 1; i < word.length(); i++) {
+			if (word.charAt(i - 1) == ' ' || word.charAt(i - 1) == '(' || word.charAt(i -1) == '-') {
+				cOutput = cOutput + ("" + word.charAt(i)).toUpperCase();
+			} else {
+				cOutput = cOutput + word.charAt(i);
+			}
+		}
+		return cOutput;
+	}
 }

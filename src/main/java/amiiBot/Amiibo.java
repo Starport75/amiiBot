@@ -11,10 +11,13 @@ import org.json.JSONObject;
 public class Amiibo {
 	// 100% static data that would never change no matter what
 	String amiiboName;
+	String amiiboNameUpper;
 	int amiiboID;
 	String amiiboType;
+	String amiiboTypeUpper;
 	int amiiboTypeID;
 	String amiiboSeries;
+	String amiiboSeriesUpper;
 	int amiiboSeriesID;
 	String releaseAU;
 	String releaseEU;
@@ -41,11 +44,14 @@ public class Amiibo {
 
 	public Amiibo(String name, int id, String type, int typeID, String series, int seriesID, String AU, String EU,
 			String JP, String NA, String color, String image) {
-		amiiboName = name;
+		amiiboName = name.toLowerCase();
+		amiiboNameUpper = name;
 		amiiboID = id;
-		amiiboType = type;
+		amiiboType = type.toLowerCase();
+		amiiboTypeUpper = type;
 		amiiboTypeID = typeID;
-		amiiboSeries = series;
+		amiiboSeries = series.toLowerCase();
+		amiiboSeriesUpper = series;
 		amiiboSeriesID = seriesID;
 		releaseAU = AU;
 		releaseEU = EU;
@@ -115,6 +121,18 @@ public class Amiibo {
 
 	public String getSeries() {
 		return amiiboSeries;
+	}
+	
+	public String getNameUppercase() {
+		return amiiboNameUpper;
+	}
+
+	public String getTypeUppercase() {
+		return amiiboTypeUpper;
+	}
+
+	public String getSeriesUppercase() {
+		return amiiboSeriesUpper;
 	}
 
 	public int getNumObtained() {

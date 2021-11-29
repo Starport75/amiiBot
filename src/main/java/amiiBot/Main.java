@@ -133,7 +133,7 @@ public class Main {
 							while (message.contains("<") & message.contains(">")
 									& message.indexOf("<") < message.indexOf(">")) {
 
-								params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')));
+								params.add(message.substring(message.indexOf('<') + 1, message.indexOf('>')).toLowerCase());
 								message = message.substring(message.indexOf('>') + 1);
 							}
 							commandFound = true;

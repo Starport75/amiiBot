@@ -71,7 +71,7 @@ public class ShowInfoCommand extends AbstractCommand {
 			}
 		}
 
-		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getName())
+		BetterEmbed embed = new BetterEmbed().setTitle(currAmiibo.getNameUppercase())
 				.setImage(currAmiibo.getImage(egg, userDiscordID))
 				.addField("Release Dates:",
 						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
