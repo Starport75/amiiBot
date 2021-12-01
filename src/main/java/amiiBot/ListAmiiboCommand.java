@@ -35,9 +35,9 @@ public class ListAmiiboCommand extends AbstractCommand {
 			if (!hasAccount) {
 				return new BetterEmbed().setError(websiteData.getLastError());
 			}
-			if (parameters.get(1).equals("Obtained")) {
+			if (parameters.get(1).equals("obtained")) {
 				listObtained = true;
-			} else if (parameters.get(1).equals("Not Obtained")) {
+			} else if (parameters.get(1).equals("not obtained")) {
 				listObtained = false;
 			} else {
 				return new BetterEmbed().setError("Error: Parameter \"" + parameters.get(1) + "\" not recognized as <Obtained/Not Obtained>");
