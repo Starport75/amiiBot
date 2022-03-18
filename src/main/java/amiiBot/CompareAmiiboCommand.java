@@ -2,6 +2,10 @@ package amiiBot;
 
 import java.util.ArrayList;
 
+import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
+
 public class CompareAmiiboCommand extends AbstractCommand {
 	String description = "Default description. Contact the creator if you are reading this message";
 	String command = "compareAmiibo";
@@ -9,8 +13,8 @@ public class CompareAmiiboCommand extends AbstractCommand {
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
-			ArrayList<String> parameters, EasterEgg egg) {
-		
+			ArrayList<String> parameters, EasterEgg egg, DiscordApi api, Server currServer, User currUser) {
+
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 
 		if (!amiiboList.updateCollectionData(userDiscordID, websiteData)) {
@@ -38,7 +42,8 @@ public class CompareAmiiboCommand extends AbstractCommand {
 			output = output + "*Listing amiibo that you own that " + "USER" + " does not:*";
 		} else if (parameters.get(2).equals("Dupes")) {
 			minAmiibo = 2;
-			output = output + "*Listing amiibo that you own dupes of that " + "USER" + " is missing from their collection:";
+			output = output + "*Listing amiibo that you own dupes of that " + "USER"
+					+ " is missing from their collection:";
 		} else {
 			return new BetterEmbed()
 					.setError("Error: Parameter \"" + parameters.get(1) + "\" not recognized as <All/Dupes>");

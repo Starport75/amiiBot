@@ -138,7 +138,7 @@ public class Main {
 							}
 							commandFound = true;
 							BetterEmbed messageOutput = commandList.get(i).getOutput(discordID, accessLevel, mainList,
-									params, easterEgg);
+									params, easterEgg, api, currServer, currUser);
 							event.getChannel().sendMessage(messageOutput.getEmbed());
 						}
 					}
@@ -164,7 +164,9 @@ public class Main {
 		list.add(new AddAmiiboCommand());
 		list.add(new RemoveAmiiboCommand());
 		//list.add(new CompareAmiiboCommand());
+		list.add(new UserStatsCommand());
 		list.add(new EasterEggCommand());
+		list.add(new CreditsCommand());
 
 		return list;
 	}

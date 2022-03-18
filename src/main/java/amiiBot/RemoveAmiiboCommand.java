@@ -2,6 +2,9 @@ package amiiBot;
 
 import java.util.ArrayList;
 
+import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.json.JSONObject;
 
 public class RemoveAmiiboCommand extends AbstractCommand {
@@ -11,7 +14,7 @@ public class RemoveAmiiboCommand extends AbstractCommand {
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
-			ArrayList<String> parameters, EasterEgg egg) {
+			ArrayList<String> parameters, EasterEgg egg, DiscordApi api, Server currServer, User currUser) {
 
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		String seriesName;

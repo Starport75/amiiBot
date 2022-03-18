@@ -2,6 +2,10 @@ package amiiBot;
 
 import java.util.ArrayList;
 
+import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
+
 public class ShowInfoCommand extends AbstractCommand {
 	String description = "Shows various information about the specified amiibo";
 	String command = "showInfo";
@@ -9,7 +13,7 @@ public class ShowInfoCommand extends AbstractCommand {
 	int accessLevel = 0;
 
 	public BetterEmbed getOutput(String userDiscordID, int accessLevel, UserAmiiboList amiiboList,
-			ArrayList<String> parameters, EasterEgg egg) {
+			ArrayList<String> parameters, EasterEgg egg, DiscordApi api, Server currServer, User currUser) {
 
 		if (parameters.size() < 1) {
 			return new BetterEmbed().setError(

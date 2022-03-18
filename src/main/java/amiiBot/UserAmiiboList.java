@@ -36,9 +36,9 @@ public class UserAmiiboList {
 		
 			String amiiboType = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("type").get("type")
 					.toString().toLowerCase();
-			amiiboType = typeCheck(amiiboType);
 			String seriesName = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("amiibo_series")
 					.get("name").toString().toLowerCase();
+			amiiboType = typeCheck(amiiboType, seriesName);
 			int amiiboCardNumber = data.getJSONArray("amiibo").getJSONObject(amiiboIndex).getJSONObject("card_number").getInt("animal_crossing_number");
 			
 			seriesName = seriesCheck(seriesName, amiiboType, amiiboCardNumber);
@@ -109,7 +109,7 @@ public class UserAmiiboList {
 	}
 
 	public String seriesCheck(String series, String type, int cardNumber) {
-		if (series.equals("animal crossing") || series.equals("others")) {
+		if (series.equals("animal crossing")) {
 			if (type.equals("figure")) {
 				series = series + " (figures)";
 			} else if (type.equals("card")) {
@@ -142,8 +142,8 @@ public class UserAmiiboList {
 		return series;
 	}
 
-	public String typeCheck(String type) {
-		if (type.equals("yarn")) {
+	public String typeCheck(String type, String series) {
+		if (type.equals("yarn") || series.equals("super mario cereal")) {
 			type = "figure";
 		}
 		return type;
@@ -256,5 +256,29 @@ public class UserAmiiboList {
 			}
 		}
 		return null;
+	}
+	
+	public int getNumInType(String type) {
+		int total = 0;
+		for (int i = 0; i < this.getNumOfSeries(type); i++) {
+			total = total + this.getNumOfAmiibo(this.getSeriesAt(i, type));
+		}
+		return total;
+	};
+	
+	public int getNumCollectedInType(String type) {
+		int total = 0;
+		for (int i = 0; i < this.getNumOfSeries(type); i++) {
+			total = total + this.getNumCollectedInSeries(this.getSeriesAt(i, type));
+		}
+		return total;
+	};
+	
+	public int getCollectionWorth(String type) {
+		int total = 0;
+		for (int i = 0; i < this.getNumOfSeries(type); i++) {
+			
+		}
+		return total;
 	}
 }
