@@ -20,7 +20,7 @@ public class AmiiboHuntAccess {
 	String lastOutput;
 	String lastError;
 
-	public boolean sendPostRequest(String url, String discordID, String amiiboID, String isBoxed) {
+	public boolean sendPostRequest(String url, String discordID, String[] name, String[] value) {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(url);
 
@@ -29,11 +29,19 @@ public class AmiiboHuntAccess {
 		if (discordID != null) {
 			params.add(new BasicNameValuePair("discord_id", discordID));
 		}
-		if (amiiboID != null) {
-			params.add(new BasicNameValuePair("amiibo_id", amiiboID));
-		}
-		if (isBoxed != null) {
-			params.add(new BasicNameValuePair("is_boxed", isBoxed));
+
+		/*
+		 * if (amiiboID != null) { params.add(new BasicNameValuePair("amiibo_id",
+		 * amiiboID)); } if (isBoxed != null) { params.add(new
+		 * BasicNameValuePair("is_boxed", isBoxed)); }
+		 */
+
+		if (name != null) {
+			for (int i = 0; i < name.length; i++) {
+				if (name[i] != "") {
+					params.add(new BasicNameValuePair(name[i], value[i]));
+				}
+			}
 		}
 
 		try {
@@ -82,6 +90,8 @@ public class AmiiboHuntAccess {
 		}
 		lastOutput = result;
 
+		//System.out.println(lastOutput);
+
 		boolean isError;
 		int endpoint;
 		if (result.length() > 50) {
@@ -89,6 +99,7 @@ public class AmiiboHuntAccess {
 		} else {
 			endpoint = result.length();
 		}
+
 		String subResult = result.substring(0, endpoint);
 		isError = subResult.contains("error");
 		if (isError) {
@@ -125,7 +136,7 @@ public class AmiiboHuntAccess {
 	public String getLastRequestString() {
 		return lastOutput;
 	}
-	
+
 	public String getLastError() {
 		return lastError;
 	}

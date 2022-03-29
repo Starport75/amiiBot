@@ -49,7 +49,7 @@ public class AddAmiiboCommand extends AbstractCommand {
 		}
 
 		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/addAmiiboToCollection",
-				userDiscordID, "" + currAmiibo.getAmiiboID(), isBoxed)) {
+				userDiscordID, new String[]{"amiibo_id", "is_boxed"}, new String[]{"" + currAmiibo.getAmiiboID(), isBoxed})) {
 			return new BetterEmbed().setError(websiteData.getLastError());
 		}
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());

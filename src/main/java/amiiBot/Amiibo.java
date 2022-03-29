@@ -78,8 +78,9 @@ public class Amiibo {
 
 		retailerList = new ArrayList<String[]>();
 
+		
 		websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/getAmiiboData", discordID,
-				amiiboID + "", null);
+				new String[]{"amiibo_id"}, new String[]{amiiboID + ""});
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
 
 		JSONArray retailerJSON = data.getJSONObject("amiibo").getJSONArray("stock_count");

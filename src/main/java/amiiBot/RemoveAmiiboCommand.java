@@ -41,7 +41,7 @@ public class RemoveAmiiboCommand extends AbstractCommand {
 		Amiibo currAmiibo = amiiboList.getAmiibo(amiiboName, seriesName);
 
 		if (!websiteData.sendPostRequest("https://www.amiibohunt.com/api/discord/v1/removeAmiiboFromCollection",
-				userDiscordID, "" + currAmiibo.getAmiiboID(), null)) {
+				userDiscordID, new String[] {"amiibo_id"}, new String[]{"" + currAmiibo.getAmiiboID()})) {
 			return new BetterEmbed().setError(websiteData.getLastError());
 		}
 		JSONObject data = new JSONObject(websiteData.getLastRequestString());
