@@ -1,6 +1,6 @@
 /*
- * amiiBot v1.0.0
- * 11/14/2021
+ * amiiBot v2.0.0
+ * 3/28/2022
  * Created by Starport75 in collaboration with rob
  */
 
