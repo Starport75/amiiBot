@@ -27,7 +27,7 @@ public class UserStatsCommand extends AbstractCommand {
 				.setDescription(
 						userName + " has " + amiiboList.getNumCollectedInType("figure") + "/" + amiiboList.getNumInType("figure") + " Figures" +
 						"\n" + userName + " has " + amiiboList.getNumCollectedInType("card") + "/" + amiiboList.getNumInType("card") + " Cards" +
-						"\n" + userName + " has " + amiiboList.getNumCollectedInType("band") + "/" + amiiboList.getNumInType("band")
+						"\n" + userName + " has " + amiiboList.getNumCollectedInType("band") + "/" + amiiboList.getNumInType("band") + " Bands"
 						);
 	}
 
