@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class EasterEgg {
 
 	ArrayList<String[]> imageList = new ArrayList<String[]>();
 	ArrayList<String> eggList = new ArrayList<String>();
-	boolean active = false;
+	boolean active = true;
 
 	public EasterEgg(){
 
@@ -28,7 +29,7 @@ public class EasterEgg {
 		
 		while (eeScanner.hasNextLine()) {
 		fullString = eeScanner.nextLine();
-		url = fullString.substring(0, fullString.indexOf('<')).toLowerCase();
+		url = fullString.substring(0, fullString.indexOf('<'));
 		name = fullString.substring(fullString.indexOf('<') + 1, fullString.indexOf('>')).toLowerCase();
 		series = fullString.substring(fullString.indexOf('>') + 1).toLowerCase();
 		imageList.add(new String[] {url, name, series});
@@ -57,7 +58,8 @@ public class EasterEgg {
 	}
 	
 	public boolean getEE(String discordID) {
-		return eggList.contains(discordID);
+		LocalDate date = LocalDate.now();
+		return eggList.contains(discordID) || (date.getDayOfMonth() == 1 && date.getMonthValue() == 4);
 	}
 	
 
