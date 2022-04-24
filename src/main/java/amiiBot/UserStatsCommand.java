@@ -19,7 +19,7 @@ public class UserStatsCommand extends AbstractCommand {
 		String userName = currUser.getDisplayName(currServer);
 		AmiiboHuntAccess websiteData = new AmiiboHuntAccess();
 		
-		if (!amiiboList.updateCollectionData(userDiscordID, websiteData) && parameters.size() > 1) {
+		if (!amiiboList.updateCollectionData(userDiscordID, websiteData)) {
 			return new BetterEmbed().setError(websiteData.getLastError());
 		}
 		
