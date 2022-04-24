@@ -2,6 +2,8 @@ package amiiBot;
 
 import org.json.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserAmiiboList {
@@ -133,6 +135,12 @@ public class UserAmiiboList {
 					series = series + " (error)";
 				}
 			}
+		} else if (series.equals("pokemon")){
+			if (type.equals("figure")) {
+				series = series + " (figures)";
+			} else if (type.equals("card")) {
+				series = series + " (cards)";
+			}
 		}
 		
 		if (series.charAt(series.length() - 1) == '.') {
@@ -142,12 +150,16 @@ public class UserAmiiboList {
 		return series;
 	}
 
+	
 	public String typeCheck(String type, String series) {
-		if (type.equals("yarn") || series.equals("super mario cereal")) {
+		/*
+		if (type.equals("yarn")) {
 			type = "figure";
 		}
+		*/
 		return type;
 	}
+	
 
 	public ArrayList<String> getTypeList() {
 		return typeList;

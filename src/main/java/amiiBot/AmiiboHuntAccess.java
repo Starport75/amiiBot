@@ -90,8 +90,18 @@ public class AmiiboHuntAccess {
 		}
 		lastOutput = result;
 
-		//System.out.println(lastOutput);
-
+		/*
+		try {
+		      FileWriter myWriter = new FileWriter("rawData.txt");
+		      myWriter.write(lastOutput);
+		      myWriter.close();
+		      System.out.println("Successfully wrote to the file.");
+		    } catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
+		*/
+		
 		boolean isError;
 		int endpoint;
 		if (result.length() > 50) {
@@ -107,9 +117,9 @@ public class AmiiboHuntAccess {
 			if (subResult.contains("user profile is not public")) {
 				lastError = "Error: Cannot access account data, as the user is set to Private.";
 			} else if (subResult.contains("discord ID not found")) {
-				lastError = "Error: You don't have an AmiiboHunt account linked to their Discord account! Click [here](https://www.amiibohunt.com/oauth/discord/redirect) to link and/or create your account!";
+				lastError = "Error: You don't have an AmiiboHunt account linked to their Discord account! Click [here](https://www.amiibohunt.com/oauth/discord/redirect) to link and/or create your account! (Error code 'Mario')";
 			} else if (subResult.contains("invalid discord ID")) {
-				lastError = "An error has occured while interacting with Discord. Please contact Starport75 for assistance";
+				lastError = "Error: You don't have an AmiiboHunt account linked to their Discord account! Click [here](https://www.amiibohunt.com/oauth/discord/redirect) to link and/or create your account! (Error code 'Luigi')";
 			} else if (subResult.contains("invalid key")) {
 				lastError = "An error has occured while interacting with amiiboHunt. Please contact Starport75 for assistance";
 			} else {
