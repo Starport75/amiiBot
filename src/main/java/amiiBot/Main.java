@@ -1,5 +1,5 @@
 /*
- * amiiBot v2.0.0
+ * amiiBot v2.0.2
  * 3/28/2022
  * Created by Starport75 in collaboration with rob
  */

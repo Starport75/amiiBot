@@ -23,11 +23,20 @@ public class UserStatsCommand extends AbstractCommand {
 			return new BetterEmbed().setError(websiteData.getLastError());
 		}
 		
+		String output = userName + "'s collection consists of: ";
+		String type;
+		String formattedType;
+		
+		for (int i = 0; i < amiiboList.getNumOfTypes(); i++) {
+			type = amiiboList.getTypeAt(i);
+			formattedType = type.toUpperCase().substring(0,1) + type.substring(1);
+			output = output + "\n" + amiiboList.getNumCollectedInType(type) + 
+					"/" + amiiboList.getNumInType(type) + " " + formattedType + "s";
+		}
+		
 		return new BetterEmbed().setTitle(userName + "'s Stats:")
 				.setDescription(
-						userName + " has " + amiiboList.getNumCollectedInType("figure") + "/" + amiiboList.getNumInType("figure") + " Figures" +
-						"\n" + userName + " has " + amiiboList.getNumCollectedInType("card") + "/" + amiiboList.getNumInType("card") + " Cards" +
-						"\n" + userName + " has " + amiiboList.getNumCollectedInType("band") + "/" + amiiboList.getNumInType("band") + " Bands"
+						output
 						);
 	}
 
