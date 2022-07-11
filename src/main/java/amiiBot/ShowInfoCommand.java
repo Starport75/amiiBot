@@ -81,6 +81,7 @@ public class ShowInfoCommand extends AbstractCommand {
 						"🇯🇵: " + currAmiibo.getReleaseJP() + "\n🇺🇸: " + currAmiibo.getReleaseNA() + "\n🇪🇺: "
 								+ currAmiibo.getReleaseEU() + "\n🇦🇺: " + currAmiibo.getReleaseAU())
 				.addField("**Retailers with Stock**", retailOutput).setColor(currAmiibo.getColor())
+				/*
 				.addField("\u200b", "**Average Completed & Sold Prices** *(est.)*")
 				.addInlineField("Average Price NiB",
 						currAmiibo.getFormattedNewPriceCompletedNA() + "\n"
@@ -88,6 +89,7 @@ public class ShowInfoCommand extends AbstractCommand {
 				.addInlineField("Average Price OoB",
 						currAmiibo.getFormattedUsedPriceCompletedNA() + "\n"
 								+ currAmiibo.getFormattedUsedPriceCompletedUK())
+				*/
 				.addField("\u200b", "**Average Current Listed Prices** *(est.)*")
 				.addInlineField("Average Price NiB",
 						currAmiibo.getFormattedNewPriceListedNA() + "\n" + currAmiibo.getFormattedNewPriceListedUK())
